@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "230056404196",
+    "project_id": "fluxsync518",
+    "storage_bucket": "fluxsync518.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230056404196:android:1e13c6638380178341f8f1",
+        "android_client_info": {
+          "package_name": "com.dieyteixeira.fluxsync"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDJ4pl1c4begi5o4foBnm9mTzgk5_lMH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
