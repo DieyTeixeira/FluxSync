@@ -13,10 +13,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.dieyteixeira.fluxsync.app.theme.Background
+import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.LightColor1
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
 
@@ -64,7 +63,7 @@ fun CustomBottomNavigation(
         modifier = Modifier
             .fillMaxWidth()
             .clip(navShape)
-            .background(Background)
+            .background(ColorBackground)
             .padding(vertical = 18.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically

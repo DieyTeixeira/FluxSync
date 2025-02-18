@@ -1,23 +1,25 @@
 package com.dieyteixeira.fluxsync.ui.home.screen
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
@@ -35,36 +37,33 @@ import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.InsertChart
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
-import com.dieyteixeira.fluxsync.app.theme.Background
+import com.dieyteixeira.fluxsync.app.theme.ColorBackground
+import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.LightBackground
+import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.app.theme.LightColor4
 import com.dieyteixeira.fluxsync.app.theme.LightColor5
 import com.dieyteixeira.fluxsync.app.theme.ManageStatusBarIcons
-import com.dieyteixeira.fluxsync.ui.home.screen.tabs.ChartTab
-import com.dieyteixeira.fluxsync.ui.home.screen.tabs.HomeTab
-import com.dieyteixeira.fluxsync.ui.home.screen.tabs.SettingsTab
-import com.dieyteixeira.fluxsync.ui.home.screen.tabs.TransactionTab
+import com.dieyteixeira.fluxsync.ui.home.tabs.chart.ChartTab
+import com.dieyteixeira.fluxsync.ui.home.tabs.home.screen.HomeTabScreen
+import com.dieyteixeira.fluxsync.ui.home.tabs.settings.SettingsTab
+import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.TransactionTab
 import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
 import com.exyte.animatednavbar.AnimatedNavigationBar
 import com.exyte.animatednavbar.animation.balltrajectory.Straight
@@ -73,6 +72,7 @@ import com.exyte.animatednavbar.animation.indendshape.shapeCornerRadius
 import com.exyte.animatednavbar.utils.noRippleClickable
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalAnimationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
@@ -83,7 +83,6 @@ fun HomeScreen(
     // Cor dos ícones da status bar
     ManageStatusBarIcons(isIconBlack = false)
 
-    val navController = rememberNavController()
     val navigationBarItems = remember { NavigationBarItems.values() }
     var selectedIndex by remember { mutableStateOf(0) }
     var pulseEffect by remember { mutableStateOf(false) }
@@ -109,8 +108,8 @@ fun HomeScreen(
                 cornerRadius = shapeCornerRadius(cornerRadius = 34.dp),
                 ballAnimation = Straight(tween(300)),
                 indentAnimation = Height(tween(300)),
-                barColor = Background,
-                ballColor = LightColor5
+                barColor = ColorCards,
+                ballColor = LightColor4
             ) {
                 navigationBarItems.forEach { item ->
                     if (item.ordinal == 2) {
@@ -131,7 +130,7 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .fillMaxSize(0.85f * pulseScale)
                                     .background(
-                                        color = LightColor4,
+                                        color = LightColor3,
                                         shape = RoundedCornerShape(50)
                                     )
                             )
@@ -172,7 +171,7 @@ fun HomeScreen(
                                 modifier = Modifier.size(25.dp),
                                 imageVector = item.unselectedIcon,
                                 contentDescription = "Bottom Bar Icon",
-                                tint = Color.LightGray
+                                tint = Color.Gray.copy(alpha = 0.75f)
                             )
                             Box(
                                 modifier = Modifier
@@ -191,7 +190,7 @@ fun HomeScreen(
                                         .rotate(45f)
                                         .border(
                                             width = 2.dp,
-                                            color = LightColor3.copy(alpha = revealProgress),
+                                            color = LightColor2.copy(alpha = revealProgress),
                                             shape = RoundedCornerShape(
                                                 shapeForm, 100, 100, 100
                                             )
@@ -207,7 +206,7 @@ fun HomeScreen(
                                     modifier = Modifier.size(25.dp),
                                     imageVector = item.selectedIcon,
                                     contentDescription = "Bottom Bar Icon",
-                                    tint = LightColor3.copy(alpha = revealProgress)
+                                    tint = LightColor2.copy(alpha = revealProgress)
                                 )
                             }
                         }
@@ -219,6 +218,7 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(ColorBackground)
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -226,10 +226,22 @@ fun HomeScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(28.dp)
-                    .background(LightColor3)
+                    .height(30.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(LightColor5, LightColor3)
+                        )
+                    )
             )
-            NavigationBarItems.entries[selectedIndex].screen(viewModel, onSignOutClick)
+            AnimatedContent(
+                targetState = selectedIndex,
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)) with
+                            fadeOut(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
+                }
+            ) { targetState ->
+                NavigationBarItems.entries[targetState].screen(viewModel, onSignOutClick)
+            }
         }
 
         if (showDialog) {
@@ -261,7 +273,7 @@ enum class NavigationBarItems(
     Home(
         selectedIcon = Icons.Outlined.Home,
         unselectedIcon = Icons.Filled.Home,
-        screen = { viewModel, onSignOutClick -> HomeTab(viewModel, onSignOutClick) }
+        screen = { LoginViewModel, onSignOutClick -> HomeTabScreen(LoginViewModel, onSignOutClick) }
     ),
     Transaction(
         selectedIcon = Icons.Outlined.Description,
