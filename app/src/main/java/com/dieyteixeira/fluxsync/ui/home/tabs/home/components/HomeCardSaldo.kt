@@ -172,7 +172,7 @@ fun SaldoItem(
                 fontWeight = FontWeight.Medium
             )
             Text(
-                text = if (visibility) formatarValor(saldo.valor) else "R$ ****",
+                text = if (visibility) formatarValor(saldo.valor) else "R$ *****",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (saldo.valor > 0) ColorPositive else ColorNegative
@@ -184,7 +184,7 @@ fun SaldoItem(
 @Preview
 @Composable
 private fun PreviewHomeCardSaldo() {
-    HomeCardTransactions(
+    HomeCardSaldo(
         isSaldoVisivel = true,
         onVisibilityChange = {}
     )

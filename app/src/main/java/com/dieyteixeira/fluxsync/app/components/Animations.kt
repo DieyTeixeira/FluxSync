@@ -1,4 +1,4 @@
-package com.dieyteixeira.fluxsync.app.animations
+package com.dieyteixeira.fluxsync.app.components
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition

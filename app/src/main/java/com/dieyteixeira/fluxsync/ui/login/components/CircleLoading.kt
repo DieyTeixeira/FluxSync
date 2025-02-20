@@ -11,7 +11,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.dieyteixeira.fluxsync.app.animations.fractionTransition
+import com.dieyteixeira.fluxsync.app.components.fractionTransition
 import kotlin.math.cos
 import kotlin.math.sin
 

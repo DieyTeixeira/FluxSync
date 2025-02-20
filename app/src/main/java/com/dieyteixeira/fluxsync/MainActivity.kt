@@ -8,6 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.theme.FluxSyncTheme
 import com.dieyteixeira.fluxsync.ui.home.navigation.homeScreen
 import com.dieyteixeira.fluxsync.ui.login.navigation.loginScreen

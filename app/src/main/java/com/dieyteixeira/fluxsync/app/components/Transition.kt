@@ -1,4 +1,4 @@
-package com.dieyteixeira.fluxsync.app.animations
+package com.dieyteixeira.fluxsync.app.components
 
 import androidx.annotation.IntRange
 import androidx.compose.animation.core.Easing

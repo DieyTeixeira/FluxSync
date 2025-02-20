@@ -19,8 +19,8 @@ val ColorBackground = Color(0xFFF0F1F2)
 val ColorCards = Color(0xFFFDFDFD)
 val ColorFontesLight = Color(0xFF999A95)
 val ColorFontesDark = Color(0xFF2D2E29)
-val ColorPositive = Color(0xFF229922)
-val ColorNegative = Color(0xFFD22828)
+val ColorPositive = Color(0xFF108770)
+val ColorNegative = Color(0xFFBE0B19)
 
 
 val ColorError = Color(0xFFFF1E00)
