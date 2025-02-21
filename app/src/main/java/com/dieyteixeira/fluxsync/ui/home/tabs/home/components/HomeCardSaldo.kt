@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,6 +41,7 @@ import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorError
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
+import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.ColorSuccess
@@ -58,7 +60,19 @@ fun HomeCardSaldo(
     val saldoTotal = saldos.sumOf { it.valor }
 
     Column(
-        modifier = Modifier.padding(20.dp, 0.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp, 0.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(10.dp),
+                ambientColor = Color.Gray,
+                spotColor = Color.Gray
+            )
+            .background(
+                color = ColorCards,
+                shape = RoundedCornerShape(10.dp)
+            )
     ) {
         Box(
             modifier = Modifier
@@ -104,13 +118,7 @@ fun HomeCardSaldo(
                 )
             }
         }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .padding(20.dp, 0.dp)
-                .background(ColorBackground)
-        )
+        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(ColorLine))
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()

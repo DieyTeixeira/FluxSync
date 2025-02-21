@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
+import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.DarkColorError
@@ -37,16 +40,24 @@ fun HomeCardHistorico(
 ) {
 
     Column(
-        modifier = Modifier.padding(20.dp, 0.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp, 0.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(10.dp),
+                ambientColor = Color.Gray,
+                spotColor = Color.Gray
+            )
+            .background(
+                color = ColorCards,
+                shape = RoundedCornerShape(10.dp)
+            )
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-                .background(
-                    color = ColorCards,
-                    shape = RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp)
-                ),
+                .height(50.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -65,23 +76,11 @@ fun HomeCardHistorico(
                 )
             }
         }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .padding(20.dp, 0.dp)
-                .background(ColorBackground)
-        )
+        Box(modifier = Modifier.fillMaxWidth(0.9f).height(1.dp).background(ColorLine).align(Alignment.CenterHorizontally))
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = 295.dp)
-                .background(
-                    color = ColorCards,
-                    shape = RoundedCornerShape(
-                        0.dp, 0.dp, 10.dp, 10.dp
-                    )
-                )
                 .padding(10.dp)
         ) {
             items(transacoes.size) { index ->

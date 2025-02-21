@@ -10,9 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dieyteixeira.fluxsync.app.theme.ColorCards
 
 @Composable
 fun HomeCardNotifications() {
@@ -21,8 +23,14 @@ fun HomeCardNotifications() {
             .fillMaxWidth()
             .height(125.dp)
             .padding(20.dp, 0.dp)
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(10.dp),
+                ambientColor = Color.Gray,
+                spotColor = Color.Gray
+            )
             .background(
-                color = Color.White,
+                color = ColorCards,
                 shape = RoundedCornerShape(10.dp)
             ),
         contentAlignment = Alignment.Center

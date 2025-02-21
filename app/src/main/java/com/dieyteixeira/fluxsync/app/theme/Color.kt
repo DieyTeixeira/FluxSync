@@ -16,10 +16,11 @@ val DarkColor4 = Color(0xFF774505)
 val DarkColor5 = Color(0xFF643500)
 
 val ColorBackground = Color(0xFFF0F1F2)
+val ColorLine = Color(0xFFF3F4F5)
 val ColorCards = Color(0xFFFDFDFD)
 val ColorFontesLight = Color(0xFF999A95)
 val ColorFontesDark = Color(0xFF2D2E29)
-val ColorPositive = Color(0xFF108770)
+val ColorPositive = Color(0xFF1B9C54)
 val ColorNegative = Color(0xFFBE0B19)
 
 

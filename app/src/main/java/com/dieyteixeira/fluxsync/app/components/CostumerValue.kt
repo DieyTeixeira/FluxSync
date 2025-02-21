@@ -53,7 +53,7 @@ fun CustomField(
         }
     }
 
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
@@ -62,11 +62,18 @@ fun CustomField(
             .clickable{
                 clickVisibility = true
             },
-        contentAlignment = Alignment.CenterEnd
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End
     ) {
         Text(
+            text = "R$ ",
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+        Text(
             text = value.ifEmpty { "0,00" },
-            fontSize = 35.sp,
+            fontSize = 40.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
