@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Circle
@@ -137,7 +138,7 @@ fun AddCategoriasDialog(
 ) {
     var descricao by remember { mutableStateOf("") }
     var color by remember { mutableStateOf(Color.Transparent) }
-    var icon by remember { mutableStateOf(Icons.Default.Circle) }
+    var icon by remember { mutableStateOf(Icons.Default.Add) }
 
     CustomDialog(
         onClickClose = onClickClose
@@ -160,12 +161,10 @@ fun AddCategoriasDialog(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (icon != Icons.Default.Circle) {
-                    IconPersonal(
-                        color = color,
-                        icon = icon
-                    )
-                }
+                IconPersonal(
+                    color = color,
+                    icon = icon
+                )
                 TextInput(
                     textValue = descricao,
                     onValueChange = { descricao = it },
@@ -228,13 +227,15 @@ fun AddCategoriasDialog(
             Spacer(modifier = Modifier.height(20.dp))
             ButtonPersonalFilled(
                 onClick = {
-                    homeViewModel.salvarCategoria(
-                        icon = iconToString(icon),
-                        color = colorToString(color),
-                        descricao = descricao
-                    )
-                    homeViewModel.getCategorias()
-                    onClickClose()
+                    if (icon != Icons.Default.Add) {
+                        homeViewModel.salvarCategoria(
+                            icon = iconToString(icon),
+                            color = colorToString(color),
+                            descricao = descricao
+                        )
+                        homeViewModel.getCategorias()
+                        onClickClose()
+                    }
                 },
                 text = "Salvar",
                 colorText = Color.White,
