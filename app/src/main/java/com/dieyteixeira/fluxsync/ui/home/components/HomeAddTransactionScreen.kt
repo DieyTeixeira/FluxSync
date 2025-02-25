@@ -1,12 +1,11 @@
 package com.dieyteixeira.fluxsync.ui.home.components
 
+import android.annotation.SuppressLint
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,7 +28,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.Comment
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,7 +47,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,15 +57,15 @@ import com.dieyteixeira.fluxsync.app.components.DatePickerCustom
 import com.dieyteixeira.fluxsync.app.components.formatCurrencyInput
 import com.dieyteixeira.fluxsync.app.components.removeLastDigit
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
-import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
-import com.dieyteixeira.fluxsync.app.theme.ColorLine
+import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
-import kotlinx.coroutines.Dispatchers
+import com.dieyteixeira.fluxsync.app.theme.LightColor2
+import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+@SuppressLint("DefaultLocale")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeAddTransactionScreen(
@@ -100,6 +98,13 @@ fun HomeAddTransactionScreen(
     var dateSelected by remember { mutableStateOf(LocalDate.now()) }
     var dateRegistro by remember { mutableStateOf("") }
     var showCustomDatePicker by remember { mutableStateOf(false) }
+    val formattedDate = if (dateSelected == LocalDate.now()) {
+        "Hoje"
+    } else {
+        String.format("%02d/%02d/%d", dateSelected.dayOfMonth, dateSelected.monthValue, dateSelected.year)
+    }
+    val typeLancamento = remember { mutableStateOf("Único") }
+    var observacaoText by remember { mutableStateOf("") }
 
     LaunchedEffect(isClickClose) {
         if (isClickClose) {
@@ -223,26 +228,42 @@ fun HomeAddTransactionScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     item {
-                        HomeAddFieldsText(
+                        HomeAddFieldsTextLeanding(
                             divider = false,
                             text = "Descrição",
                             textValue = descriptionText,
                             onValueChange = { descriptionText = it },
-                            leadingIcon = Icons.Outlined.Edit,
+                            icon = Icons.Outlined.Edit,
                             placeholder = "Adicionar a descrição",
+                            maxLength = 20,
                             focusRequester = focusRequester,
                             onClickKeyboard = { isKeyboardVisible = false },
                             keyboardController = keyboardController
                         )
                     }
                     item {
-                        HomeAddFieldsTextIcon(
+                        HomeAddFieldsTextImage(
+                            interactionSource = interactionSource,
                             divider = true,
                             text = "Categoria",
                             textValue = categoryText,
                             onValueChange = { categoryText = it },
                             placeholder = "Adicionar a categoria",
-                            icon = R.drawable.banco_orginal,
+                            image = R.drawable.banco_orginal,
+                            focusRequester = focusRequester,
+                            onClickKeyboard = { isKeyboardVisible = false },
+                            keyboardController = keyboardController
+                        )
+                    }
+                    item {
+                        HomeAddFieldsTextImage(
+                            interactionSource = interactionSource,
+                            divider = true,
+                            text = if (typeTransaction.value == "receita") "Entrada em" else "Saída de",
+                            textValue = contaText,
+                            onValueChange = { contaText = it },
+                            placeholder = "Adicionar a conta",
+                            image = R.drawable.banco_c6,
                             focusRequester = focusRequester,
                             onClickKeyboard = { isKeyboardVisible = false },
                             keyboardController = keyboardController
@@ -250,67 +271,49 @@ fun HomeAddTransactionScreen(
                     }
                     item {
                         HomeAddFieldsTextIcon(
+                            interactionSource = interactionSource,
                             divider = true,
-                            text = if (typeTransaction.value == "receita") "Entrada em" else "Saída de",
-                            textValue = contaText,
-                            onValueChange = { contaText = it },
-                            placeholder = "Adicionar a conta",
-                            icon = R.drawable.banco_c6,
+                            text = "Data do lançamento",
+                            textValue = formattedDate,
+                            icon = Icons.Outlined.CalendarMonth,
+                            onClick = { showCustomDatePicker = true }
+                        )
+                    }
+                    item {
+                        HomeAddFieldsTextButtons(
+                            divider = true,
+                            text = "Tipo de lançamento",
+                            textValue1 = "Único",
+                            colorText1 = if (typeLancamento.value == "Único") Color.White else ColorFontesLight,
+                            color1 = if (typeLancamento.value == "Único") LightColor2 else Color.Transparent,
+                            colorBorder1 = if (typeLancamento.value == "Único") Color.Transparent else ColorFontesLight,
+                            onClick1 = { typeLancamento.value = "Único" },
+                            textValue2 = "Fixo",
+                            colorText2 = if (typeLancamento.value == "Fixo") Color.White else ColorFontesLight,
+                            color2 = if (typeLancamento.value == "Fixo") LightColor2 else Color.Transparent,
+                            colorBorder2 = if (typeLancamento.value == "Fixo") Color.Transparent else ColorFontesLight,
+                            onClick2 = { typeLancamento.value = "Fixo" },
+                            textValue3 = "Parcelado",
+                            colorText3 = if (typeLancamento.value == "Parcelado") Color.White else ColorFontesLight,
+                            color3 = if (typeLancamento.value == "Parcelado") LightColor2 else Color.Transparent,
+                            colorBorder3 = if (typeLancamento.value == "Parcelado") Color.Transparent else ColorFontesLight,
+                            onClick3 = { typeLancamento.value = "Parcelado" }
+                        )
+                    }
+                    item {
+                        HomeAddFieldsTextLeanding(
+                            divider = true,
+                            text = "Observação",
+                            textValue = observacaoText,
+                            onValueChange = { observacaoText = it },
+                            icon = Icons.Outlined.Comment,
+                            placeholder = "Adicionar alguma observação",
+                            singleLine = false,
+                            maxLength = 150,
                             focusRequester = focusRequester,
                             onClickKeyboard = { isKeyboardVisible = false },
                             keyboardController = keyboardController
                         )
-                    }
-                    item {
-                        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(ColorLine))
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(25.dp, 20.dp, 25.dp, 5.dp)
-                        ) {
-                            Text(
-                                text = "Data",
-                                fontSize = 18.sp,
-                                color = ColorFontesDark,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Spacer(modifier = Modifier.width(7.dp))
-                                Box(
-                                    modifier = Modifier
-                                        .size(30.dp)
-                                        .background(
-                                            color = Color.Black,
-                                            shape = RoundedCornerShape(100)
-                                        )
-                                        .clickable(
-                                            indication = null,
-                                            interactionSource = interactionSource
-                                        ) {
-                                            showCustomDatePicker = true
-                                        },
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.CalendarMonth,
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(20.dp)
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(7.dp))
-                                Text(
-                                    text = "${dateSelected.dayOfMonth}/${dateSelected.monthValue}/${dateSelected.year}",
-                                    fontSize = 18.sp,
-                                    color = ColorFontesDark
-                                )
-                            }
-                        }
                     }
                 }
             }

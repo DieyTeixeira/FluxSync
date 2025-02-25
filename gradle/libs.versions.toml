@@ -1,6 +1,6 @@
 [versions]
 accompanistReorderableVersion = "0.31.1-alpha"
-agp = "8.10.0-alpha05"
+agp = "8.10.0-alpha06"
 animatedNavigationBar = "1.0.0"
 coilCompose = "2.7.0"
 converterGson = "2.11.0"

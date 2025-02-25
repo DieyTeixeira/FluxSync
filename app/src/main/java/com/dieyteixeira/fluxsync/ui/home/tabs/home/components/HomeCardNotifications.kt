@@ -1,6 +1,7 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.home.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,12 +18,17 @@ import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 
 @Composable
-fun HomeCardNotifications() {
+fun HomeCardNotifications(
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(125.dp)
             .padding(20.dp, 0.dp)
+            .clickable {
+
+            }
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(10.dp),

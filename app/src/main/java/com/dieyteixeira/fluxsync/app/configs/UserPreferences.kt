@@ -23,11 +23,11 @@ class UserPreferences(private val context: Context) {
     // Recuperar preferências do usuário
     val userPreferences: Flow<Pair<List<String>, Map<String, Boolean>>> = context.dataStore.data
         .map { preferences ->
-            val cardsOrder = preferences[CARDS_ORDER_KEY]?.split(",") ?: listOf("Saldo", "Histórico")
-            val enabledCards = preferences[ENABLED_CARDS_KEY]?.split(";")?.associate {
-                val (key, value) = it.split(":")
-                key to value.toBoolean()
-            } ?: cardsOrder.associateWith { true }
+            val cardsOrder = preferences[CARDS_ORDER_KEY]?.split(",") ?: listOf("Saldo", "Histórico", "Ajustes")
+            val enabledCards = preferences[ENABLED_CARDS_KEY]?.split(";")?.mapNotNull {
+                val parts = it.split(":")
+                if (parts.size == 2) parts[0] to parts[1].toBoolean() else null
+            }?.toMap() ?: cardsOrder.associateWith { true }
 
             cardsOrder to enabledCards
         }

@@ -77,11 +77,7 @@ fun HomeCardSaldo(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(80.dp)
-                .background(
-                    color = ColorCards,
-                    shape = RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp)
-                ),
+                .height(80.dp),
             contentAlignment = Alignment.Center
         ) {
             Row(
@@ -118,17 +114,11 @@ fun HomeCardSaldo(
                 )
             }
         }
-        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(ColorLine))
+        Box(modifier = Modifier.fillMaxWidth(0.95f).height(1.dp).background(ColorLine).align(Alignment.CenterHorizontally))
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = 235.dp)
-                .background(
-                    color = ColorCards,
-                    shape = RoundedCornerShape(
-                        0.dp, 0.dp, 10.dp, 10.dp
-                    )
-                )
                 .padding(10.dp)
         ) {
             items(saldos.size) { index ->

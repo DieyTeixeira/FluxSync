@@ -52,3 +52,12 @@ val saldos = listOf(
     Saldo(R.drawable.banco_c6, Color(0xFF000000), "C6 Bank", 253.16),
     Saldo(R.drawable.banco_santander, Color.LightGray.copy(alpha = 0.5f), "Banco Santander", 857.49)
 )
+
+data class ItemAjuste(
+    val text: String
+)
+
+val itemsAjuste = listOf(
+    ItemAjuste("Contas"),
+    ItemAjuste("Categorias")
+)

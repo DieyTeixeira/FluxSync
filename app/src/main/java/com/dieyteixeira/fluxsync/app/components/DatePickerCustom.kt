@@ -98,32 +98,22 @@ fun DatePickerCustom(
                     horizontalArrangement = Arrangement.End
                 ) {
 
-                    TextButton(
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .height(35.dp),
-                        onClick = onCancelClick
-                    ) {
-                        Text(
-                            text = "Cancel",
-                            color = LightColor3,
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                    }
-
-                    Button(
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .height(35.dp),
-                        onClick = {
-                            onOKClick(selDate.value)
-                        }
-                    ) {
-                        Text(
-                            text = "OK",
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                    }
+                    ButtonPersonalText(
+                        onClick = { onCancelClick() },
+                        text = "Cancel",
+                        colorText = LightColor3,
+                        height = 35.dp,
+                        width = 80.dp
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    ButtonPersonalFilled(
+                        onClick = { onOKClick(selDate.value) },
+                        text = "OK",
+                        colorText = Color.White,
+                        color = LightColor3,
+                        height = 35.dp,
+                        width = 80.dp
+                    )
                 }
             }
         }

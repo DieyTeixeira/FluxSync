@@ -2,6 +2,8 @@ package com.dieyteixeira.fluxsync.ui.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -26,7 +27,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -34,20 +34,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dieyteixeira.fluxsync.R
-import com.dieyteixeira.fluxsync.app.theme.ColorBackground
-import com.dieyteixeira.fluxsync.app.theme.ColorCards
+import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
+import com.dieyteixeira.fluxsync.app.theme.LightColor2
 
 @Composable
-fun HomeAddFieldsText(
+fun HomeAddFieldsTextLeanding(
     divider: Boolean,
     text: String,
     textValue: String,
     onValueChange: (String) -> Unit,
-    leadingIcon: ImageVector,
+    icon: ImageVector,
     placeholder: String,
+    singleLine: Boolean = true,
+    maxLength: Int,
     focusRequester: FocusRequester,
     onClickKeyboard: () -> Unit,
     keyboardController: SoftwareKeyboardController?
@@ -66,59 +67,80 @@ fun HomeAddFieldsText(
             color = ColorFontesDark,
             fontWeight = FontWeight.Bold
         )
-        TextField(
-            value = textValue,
-            onValueChange = onValueChange,
-            placeholder = {
-                Text(
-                    text = placeholder,
-                    fontSize = 18.sp,
-                    color = ColorFontesDark
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    imageVector = leadingIcon,
-                    contentDescription = null,
-                    tint = ColorFontesDark
-                )
-            },
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester)
-                .onFocusChanged { focusState ->
-                    if (focusState.isFocused) {
-                        onClickKeyboard()
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(modifier = Modifier.width(7.dp))
+            Box(
+                modifier = Modifier
+                    .size(30.dp)
+                    .background(
+                        color = Color.Transparent
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = LightColor2,
+                    modifier = Modifier
+                        .size(25.dp)
+                )
+            }
+            TextField(
+                value = textValue,
+                onValueChange = { newValue ->
+                    if (newValue.length <= maxLength) {
+                        onValueChange(newValue)
                     }
                 },
-            textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
-            singleLine = false,
-            keyboardOptions = KeyboardOptions.Default,
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    keyboardController?.hide() // Fecha o teclado ao pressionar "Done"
-                }
-            ),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                disabledBorderColor = Color.Transparent,
-                textColor = ColorFontesDark,
-                cursorColor = ColorFontesDark
+                placeholder = {
+                    Text(
+                        text = placeholder,
+                        fontSize = 18.sp,
+                        color = ColorFontesDark
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester)
+                    .onFocusChanged { focusState ->
+                        if (focusState.isFocused) {
+                            onClickKeyboard()
+                        }
+                    },
+                textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                singleLine = singleLine,
+                keyboardOptions = KeyboardOptions.Default,
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                    }
+                ),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    disabledBorderColor = Color.Transparent,
+                    textColor = ColorFontesDark,
+                    cursorColor = ColorFontesDark
+                )
             )
-        )
+        }
     }
 }
 
 @Composable
-fun HomeAddFieldsTextIcon(
+fun HomeAddFieldsTextImage(
+    interactionSource: MutableInteractionSource,
     divider: Boolean,
     text: String,
     textValue: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
-    icon: Int,
+    image: Int,
     focusRequester: FocusRequester,
     onClickKeyboard: () -> Unit,
     keyboardController: SoftwareKeyboardController?
@@ -153,7 +175,7 @@ fun HomeAddFieldsTextIcon(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(icon),
+                    painter = painterResource(image),
                     contentDescription = "Ícone",
                     modifier = Modifier
                         .size(20.dp)
@@ -162,29 +184,19 @@ fun HomeAddFieldsTextIcon(
             TextField(
                 value = textValue,
                 onValueChange = onValueChange,
-                placeholder = {
-                    Text(
-                        text = placeholder,
-                        fontSize = 18.sp,
-                        color = ColorFontesDark
-                    )
-                },
+                placeholder = { Text(
+                    text = placeholder,
+                    fontSize = 18.sp,
+                    color = ColorFontesDark
+                ) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester)
-                    .onFocusChanged { focusState ->
-                        if (focusState.isFocused) {
-                            onClickKeyboard()
-                        }
-                    },
+                    .onFocusChanged { focusState -> if (focusState.isFocused) { onClickKeyboard() } },
                 textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
                 singleLine = false,
                 keyboardOptions = KeyboardOptions.Default,
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide() // Fecha o teclado ao pressionar "Done"
-                    }
-                ),
+                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     backgroundColor = Color.Transparent,
                     focusedBorderColor = Color.Transparent,
@@ -193,6 +205,142 @@ fun HomeAddFieldsTextIcon(
                     textColor = ColorFontesDark,
                     cursorColor = ColorFontesDark
                 )
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeAddFieldsTextIcon(
+    interactionSource: MutableInteractionSource,
+    divider: Boolean,
+    text: String,
+    textValue: String,
+    icon: ImageVector,
+    onClick: () -> Unit = {},
+) {
+    if (divider) {
+        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(ColorLine))
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(25.dp, 20.dp, 25.dp, 20.dp)
+    ) {
+        Text(
+            text = text,
+            fontSize = 18.sp,
+            color = ColorFontesDark,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ) {
+                    onClick()
+                },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(modifier = Modifier.width(7.dp))
+            Box(
+                modifier = Modifier
+                    .size(30.dp)
+                    .background(
+                        color = Color.Transparent
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = LightColor2,
+                    modifier = Modifier
+                        .size(25.dp)
+                )
+            }
+            Spacer(modifier = Modifier.width(15.dp))
+            Text(
+                text = textValue,
+                fontSize = 18.sp,
+                color = ColorFontesDark
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeAddFieldsTextButtons(
+    divider: Boolean,
+    text: String,
+    textValue1: String,
+    colorText1: Color,
+    color1: Color,
+    colorBorder1: Color,
+    textValue2: String,
+    colorText2: Color,
+    color2: Color,
+    colorBorder2: Color,
+    textValue3: String,
+    colorText3: Color,
+    color3: Color,
+    colorBorder3: Color,
+    onClick1: () -> Unit = {},
+    onClick2: () -> Unit = {},
+    onClick3: () -> Unit = {}
+) {
+    if (divider) {
+        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(ColorLine))
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(25.dp, 20.dp, 25.dp, 20.dp)
+    ) {
+        Text(
+            text = text,
+            fontSize = 18.sp,
+            color = ColorFontesDark,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(modifier = Modifier.width(7.dp))
+            ButtonPersonalFilled(
+                onClick = onClick1,
+                text = textValue1,
+                colorText = colorText1,
+                color = color1,
+                colorBorder = colorBorder1,
+                height = 35.dp,
+                width = 100.dp
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            ButtonPersonalFilled(
+                onClick = onClick2,
+                text = textValue2,
+                colorText = colorText2,
+                color = color2,
+                colorBorder = colorBorder2,
+                height = 35.dp,
+                width = 100.dp
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            ButtonPersonalFilled(
+                onClick = onClick3,
+                text = textValue3,
+                colorText = colorText3,
+                color = color3,
+                colorBorder = colorBorder3,
+                height = 35.dp,
+                width = 100.dp
             )
         }
     }
