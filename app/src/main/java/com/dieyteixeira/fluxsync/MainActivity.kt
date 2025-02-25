@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.theme.FluxSyncTheme
 import com.dieyteixeira.fluxsync.ui.home.navigation.homeScreen
+import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import com.dieyteixeira.fluxsync.ui.login.navigation.loginScreen
 import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
 import com.dieyteixeira.fluxsync.ui.splash.navigation.splashScreen
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
                 val loginViewModel: LoginViewModel by viewModel()
+                val homeViewModel: HomeViewModel by viewModel()
 
                 LaunchedEffect(Unit) {
                     delay(2000)
@@ -68,6 +70,7 @@ class MainActivity : ComponentActivity() {
                     )
                     homeScreen(
                         loginViewModel = loginViewModel,
+                        homeViewModel = homeViewModel,
                         onSignOut = { navController.navigateToScreen("login", "home") }
                     )
                 }

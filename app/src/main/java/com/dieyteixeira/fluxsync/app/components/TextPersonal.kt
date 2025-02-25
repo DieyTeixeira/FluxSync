@@ -83,10 +83,7 @@ fun TextInputIcon(
 fun TextInput(
     textValue: String,
     onValueChange: (String) -> Unit,
-    placeholder: String,
-    focusRequester: FocusRequester,
-    onClickKeyboard: () -> Unit,
-    keyboardController: SoftwareKeyboardController?
+    placeholder: String
 ) {
     TextField(
         value = textValue,
@@ -99,21 +96,9 @@ fun TextInput(
             )
         },
         modifier = Modifier
-            .fillMaxWidth()
-            .focusRequester(focusRequester)
-            .onFocusChanged { focusState ->
-                if (focusState.isFocused) {
-                    onClickKeyboard()
-                }
-            },
+            .fillMaxWidth(),
         textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
         singleLine = false,
-        keyboardOptions = KeyboardOptions.Default,
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide() // Fecha o teclado ao pressionar "Done"
-            }
-        ),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = Color.Transparent,
             focusedBorderColor = Color.Transparent,

@@ -4,7 +4,7 @@ import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dieyteixeira.fluxsync.app.repository.AuthRepository
+import com.dieyteixeira.fluxsync.app.di.repository.AuthRepository
 import com.dieyteixeira.fluxsync.ui.login.state.LoginState
 import com.dieyteixeira.fluxsync.ui.login.state.LoginUiState
 import com.google.firebase.auth.FirebaseAuthException

@@ -9,17 +9,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Description
@@ -34,26 +25,22 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
-import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
-import com.dieyteixeira.fluxsync.app.theme.LightColor1
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
-import com.dieyteixeira.fluxsync.app.theme.LightColor5
 import com.dieyteixeira.fluxsync.ui.home.tabs.chart.ChartTab
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.screen.HomeTabScreen
 import com.dieyteixeira.fluxsync.ui.home.tabs.settings.SettingsTab
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.TransactionTab
+import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HomePrincipalScreen(
     selectedIndex: Int,
-    viewModel: LoginViewModel,
+    loginViewModel: LoginViewModel,
+    homeViewModel: HomeViewModel,
     userPreferences: UserPreferences,
     onSignOutClick: () -> Unit
 ) {
@@ -72,7 +59,7 @@ fun HomePrincipalScreen(
                         fadeOut(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
             }
         ) { targetState ->
-            NavigationBarItems.entries[targetState].screen(viewModel, userPreferences, onSignOutClick)
+            NavigationBarItems.entries[targetState].screen(loginViewModel, homeViewModel, userPreferences, onSignOutClick)
         }
     }
 }
@@ -80,33 +67,33 @@ fun HomePrincipalScreen(
 enum class NavigationBarItems(
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
-    val screen: @Composable (LoginViewModel, UserPreferences, () -> Unit) -> Unit,
+    val screen: @Composable (LoginViewModel, HomeViewModel, UserPreferences, () -> Unit) -> Unit,
 ) {
     Home(
         selectedIcon = Icons.Outlined.Home,
         unselectedIcon = Icons.Filled.Home,
-        screen = { viewModel, userPreferences, onSignOutClick ->
-            HomeTabScreen(viewModel, userPreferences, onSignOutClick)
+        screen = { loginViewModel, homeViewModel, userPreferences, onSignOutClick ->
+            HomeTabScreen(loginViewModel, homeViewModel, userPreferences, onSignOutClick)
         }
     ),
     Transaction(
         selectedIcon = Icons.Outlined.Description,
         unselectedIcon = Icons.Filled.Description,
-        screen = { _, _, _ -> TransactionTab() }
+        screen = { _, _, _, _ -> TransactionTab() }
     ),
     Add(
         selectedIcon = Icons.Outlined.Add,
         unselectedIcon = Icons.Filled.Add,
-        screen = { _, _, _ -> }
+        screen = { _, _, _, _ -> }
     ),
     Chart(
         selectedIcon = Icons.Outlined.InsertChart,
         unselectedIcon = Icons.Filled.InsertChart,
-        screen = { _, _, _ -> ChartTab() }
+        screen = { _, _, _, _ -> ChartTab() }
     ),
     Settings(
         selectedIcon = Icons.Outlined.Settings,
         unselectedIcon = Icons.Filled.Settings,
-        screen = { _, _, _ -> SettingsTab() }
+        screen = { _, _, _, _ -> SettingsTab() }
     )
 }

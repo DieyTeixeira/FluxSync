@@ -3,27 +3,44 @@ package com.dieyteixeira.fluxsync.app.theme
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
+// cores padrão do app (light)
 val LightColor1 = Color(0xFF037063)
 val LightColor2 = Color(0xFF026054)
 val LightColor3 = Color(0xFF025045)
 val LightColor4 = Color(0xFF013F35)
 val LightColor5 = Color(0xFF002F26)
 
+// cores padrão do app (dark)
 val DarkColor1 = Color(0xFFB17512)
 val DarkColor2 = Color(0xFF9E650E)
 val DarkColor3 = Color(0xFF8B5509)
 val DarkColor4 = Color(0xFF774505)
 val DarkColor5 = Color(0xFF643500)
 
+// cores para ícones
+val BrownCategory = Color(0xFFBC906F)
+val RedCategory = Color(0xFFFD7D7A)
+val OrangeCategory = Color(0xFFFCC380)
+val YellowCategory = Color(0xFFFCE78C)
+val GreenCategory = Color(0xFFC0DE7E)
+val BlueCategory = Color(0xFF84E0EF)
+val PurpleCategory = Color(0xFFD6B4E8)
+val GrayCategory = Color(0xFFCACBC6)
+
+// cores auxiliares
 val ColorBackground = Color(0xFFF0F1F2)
 val ColorLine = Color(0xFFF3F4F5)
 val ColorCards = Color(0xFFFDFDFD)
+
+// cores de fonte
 val ColorFontesLight = Color(0xFF999A95)
 val ColorFontesDark = Color(0xFF2D2E29)
+
+// cores negativo e positivo
 val ColorPositive = Color(0xFF1B9C54)
 val ColorNegative = Color(0xFFBE0B19)
 
-
+// cores de tratamento de erros
 val ColorError = Color(0xFFFF1E00)
 val DarkColorError = Color(0xFFAA0000)
 val ColorSuccess = Color(0xFF27B238)

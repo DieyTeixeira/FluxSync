@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -29,10 +28,8 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
-import com.dieyteixeira.fluxsync.app.theme.DarkColorError
-import com.dieyteixeira.fluxsync.app.theme.DarkColorSuccess
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.state.Transacao
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.state.transacoes
+import com.dieyteixeira.fluxsync.ui.home.state.Transacao
+import com.dieyteixeira.fluxsync.ui.home.state.transacoes
 
 @Composable
 fun HomeCardHistorico(

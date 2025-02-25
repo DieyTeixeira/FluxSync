@@ -23,10 +23,6 @@ import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -36,20 +32,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
-import com.dieyteixeira.fluxsync.app.theme.ColorError
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
-import com.dieyteixeira.fluxsync.app.theme.ColorSuccess
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.state.Saldo
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.state.Transacao
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.state.formatarValor
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.state.saldos
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.state.transacoes
+import com.dieyteixeira.fluxsync.ui.home.state.Conta
+import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
+import com.dieyteixeira.fluxsync.ui.home.state.contas
 
 @Composable
 fun HomeCardSaldo(
@@ -57,7 +48,7 @@ fun HomeCardSaldo(
     onVisibilityChange: (Boolean) -> Unit
 ) {
 
-    val saldoTotal = saldos.sumOf { it.valor }
+    val saldoTotal = contas.sumOf { it.valor }
 
     Column(
         modifier = Modifier
@@ -121,9 +112,9 @@ fun HomeCardSaldo(
                 .heightIn(max = 235.dp)
                 .padding(10.dp)
         ) {
-            items(saldos.size) { index ->
+            items(contas.size) { index ->
                 SaldoItem(
-                    saldo = saldos[index],
+                    contas = contas[index],
                     visibility = isSaldoVisivel
                 )
             }
@@ -133,7 +124,7 @@ fun HomeCardSaldo(
 
 @Composable
 fun SaldoItem(
-    saldo: Saldo,
+    contas: Conta,
     visibility: Boolean
 ) {
 
@@ -147,13 +138,13 @@ fun SaldoItem(
             modifier = Modifier
                 .size(30.dp)
                 .background(
-                    color = saldo.color,
+                    color = contas.color,
                     shape = RoundedCornerShape(100)
                 ),
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = saldo.icon),
+                painter = painterResource(id = contas.icon),
                 contentDescription = "Ícone de banco",
                 modifier = Modifier
                     .size(20.dp)
@@ -165,15 +156,15 @@ fun SaldoItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = saldo.descricao,
+                text = contas.descricao,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium
             )
             Text(
-                text = if (visibility) formatarValor(saldo.valor) else "R$ *****",
+                text = if (visibility) formatarValor(contas.valor) else "R$ *****",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = if (saldo.valor > 0) ColorPositive else ColorNegative
+                color = if (contas.valor > 0) ColorPositive else ColorNegative
             )
         }
     }

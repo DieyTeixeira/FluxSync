@@ -1,8 +1,9 @@
-package com.dieyteixeira.fluxsync.app.repository
+package com.dieyteixeira.fluxsync.app.di.repository
 
 import com.dieyteixeira.fluxsync.ui.login.state.LoginState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
 class AuthRepository(

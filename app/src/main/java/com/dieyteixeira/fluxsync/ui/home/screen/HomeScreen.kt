@@ -22,13 +22,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,7 +38,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.clipRect
@@ -59,6 +55,7 @@ import com.dieyteixeira.fluxsync.app.theme.ManageStatusBarIcons
 import com.dieyteixeira.fluxsync.ui.home.components.HomeAddTransactionScreen
 import com.dieyteixeira.fluxsync.ui.home.components.HomePrincipalScreen
 import com.dieyteixeira.fluxsync.ui.home.components.NavigationBarItems
+import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
 import com.exyte.animatednavbar.AnimatedNavigationBar
 import com.exyte.animatednavbar.animation.balltrajectory.Straight
@@ -72,7 +69,8 @@ import kotlinx.coroutines.delay
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-    viewModel: LoginViewModel,
+    loginViewModel: LoginViewModel,
+    homeViewModel: HomeViewModel,
     onSignOutClick: () -> Unit
 ) {
 
@@ -253,7 +251,8 @@ fun HomeScreen(
                         ) {
                             HomePrincipalScreen(
                                 selectedIndex = selectedIndex,
-                                viewModel = viewModel,
+                                loginViewModel = loginViewModel,
+                                homeViewModel = homeViewModel,
                                 userPreferences = userPreferences,
                                 onSignOutClick = onSignOutClick
                             )

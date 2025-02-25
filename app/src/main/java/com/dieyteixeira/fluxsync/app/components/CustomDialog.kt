@@ -127,7 +127,7 @@ fun CustomDialog(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .background(
-                        color = DarkColorError,
+                        color = ColorError,
                         shape = RoundedCornerShape(0.dp, 15.dp, 0.dp, 15.dp),
                     )
                     .padding(5.dp)
