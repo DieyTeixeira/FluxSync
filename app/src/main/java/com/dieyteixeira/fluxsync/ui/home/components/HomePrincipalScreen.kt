@@ -11,21 +11,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.InsertChart
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.InsertChart
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.ui.home.tabs.chart.ChartTab
@@ -65,35 +54,29 @@ fun HomePrincipalScreen(
 }
 
 enum class NavigationBarItems(
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    val screen: @Composable (LoginViewModel, HomeViewModel, UserPreferences, () -> Unit) -> Unit,
+    val icon: Int,
+    val screen: @Composable ((LoginViewModel, HomeViewModel, UserPreferences, () -> Unit) -> Unit),
 ) {
     Home(
-        selectedIcon = Icons.Outlined.Home,
-        unselectedIcon = Icons.Filled.Home,
+        icon = R.drawable.icon_casa,
         screen = { loginViewModel, homeViewModel, userPreferences, onSignOutClick ->
             HomeTabScreen(loginViewModel, homeViewModel, userPreferences, onSignOutClick)
         }
     ),
     Transaction(
-        selectedIcon = Icons.Outlined.Description,
-        unselectedIcon = Icons.Filled.Description,
+        icon = R.drawable.icon_documento,
         screen = { _, _, _, _ -> TransactionTab() }
     ),
     Add(
-        selectedIcon = Icons.Outlined.Add,
-        unselectedIcon = Icons.Filled.Add,
+        icon = R.drawable.icon_mais,
         screen = { _, _, _, _ -> }
     ),
     Chart(
-        selectedIcon = Icons.Outlined.InsertChart,
-        unselectedIcon = Icons.Filled.InsertChart,
+        icon = R.drawable.icon_estatisticas,
         screen = { _, _, _, _ -> ChartTab() }
     ),
     Settings(
-        selectedIcon = Icons.Outlined.Settings,
-        unselectedIcon = Icons.Filled.Settings,
+        icon = R.drawable.icon_ferramenta,
         screen = { _, _, _, _ -> SettingsTab() }
     )
 }

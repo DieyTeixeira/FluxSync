@@ -17,17 +17,26 @@ val DarkColor3 = Color(0xFF8B5509)
 val DarkColor4 = Color(0xFF774505)
 val DarkColor5 = Color(0xFF643500)
 
-// cores para ícones
-val BrownCategory = Color(0xFFBC906F)
-val RedCategory = Color(0xFFFD7D7A)
+// cores para contas
+val BlackCont = Color(0xFF2D2E29)
+val DarkCont = Color(0xFF999A95)
+val GrayCont = Color(0xFFCACBC6)
+val RedCont = Color(0xFFFF4D4D)
+val YellowCont = Color(0xFFFFD700)
+val GreenCont = Color(0xFF76C442)
+val BlueCont = Color(0xFF0080CF)
+
+// cores para categorias
+val BrownCategory = Color(0xFFD4A98A)
+val RedCategory = Color(0xFFFF9696)
 val OrangeCategory = Color(0xFFFCC380)
 val YellowCategory = Color(0xFFFCE78C)
 val GreenCategory = Color(0xFFC0DE7E)
 val BlueCategory = Color(0xFF84E0EF)
 val PurpleCategory = Color(0xFFD6B4E8)
-val GrayCategory = Color(0xFFCACBC6)
 
 // cores auxiliares
+val ColorGray = Color(0xFFCACBC6)
 val ColorBackground = Color(0xFFF0F1F2)
 val ColorLine = Color(0xFFF3F4F5)
 val ColorCards = Color(0xFFFDFDFD)

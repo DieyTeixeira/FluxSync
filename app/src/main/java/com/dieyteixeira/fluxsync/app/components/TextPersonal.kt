@@ -24,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
+import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 
 @Composable
 fun TextInputIcon(
@@ -42,7 +43,7 @@ fun TextInputIcon(
             Text(
                 text = placeholder,
                 fontSize = 18.sp,
-                color = ColorFontesDark
+                color = ColorFontesLight
             )
         },
         leadingIcon = {
@@ -92,7 +93,7 @@ fun TextInput(
             Text(
                 text = placeholder,
                 fontSize = 18.sp,
-                color = ColorFontesDark
+                color = ColorFontesLight
             )
         },
         modifier = Modifier

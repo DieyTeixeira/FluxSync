@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.app.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
@@ -11,13 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.dieyteixeira.fluxsync.R
 
 @Composable
 fun IconPersonal(
     color: Color,
-    icon: ImageVector
+    icon: Int
 ) {
     Box(
         contentAlignment = Alignment.Center
@@ -25,19 +29,19 @@ fun IconPersonal(
         Box(
             modifier = Modifier
                 .offset(y = -2.dp)
-                .size(25.dp)
+                .size(28.dp)
                 .background(
                     color = color,
                     shape = RoundedCornerShape(100)
                 )
         )
-        Icon(
-            imageVector = icon,
-            contentDescription = "Ícone de banco",
-            tint = Color.Black,
+        Image(
+            painter = painterResource(id = icon),
+            contentDescription = null,
             modifier = Modifier
                 .offset(y = 3.dp)
-                .size(25.dp)
+                .size(23.dp),
+            colorFilter = ColorFilter.tint(Color.Black)
         )
     }
 }

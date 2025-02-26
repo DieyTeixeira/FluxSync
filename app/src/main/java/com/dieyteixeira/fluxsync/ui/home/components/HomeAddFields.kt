@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
+import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
 
@@ -45,7 +47,7 @@ fun HomeAddFieldsTextLeanding(
     text: String,
     textValue: String,
     onValueChange: (String) -> Unit,
-    icon: ImageVector,
+    icon: Int,
     placeholder: String,
     singleLine: Boolean = true,
     maxLength: Int,
@@ -81,12 +83,11 @@ fun HomeAddFieldsTextLeanding(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = icon,
+                Image(
+                    painter = painterResource(id = icon),
                     contentDescription = null,
-                    tint = LightColor2,
-                    modifier = Modifier
-                        .size(25.dp)
+                    modifier = Modifier.size(23.dp),
+                    colorFilter = ColorFilter.tint(LightColor2)
                 )
             }
             TextField(
@@ -100,7 +101,7 @@ fun HomeAddFieldsTextLeanding(
                     Text(
                         text = placeholder,
                         fontSize = 18.sp,
-                        color = ColorFontesDark
+                        color = ColorFontesLight
                     )
                 },
                 modifier = Modifier
@@ -140,7 +141,7 @@ fun HomeAddFieldsTextImage(
     textValue: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
-    image: Int,
+    icon: Int,
     focusRequester: FocusRequester,
     onClickKeyboard: () -> Unit,
     keyboardController: SoftwareKeyboardController?
@@ -175,7 +176,7 @@ fun HomeAddFieldsTextImage(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(image),
+                    painter = painterResource(icon),
                     contentDescription = "Ícone",
                     modifier = Modifier
                         .size(20.dp)
@@ -187,7 +188,7 @@ fun HomeAddFieldsTextImage(
                 placeholder = { Text(
                     text = placeholder,
                     fontSize = 18.sp,
-                    color = ColorFontesDark
+                    color = ColorFontesLight
                 ) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -216,7 +217,7 @@ fun HomeAddFieldsTextIcon(
     divider: Boolean,
     text: String,
     textValue: String,
-    icon: ImageVector,
+    icon: Int,
     onClick: () -> Unit = {},
 ) {
     if (divider) {
@@ -254,12 +255,11 @@ fun HomeAddFieldsTextIcon(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = icon,
+                Image(
+                    painter = painterResource(id = icon),
                     contentDescription = null,
-                    tint = LightColor2,
-                    modifier = Modifier
-                        .size(25.dp)
+                    modifier = Modifier.size(23.dp),
+                    colorFilter = ColorFilter.tint(LightColor2)
                 )
             }
             Spacer(modifier = Modifier.width(15.dp))

@@ -66,15 +66,6 @@ val contas = listOf(
     Conta(R.drawable.banco_santander, Color.LightGray.copy(alpha = 0.5f), "Banco Santander", 857.49)
 )
 
-val categorias = listOf(
-    Categoria(Icons.Default.Fastfood, OrangeCategory, "Alimentação"),
-    Categoria(Icons.Default.AutoStories, BlueCategory, "Educação"),
-    Categoria(Icons.Default.Kayaking, GreenCategory, "Lazer"),
-    Categoria(Icons.Default.Handshake, RedCategory, "Saúde"),
-    Categoria(Icons.Default.DirectionsCar, YellowCategory, "Transporte"),
-    Categoria(Icons.Default.Apps, BrownCategory, "Outros")
-)
-
 data class ItemAjuste(
     val text: String
 )

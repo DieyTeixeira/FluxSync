@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.home.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -19,9 +20,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dieyteixeira.fluxsync.R
+import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.app.theme.LightColor4
 
@@ -53,11 +58,11 @@ fun HomeTopBar() {
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    modifier = Modifier.size(30.dp),
-                    imageVector = Icons.Filled.Person,
+                Image(
+                    painter = painterResource(id = R.drawable.icon_usuario),
                     contentDescription = "Bottom Bar Icon",
-                    tint = LightColor3
+                    modifier = Modifier.size(28.dp),
+                    colorFilter = ColorFilter.tint(LightColor3)
                 )
             }
         }
@@ -89,11 +94,11 @@ fun HomeTopBar() {
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                modifier = Modifier.size(30.dp),
-                imageVector = Icons.Filled.Notifications,
+            Image(
+                painter = painterResource(id = R.drawable.icon_sino),
                 contentDescription = "Bottom Bar Icon",
-                tint = Color.White
+                modifier = Modifier.size(22.dp),
+                colorFilter = ColorFilter.tint(Color.White)
             )
         }
     }

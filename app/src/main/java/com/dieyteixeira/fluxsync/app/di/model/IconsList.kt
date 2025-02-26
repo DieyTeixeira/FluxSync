@@ -1,75 +1,87 @@
 package com.dieyteixeira.fluxsync.app.di.model
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBalance
-import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.AutoStories
-import androidx.compose.material.icons.filled.Bluetooth
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Campaign
-import androidx.compose.material.icons.filled.Coffee
-import androidx.compose.material.icons.filled.Computer
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.DirectionsBike
-import androidx.compose.material.icons.filled.DirectionsCar
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.filled.Fastfood
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.GolfCourse
-import androidx.compose.material.icons.filled.Handshake
-import androidx.compose.material.icons.filled.HolidayVillage
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Hotel
-import androidx.compose.material.icons.filled.ImportContacts
-import androidx.compose.material.icons.filled.Kayaking
-import androidx.compose.material.icons.filled.LibraryBooks
-import androidx.compose.material.icons.filled.LocalDining
-import androidx.compose.material.icons.filled.LocalTaxi
-import androidx.compose.material.icons.filled.Loyalty
-import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.MonetizationOn
-import androidx.compose.material.icons.filled.Mood
-import androidx.compose.material.icons.filled.MusicNote
+import com.dieyteixeira.fluxsync.R
+import kotlin.collections.listOf
 
-val listIcons = listOf(
-    Icons.Default.Fastfood,
-    Icons.Default.AutoStories,
-    Icons.Default.Kayaking,
-    Icons.Default.Handshake,
-    Icons.Default.DirectionsCar,
-    Icons.Default.Apps,
-    Icons.Default.AccountBalance,
-    Icons.Default.Build,
-    Icons.Default.Bluetooth,
-    Icons.Default.Campaign,
-    Icons.Default.Coffee,
-    Icons.Default.Computer,
-    Icons.Default.Create,
-    Icons.Default.DirectionsBike,
-    Icons.Default.Done,
-    Icons.Default.Edit,
-    Icons.Default.Email,
-    Icons.Default.Explore,
-    Icons.Default.Favorite,
-    Icons.Default.FitnessCenter,
-    Icons.Default.GolfCourse,
-    Icons.Default.HolidayVillage,
-    Icons.Default.Home,
-    Icons.Default.Hotel,
-    Icons.Default.ImportContacts,
-    Icons.Default.LocalTaxi,
-    Icons.Default.LibraryBooks,
-    Icons.Default.LocalDining,
-    Icons.Default.Loyalty,
-    Icons.Default.Map,
-    Icons.Default.Mic,
-    Icons.Default.MonetizationOn,
-    Icons.Default.Mood,
-    Icons.Default.MusicNote
+val listIconsCategorias = listOf(
+    R.drawable.icon_hamburguer,
+    R.drawable.icon_livro,
+    R.drawable.icon_caiaque,
+    R.drawable.icon_coracao,
+    R.drawable.icon_carro,
+    R.drawable.icon_aplicativos,
+    R.drawable.icon_banco,
+    R.drawable.icon_investimento,
+    R.drawable.icon_ferramenta,
+    R.drawable.icon_cafe,
+    R.drawable.icon_computador,
+    R.drawable.icon_editar,
+    R.drawable.icon_ciclismo,
+    R.drawable.icon_envelope,
+    R.drawable.icon_academia,
+    R.drawable.icon_casa,
+    R.drawable.icon_compras,
+    R.drawable.icon_talheres,
+    R.drawable.icon_mapa,
+    R.drawable.icon_fatura,
+    R.drawable.icon_musica,
+    R.drawable.icon_aviao,
+    R.drawable.icon_carrinho,
+    R.drawable.icon_praia,
+    R.drawable.icon_documento,
+    R.drawable.icon_cama,
+    R.drawable.icon_cubo,
+    R.drawable.icon_nadador
+)
+
+data class Banco(val icon: Int, val name: String)
+
+val listBancos = listOf(
+    Banco(R.drawable.banco_abc, "Banco ABC"),
+    Banco(R.drawable.banco_ailos, "Banco Ailos"),
+    Banco(R.drawable.banco_amazonia, "Banco da Amazônia"),
+    Banco(R.drawable.banco_asaas, "Banco Asaas"),
+    Banco(R.drawable.banco_banese, "Banco Banese"),
+    Banco(R.drawable.banco_banestes, "Banco Banestes"),
+    Banco(R.drawable.banco_bankofamerica, "Bank of America"),
+    Banco(R.drawable.banco_banpara, "Banco Banpará"),
+    Banco(R.drawable.banco_banrisul, "Banco Banrisul"),
+    Banco(R.drawable.banco_bib, "Banco BIB"),
+    Banco(R.drawable.banco_bnb, "Banco do Nordeste"),
+    Banco(R.drawable.banco_bradesco, "Bradesco"),
+    Banco(R.drawable.banco_brasil, "Banco do Brasil"),
+    Banco(R.drawable.banco_brb, "Banco BRB"),
+    Banco(R.drawable.banco_bs2, "Banco BS2"),
+    Banco(R.drawable.banco_btg, "BTG Pactual"),
+    Banco(R.drawable.banco_c6, "C6 Bank"),
+    Banco(R.drawable.banco_caixa, "Caixa Econômica Federal"),
+    Banco(R.drawable.banco_capitual, "Banco Capitual"),
+    Banco(R.drawable.banco_cora, "Banco Cora"),
+    Banco(R.drawable.banco_credisis, "Banco Credisis"),
+    Banco(R.drawable.banco_cresol, "Banco Cresol"),
+    Banco(R.drawable.banco_csimples, "Banco Simples"),
+    Banco(R.drawable.banco_daycoval, "Banco Daycoval"),
+    Banco(R.drawable.banco_efibank, "Banco Efíbank"),
+    Banco(R.drawable.banco_grafeno, "Banco Grafeno"),
+    Banco(R.drawable.banco_inter, "Banco Inter"),
+    Banco(R.drawable.banco_itau, "Itaú"),
+    Banco(R.drawable.banco_letsbank, "LetsBank"),
+    Banco(R.drawable.banco_mercadopago, "Mercado Pago"),
+    Banco(R.drawable.banco_mercantil, "Banco Mercantil"),
+    Banco(R.drawable.banco_nubank, "Nubank"),
+    Banco(R.drawable.banco_omie, "Banco Omie"),
+    Banco(R.drawable.banco_original, "Banco Original"),
+    Banco(R.drawable.banco_pag, "Banco PagBank"),
+    Banco(R.drawable.banco_pine, "Banco Pine"),
+    Banco(R.drawable.banco_quality, "Banco Quality"),
+    Banco(R.drawable.banco_rendimento, "Banco Rendimento"),
+    Banco(R.drawable.banco_safra, "Banco Safra"),
+    Banco(R.drawable.banco_santander, "Santander"),
+    Banco(R.drawable.banco_sicoob, "Sicoob"),
+    Banco(R.drawable.banco_sicredi, "Sicredi"),
+    Banco(R.drawable.banco_sofisa, "Banco Sofisa"),
+    Banco(R.drawable.banco_stone, "Stone Bank"),
+    Banco(R.drawable.banco_topazio, "Banco Topázio"),
+    Banco(R.drawable.banco_tribanco, "Banco Tribanco"),
+    Banco(R.drawable.banco_unicred, "Unicred")
 )

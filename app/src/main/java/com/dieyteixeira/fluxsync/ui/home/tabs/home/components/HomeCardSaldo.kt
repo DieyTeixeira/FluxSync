@@ -27,17 +27,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
+import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.state.Conta
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.state.contas
@@ -95,13 +98,13 @@ fun HomeCardSaldo(
                         modifier = Modifier.padding(0.dp, 3.dp)
                     )
                 }
-                Icon(
-                    imageVector = if (isSaldoVisivel) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff,
+                Image(
+                    painter = painterResource(id = if (isSaldoVisivel) R.drawable.icon_visivel else R.drawable.icon_invisivel),
                     contentDescription = "Alternar visibilidade do saldo",
-                    tint = ColorFontesLight,
                     modifier = Modifier
-                        .size(24.dp)
-                        .clickable { onVisibilityChange(!isSaldoVisivel) }
+                        .size(22.dp)
+                        .clickable { onVisibilityChange(!isSaldoVisivel) },
+                    colorFilter = ColorFilter.tint(ColorFontesLight)
                 )
             }
         }

@@ -14,6 +14,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -40,8 +41,10 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
@@ -157,11 +160,11 @@ fun HomeScreen(
                                                     shape = RoundedCornerShape(50)
                                                 )
                                         )
-                                        Icon(
-                                            modifier = Modifier.size(30.dp * pulseScale),
-                                            imageVector = item.selectedIcon,
+                                        Image(
+                                            painter = painterResource(id = item.icon),
                                             contentDescription = "Bottom Bar Icon",
-                                            tint = Color.White
+                                            modifier = Modifier.size(20.dp * pulseScale),
+                                            colorFilter = ColorFilter.tint(Color.White)
                                         )
                                     }
                                 } else {
@@ -187,11 +190,11 @@ fun HomeScreen(
                                             .noRippleClickable { selectedIndex = item.ordinal },
                                         contentAlignment = Alignment.Center
                                     ) {
-                                        Icon(
-                                            modifier = Modifier.size(25.dp),
-                                            imageVector = item.unselectedIcon,
+                                        Image(
+                                            painter = painterResource(id = item.icon),
                                             contentDescription = "Bottom Bar Icon",
-                                            tint = Color.Gray.copy(alpha = 0.75f)
+                                            modifier = Modifier.size(20.dp),
+                                            colorFilter = ColorFilter.tint(Color.Gray.copy(alpha = 0.75f))
                                         )
                                         Box(
                                             modifier = Modifier
@@ -216,17 +219,11 @@ fun HomeScreen(
                                                         )
                                                     )
                                             )
-                                            Icon(
-                                                modifier = Modifier.size(25.dp),
-                                                imageVector = item.unselectedIcon,
-                                                contentDescription = "Bottom Bar Icon Unselected",
-                                                tint = Color.White.copy(alpha = revealProgress)
-                                            )
-                                            Icon(
-                                                modifier = Modifier.size(25.dp),
-                                                imageVector = item.selectedIcon,
-                                                contentDescription = "Bottom Bar Icon Selected",
-                                                tint = LightColor2.copy(alpha = revealProgress)
+                                            Image(
+                                                painter = painterResource(id = item.icon),
+                                                contentDescription = "Bottom Bar Icon",
+                                                modifier = Modifier.size(20.dp),
+                                                colorFilter = ColorFilter.tint(LightColor2.copy(alpha = revealProgress))
                                             )
                                         }
                                     }

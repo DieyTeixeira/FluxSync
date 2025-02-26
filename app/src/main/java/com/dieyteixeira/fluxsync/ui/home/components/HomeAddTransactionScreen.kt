@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,13 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Comment
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -40,13 +35,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,7 +57,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
@@ -130,13 +125,11 @@ fun HomeAddTransactionScreen(
                 },
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBackIosNew,
+            Image(
+                painter = painterResource(id = R.drawable.icon_seta_baixo),
                 contentDescription = "Icon Action",
-                tint = Color.Gray,
-                modifier = Modifier
-                    .rotate(-90f)
-                    .size(30.dp)
+                modifier = Modifier.size(25.dp),
+                colorFilter = ColorFilter.tint(Color.Gray)
             )
         }
 
@@ -233,7 +226,7 @@ fun HomeAddTransactionScreen(
                             text = "Descrição",
                             textValue = descriptionText,
                             onValueChange = { descriptionText = it },
-                            icon = Icons.Outlined.Edit,
+                            icon = R.drawable.icon_editar,
                             placeholder = "Adicionar a descrição",
                             maxLength = 20,
                             focusRequester = focusRequester,
@@ -249,7 +242,7 @@ fun HomeAddTransactionScreen(
                             textValue = categoryText,
                             onValueChange = { categoryText = it },
                             placeholder = "Adicionar a categoria",
-                            image = R.drawable.banco_orginal,
+                            icon = R.drawable.banco_original,
                             focusRequester = focusRequester,
                             onClickKeyboard = { isKeyboardVisible = false },
                             keyboardController = keyboardController
@@ -263,7 +256,7 @@ fun HomeAddTransactionScreen(
                             textValue = contaText,
                             onValueChange = { contaText = it },
                             placeholder = "Adicionar a conta",
-                            image = R.drawable.banco_c6,
+                            icon = R.drawable.banco_c6,
                             focusRequester = focusRequester,
                             onClickKeyboard = { isKeyboardVisible = false },
                             keyboardController = keyboardController
@@ -275,7 +268,7 @@ fun HomeAddTransactionScreen(
                             divider = true,
                             text = "Data do lançamento",
                             textValue = formattedDate,
-                            icon = Icons.Outlined.CalendarMonth,
+                            icon = R.drawable.icon_calendario,
                             onClick = { showCustomDatePicker = true }
                         )
                     }
@@ -306,7 +299,7 @@ fun HomeAddTransactionScreen(
                             text = "Observação",
                             textValue = observacaoText,
                             onValueChange = { observacaoText = it },
-                            icon = Icons.Outlined.Comment,
+                            icon = R.drawable.icon_comentario,
                             placeholder = "Adicionar alguma observação",
                             singleLine = false,
                             maxLength = 150,

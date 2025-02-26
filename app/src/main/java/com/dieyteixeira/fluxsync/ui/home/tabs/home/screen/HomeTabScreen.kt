@@ -176,6 +176,7 @@ fun HomeTabScreen(
     }
     if (showContas) {
         ContasDialog(
+            homeViewModel = homeViewModel,
             onClickClose = { showContas = false }
         )
     }
