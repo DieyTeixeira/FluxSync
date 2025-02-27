@@ -7,6 +7,7 @@ import com.dieyteixeira.fluxsync.R
 
 fun iconToStringCategoria(icon: Int): String {
     return when (icon) {
+        R.drawable.icon_cifrao -> "icon_cifrao"
         R.drawable.icon_hamburguer -> "icon_hamburguer"
         R.drawable.icon_livro -> "icon_livro"
         R.drawable.icon_caiaque -> "icon_caiaque"
@@ -33,7 +34,6 @@ fun iconToStringCategoria(icon: Int): String {
         R.drawable.icon_praia -> "icon_praia"
         R.drawable.icon_documento -> "icon_documento"
         R.drawable.icon_cama -> "icon_cama"
-        R.drawable.icon_cubo -> "icon_cubo"
         R.drawable.icon_nadador -> "icon_nadador"
         else -> "icon_aplicativos"
     }
@@ -41,6 +41,7 @@ fun iconToStringCategoria(icon: Int): String {
 
 fun stringToIconCategoria(iconString: String): Int {
     return when (iconString) {
+        "icon_cifrao" -> R.drawable.icon_cifrao
         "icon_hamburguer" -> R.drawable.icon_hamburguer
         "icon_livro" -> R.drawable.icon_livro
         "icon_caiaque" -> R.drawable.icon_caiaque
@@ -67,7 +68,6 @@ fun stringToIconCategoria(iconString: String): Int {
         "icon_praia" -> R.drawable.icon_praia
         "icon_documento" -> R.drawable.icon_documento
         "icon_cama" -> R.drawable.icon_cama
-        "icon_cubo" -> R.drawable.icon_cubo
         "icon_nadador" -> R.drawable.icon_nadador
         else -> R.drawable.icon_aplicativos
     }

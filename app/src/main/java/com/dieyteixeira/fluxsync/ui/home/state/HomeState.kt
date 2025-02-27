@@ -54,18 +54,6 @@ val transacoes = listOf(
     Transacao("Venda de Celular", "R$ 1.000,00", "receita")
 )
 
-data class Conta(
-    val icon: Int,
-    val color: Color,
-    val descricao: String,
-    val valor: Double
-)
-
-val contas = listOf(
-    Conta(R.drawable.banco_c6, Color(0xFF000000), "C6 Bank", 253.16),
-    Conta(R.drawable.banco_santander, Color.LightGray.copy(alpha = 0.5f), "Banco Santander", 857.49)
-)
-
 data class ItemAjuste(
     val text: String
 )

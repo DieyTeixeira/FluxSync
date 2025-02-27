@@ -162,7 +162,7 @@ fun AddCategoriasDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconPersonal(

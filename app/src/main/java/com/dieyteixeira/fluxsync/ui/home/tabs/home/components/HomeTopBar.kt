@@ -1,8 +1,13 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.home.components
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,10 +22,15 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,9 +39,21 @@ import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.app.theme.LightColor4
+import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 
 @Composable
-fun HomeTopBar() {
+fun HomeTopBar(
+    homeViewModel: HomeViewModel
+) {
+
+    val interactionSource = remember { MutableInteractionSource() }
+    var rotationAngle by remember { mutableStateOf(0f) }
+
+    val rotation by animateFloatAsState(
+        targetValue = rotationAngle,
+        animationSpec = tween(durationMillis = 1000, easing = LinearEasing)
+    )
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -91,13 +113,22 @@ fun HomeTopBar() {
                 .background(
                     color = LightColor4.copy(alpha = 0.4f),
                     shape = RoundedCornerShape(16.dp)
-                ),
+                )
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ) {
+                    rotationAngle += 720f
+                    homeViewModel.getAtualizar()
+                },
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.icon_sino),
+                painter = painterResource(id = R.drawable.icon_giro),
                 contentDescription = "Bottom Bar Icon",
-                modifier = Modifier.size(22.dp),
+                modifier = Modifier
+                    .size(22.dp)
+                    .graphicsLayer(rotationZ = rotation),
                 colorFilter = ColorFilter.tint(Color.White)
             )
         }

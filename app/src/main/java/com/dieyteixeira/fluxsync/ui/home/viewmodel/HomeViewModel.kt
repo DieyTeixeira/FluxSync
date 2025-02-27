@@ -23,6 +23,11 @@ class HomeViewModel(
         getCategorias()
     }
 
+    fun getAtualizar() {
+        getContas()
+        getCategorias()
+    }
+
     fun getContas() {
         viewModelScope.launch {
             val contasFromFirestore = firestoreRepository.getContas()

@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,17 +48,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.CustomField
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.components.DatePickerCustom
 import com.dieyteixeira.fluxsync.app.components.formatCurrencyInput
 import com.dieyteixeira.fluxsync.app.components.removeLastDigit
+import com.dieyteixeira.fluxsync.app.di.model.Categoria
+import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
+import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
@@ -64,6 +70,7 @@ import java.time.LocalDate
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeAddTransactionScreen(
+    homeViewModel: HomeViewModel,
     onClose: () -> Unit
 ) {
 
@@ -100,6 +107,12 @@ fun HomeAddTransactionScreen(
     }
     val typeLancamento = remember { mutableStateOf("Único") }
     var observacaoText by remember { mutableStateOf("") }
+
+    var showCategoryDialog by remember { mutableStateOf(false) }
+    var showAccountDialog by remember { mutableStateOf(false) }
+
+    var selectedCategory by remember { mutableStateOf<Categoria?>(null) }
+    var selectedAccount by remember { mutableStateOf<Conta?>(null) }
 
     LaunchedEffect(isClickClose) {
         if (isClickClose) {
@@ -250,15 +263,15 @@ fun HomeAddTransactionScreen(
                     }
                     item {
                         HomeAddFieldsTextImage(
-                            interactionSource = interactionSource,
+                            interactionSource = remember { MutableInteractionSource() },
                             divider = true,
                             text = if (typeTransaction.value == "receita") "Entrada em" else "Saída de",
-                            textValue = contaText,
-                            onValueChange = { contaText = it },
+                            textValue = selectedAccount?.descricao ?: "Selecionar Conta",
+                            onValueChange = { },
                             placeholder = "Adicionar a conta",
-                            icon = R.drawable.banco_c6,
+                            icon = selectedAccount?.icon ?: R.drawable.icon_banco,
                             focusRequester = focusRequester,
-                            onClickKeyboard = { isKeyboardVisible = false },
+                            onClickKeyboard = { showAccountDialog = true },
                             keyboardController = keyboardController
                         )
                     }
@@ -307,6 +320,48 @@ fun HomeAddTransactionScreen(
                             onClickKeyboard = { isKeyboardVisible = false },
                             keyboardController = keyboardController
                         )
+                    }
+                }
+            }
+
+            // Diálogo para seleção de conta
+            if (showAccountDialog) {
+                Dialog(onDismissRequest = { showAccountDialog = false }) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        elevation = 8.dp
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                "Selecione uma Conta",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            LazyColumn {
+                                items(homeViewModel.contas.value.size) { index ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                selectedAccount = homeViewModel.contas.value[index]
+                                                showAccountDialog = false
+                                            }
+                                            .padding(12.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            painterResource(id = homeViewModel.contas.value[index].icon),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(homeViewModel.contas.value[index].descricao)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.dieyteixeira.fluxsync.R
 
 data class Categoria(
+    var id: String = "",
     var icon: Int = R.drawable.icon_mais,
     var color: Color = Color.Transparent,
     var descricao: String = ""

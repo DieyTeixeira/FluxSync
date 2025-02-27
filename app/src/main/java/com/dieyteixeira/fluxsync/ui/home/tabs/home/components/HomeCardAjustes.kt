@@ -2,7 +2,9 @@ package com.dieyteixeira.fluxsync.ui.home.tabs.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,9 +22,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -105,6 +109,7 @@ fun AjusteItem(
     itemText: ItemAjuste,
     onItemClick: () -> Unit = {}
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
 
     Row(
         modifier = Modifier
@@ -114,9 +119,12 @@ fun AjusteItem(
     ) {
         Row(
             modifier = Modifier
-                .weight(2f)
+                .weight(3f)
                 .height(40.dp)
-                .background(color = ColorBackground.copy(alpha = 0.4f), shape = RoundedCornerShape(8.dp, 0.dp, 0.dp, 8.dp))
+                .background(
+                    color = ColorBackground.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(8.dp, 0.dp, 0.dp, 8.dp)
+                )
                 .padding(horizontal = 30.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -136,7 +144,8 @@ fun AjusteItem(
                     shape = RoundedCornerShape(0.dp, 8.dp, 8.dp, 0.dp)
                 )
                 .clickable(
-
+                    indication = null,
+                    interactionSource = interactionSource
                 ) {
                     onItemClick()
                 },

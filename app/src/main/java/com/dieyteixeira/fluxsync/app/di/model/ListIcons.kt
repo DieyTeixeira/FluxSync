@@ -4,6 +4,7 @@ import com.dieyteixeira.fluxsync.R
 import kotlin.collections.listOf
 
 val listIconsCategorias = listOf(
+    R.drawable.icon_cifrao,
     R.drawable.icon_hamburguer,
     R.drawable.icon_livro,
     R.drawable.icon_caiaque,
@@ -30,7 +31,6 @@ val listIconsCategorias = listOf(
     R.drawable.icon_praia,
     R.drawable.icon_documento,
     R.drawable.icon_cama,
-    R.drawable.icon_cubo,
     R.drawable.icon_nadador
 )
 

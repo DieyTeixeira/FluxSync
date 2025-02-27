@@ -279,6 +279,7 @@ fun HomeScreen(
                             )
                     ) {
                         HomeAddTransactionScreen(
+                            homeViewModel = homeViewModel,
                             onClose = { showTransactionScreen = false }
                         )
                     }

@@ -52,14 +52,22 @@ import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.listBancos
 import com.dieyteixeira.fluxsync.app.di.model.listColorsConta
 import com.dieyteixeira.fluxsync.app.di.replace.colorToStringCategoria
+import com.dieyteixeira.fluxsync.app.di.replace.colorToStringConta
 import com.dieyteixeira.fluxsync.app.di.replace.iconToStringCategoria
+import com.dieyteixeira.fluxsync.app.di.replace.iconToStringConta
 import com.dieyteixeira.fluxsync.app.theme.BlackCont
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
+import com.dieyteixeira.fluxsync.app.theme.ColorGray
+import com.dieyteixeira.fluxsync.app.theme.ColorNegative
+import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
+import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
 @Composable
@@ -117,7 +125,7 @@ fun ContasList(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(40.dp)
+            .height(60.dp)
             .background(
                 color = ColorBackground.copy(alpha = 0.7f),
                 shape = RoundedCornerShape(15.dp)
@@ -127,7 +135,7 @@ fun ContasList(
     ) {
         Box(
             modifier = Modifier
-                .size(30.dp)
+                .size(35.dp)
                 .background(
                     color = contas.color,
                     shape = RoundedCornerShape(100)
@@ -138,16 +146,36 @@ fun ContasList(
                 painter = painterResource(id = contas.icon),
                 contentDescription = "Ícone de banco",
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(25.dp)
             )
         }
         Spacer(modifier = Modifier.width(15.dp))
-        Text(
-            text = contas.descricao,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.weight(1f)
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Text(
+                text = contas.descricao,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Row {
+                Text(
+                    text = "Saldo:  ",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = ColorFontesLight
+                )
+                Text(
+                    text = formatarValor(contas.saldo),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = if (contas.saldo > 0) ColorPositive else ColorNegative
+                )
+            }
+        }
     }
 }
 
@@ -156,6 +184,7 @@ fun AddContasDialog(
     homeViewModel: HomeViewModel,
     onClickClose: () -> Unit
 ) {
+
     var descricao by remember { mutableStateOf("") }
     var color by remember { mutableStateOf(Color.LightGray) }
     var icon by remember { mutableStateOf(R.drawable.icon_mais) }
@@ -184,7 +213,7 @@ fun AddContasDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -203,7 +232,10 @@ fun AddContasDialog(
                             .size(20.dp)
                     )
                 }
-                Column {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
                     TextInput(
                         textValue = descricao,
                         onValueChange = { descricao = it },
@@ -281,7 +313,7 @@ fun AddContasDialog(
                                 .padding(5.dp)
                                 .clickable {
                                     icon = listBancos[index].icon
-                                    descricao = listBancos[index].name
+                                    descricao = if (descricao == "") listBancos[index].name else ""
                                 },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -343,8 +375,8 @@ fun AddContasDialog(
                 onClick = {
                     if (icon != R.drawable.icon_mais && color != Color.LightGray && descricao.isNotEmpty()) {
                         homeViewModel.salvarConta(
-                            icon = iconToStringCategoria(icon),
-                            color = colorToStringCategoria(color),
+                            icon = iconToStringConta(icon),
+                            color = colorToStringConta(color),
                             descricao = descricao,
                             saldo = saldo.toString()
                         )

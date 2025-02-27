@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -141,9 +142,12 @@ fun ButtonPersonalMaxWidth(
     colorText: Color,
     color: Color = Color.Transparent,
     colorBorder: Color = Color.Transparent,
-    height: Dp
+    height: Dp,
+    width: Float = 1f,
+    icon: Boolean = true
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val iconVisivel = remember { mutableStateOf(icon) }
 
     Row(
         modifier = Modifier
@@ -156,7 +160,7 @@ fun ButtonPersonalMaxWidth(
                 color = colorBorder,
                 shape = RoundedCornerShape(15.dp)
             )
-            .fillMaxWidth()
+            .fillMaxWidth(width)
             .height(height)
             .clickable(
                 indication = null,
@@ -167,12 +171,14 @@ fun ButtonPersonalMaxWidth(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = "Ícone de adição",
-            tint = colorText
-        )
-        Spacer(modifier = Modifier.width(5.dp))
+        if (iconVisivel.value) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Ícone de adição",
+                tint = colorText
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+        }
         Text(
             text = text,
             color = colorText,
