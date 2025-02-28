@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,7 +42,7 @@ import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
-import com.dieyteixeira.fluxsync.app.components.IconPersonal
+import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.components.TextInput
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.listColorsCategoria
@@ -105,7 +106,8 @@ fun CategoriasDialog(
 
 @Composable
 fun CategoriasList(
-    categorias: Categoria
+    categorias: Categoria,
+    onClickCategoria: (Categoria) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -115,10 +117,16 @@ fun CategoriasList(
                 color = ColorBackground.copy(alpha = 0.7f),
                 shape = RoundedCornerShape(15.dp)
             )
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 15.dp)
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                onClickCategoria(categorias)
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconPersonal(
+        IconCategoria(
             color = categorias.color,
             icon = categorias.icon
         )
@@ -165,7 +173,7 @@ fun AddCategoriasDialog(
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconPersonal(
+                IconCategoria(
                     color = color,
                     icon = icon
                 )

@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +48,7 @@ import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
+import com.dieyteixeira.fluxsync.app.components.IconConta
 import com.dieyteixeira.fluxsync.app.components.TextInput
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.listBancos
@@ -120,8 +122,10 @@ fun ContasDialog(
 
 @Composable
 fun ContasList(
-    contas: Conta
+    contas: Conta,
+    onClickConta: (Conta) -> Unit = {}
 ) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -130,25 +134,19 @@ fun ContasList(
                 color = ColorBackground.copy(alpha = 0.7f),
                 shape = RoundedCornerShape(15.dp)
             )
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 15.dp)
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                onClickConta(contas)
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(35.dp)
-                .background(
-                    color = contas.color,
-                    shape = RoundedCornerShape(100)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(id = contas.icon),
-                contentDescription = "Ícone de banco",
-                modifier = Modifier
-                    .size(25.dp)
-            )
-        }
+        IconConta(
+            icon = contas.icon,
+            color = contas.color
+        )
         Spacer(modifier = Modifier.width(15.dp))
         Column(
             modifier = Modifier

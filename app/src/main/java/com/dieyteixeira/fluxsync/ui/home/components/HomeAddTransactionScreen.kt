@@ -50,18 +50,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.dieyteixeira.fluxsync.R
+import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.CustomField
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.components.DatePickerCustom
+import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.components.formatCurrencyInput
 import com.dieyteixeira.fluxsync.app.components.removeLastDigit
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
+import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
+import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
+import com.dieyteixeira.fluxsync.app.theme.GrayCont
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
+import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.CategoriasList
+import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasList
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import java.time.LocalDate
@@ -107,6 +114,7 @@ fun HomeAddTransactionScreen(
     }
     val typeLancamento = remember { mutableStateOf("Único") }
     var observacaoText by remember { mutableStateOf("") }
+    var valueParcelas by remember { mutableStateOf(1) }
 
     var showCategoryDialog by remember { mutableStateOf(false) }
     var showAccountDialog by remember { mutableStateOf(false) }
@@ -148,7 +156,7 @@ fun HomeAddTransactionScreen(
 
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
@@ -231,9 +239,11 @@ fun HomeAddTransactionScreen(
                     )
                 }
                 LazyColumn(
+                    modifier = Modifier
+                        .weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    item {
+                    item { // DESCRIÇÃO
                         HomeAddFieldsTextLeanding(
                             divider = false,
                             text = "Descrição",
@@ -247,35 +257,30 @@ fun HomeAddTransactionScreen(
                             keyboardController = keyboardController
                         )
                     }
-                    item {
-                        HomeAddFieldsTextImage(
+                    item { // CONTA
+                        HomeAddFieldsInsert(
                             interactionSource = interactionSource,
-                            divider = true,
-                            text = "Categoria",
-                            textValue = categoryText,
-                            onValueChange = { categoryText = it },
-                            placeholder = "Adicionar a categoria",
-                            icon = R.drawable.banco_original,
-                            focusRequester = focusRequester,
-                            onClickKeyboard = { isKeyboardVisible = false },
-                            keyboardController = keyboardController
-                        )
-                    }
-                    item {
-                        HomeAddFieldsTextImage(
-                            interactionSource = remember { MutableInteractionSource() },
                             divider = true,
                             text = if (typeTransaction.value == "receita") "Entrada em" else "Saída de",
                             textValue = selectedAccount?.descricao ?: "Selecionar Conta",
-                            onValueChange = { },
-                            placeholder = "Adicionar a conta",
+                            textSaldo = selectedAccount?.saldo ?: 0.0,
+                            color = selectedAccount?.color ?: GrayCont,
                             icon = selectedAccount?.icon ?: R.drawable.icon_banco,
-                            focusRequester = focusRequester,
-                            onClickKeyboard = { showAccountDialog = true },
-                            keyboardController = keyboardController
+                            onClick = { showAccountDialog = true }
                         )
                     }
-                    item {
+                    item { // CATEGORIA
+                        HomeAddFieldsInsert(
+                            interactionSource = interactionSource,
+                            divider = true,
+                            text = "Categoria",
+                            textValue = selectedCategory?.descricao ?: "Selecionar Categoria",
+                            color = selectedCategory?.color ?: GrayCont,
+                            icon = selectedCategory?.icon ?: R.drawable.icon_cubo,
+                            onClick = { showCategoryDialog = true }
+                        )
+                    }
+                    item { // DATA
                         HomeAddFieldsTextIcon(
                             interactionSource = interactionSource,
                             divider = true,
@@ -285,7 +290,7 @@ fun HomeAddTransactionScreen(
                             onClick = { showCustomDatePicker = true }
                         )
                     }
-                    item {
+                    item { // TIPO DE LANÇAMENTO
                         HomeAddFieldsTextButtons(
                             divider = true,
                             text = "Tipo de lançamento",
@@ -305,9 +310,33 @@ fun HomeAddTransactionScreen(
                             colorBorder3 = if (typeLancamento.value == "Parcelado") Color.Transparent else ColorFontesLight,
                             onClick3 = { typeLancamento.value = "Parcelado" }
                         )
+                        if (typeLancamento.value == "Parcelado") {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(0.6f)
+                                    .padding(20.dp, 0.dp, 20.dp, 15.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Parcelas",
+                                    fontSize = 18.sp,
+                                    color = ColorFontesDark,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                ButtonsIncDec(
+                                    valueParcelas = valueParcelas,
+                                    onClickMenos = {
+                                        valueParcelas =
+                                            if (valueParcelas > 1) valueParcelas - 1 else 1
+                                    },
+                                    onClickMais = { valueParcelas++ }
+                                )
+                            }
+                        }
                     }
-                    item {
-                        HomeAddFieldsTextLeanding(
+                    item { // OBSERVAÇÃO
+                        HomeAddFieldsTextLongLeanding(
                             divider = true,
                             text = "Observação",
                             textValue = observacaoText,
@@ -315,12 +344,50 @@ fun HomeAddTransactionScreen(
                             icon = R.drawable.icon_comentario,
                             placeholder = "Adicionar alguma observação",
                             singleLine = false,
+                            heightMin = 100.dp,
+                            colorBorder = Color.LightGray,
                             maxLength = 150,
                             focusRequester = focusRequester,
                             onClickKeyboard = { isKeyboardVisible = false },
                             keyboardController = keyboardController
                         )
                     }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(70.dp)
+                        .background(
+                            ColorBackground,
+                            RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    ButtonPersonalFilled(
+                        onClick = {
+                            homeViewModel.salvarTransacao(
+                                descricao = descriptionText,
+                                valor = value.replace(",", ".").toDoubleOrNull() ?: 0.0,
+                                tipo = typeTransaction.value,
+                                situacao = "pendente",
+                                categoriaId = selectedCategory?.id ?: "",
+                                contaId = selectedAccount?.id ?: "",
+                                data = dateSelected.toString(),
+                                lancamento = typeLancamento.value,
+                                parcelas = valueParcelas,
+                                dataVencimento = dateSelected.toString(),
+                                dataPagamento = dateSelected.toString(),
+                                observacao = observacaoText
+                            )
+                        },
+                        text = "Efetivar Lançamento",
+                        colorText = Color.White,
+                        color = LightColor2,
+                        height = 45.dp,
+                        width = 190.dp
+                    )
                 }
             }
 
@@ -338,27 +405,53 @@ fun HomeAddTransactionScreen(
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
                             )
-
-                            LazyColumn {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
                                 items(homeViewModel.contas.value.size) { index ->
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clickable {
-                                                selectedAccount = homeViewModel.contas.value[index]
-                                                showAccountDialog = false
-                                            }
-                                            .padding(12.dp),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Icon(
-                                            painterResource(id = homeViewModel.contas.value[index].icon),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(24.dp)
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Text(homeViewModel.contas.value[index].descricao)
-                                    }
+                                    ContasList(
+                                        contas = homeViewModel.contas.value[index],
+                                        onClickConta = {
+                                            showAccountDialog = false
+                                            selectedAccount = it
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Diálogo para seleção de categoria
+            if (showCategoryDialog) {
+                Dialog(onDismissRequest = { showCategoryDialog = false }) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        elevation = 8.dp
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                "Selecione uma Conta",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            LazyColumn(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                items(homeViewModel.categorias.value.size) { index ->
+                                    CategoriasList(
+                                        categorias = homeViewModel.categorias.value[index],
+                                        onClickCategoria = {
+                                            showCategoryDialog = false
+                                            selectedCategory = it
+                                        }
+                                    )
                                 }
                             }
                         }

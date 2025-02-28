@@ -28,7 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
-import com.dieyteixeira.fluxsync.app.components.IconPersonal
+import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
@@ -139,7 +139,7 @@ fun CategoriasItem(
             .padding(10.dp, 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconPersonal(
+        IconCategoria(
             icon = categorias.icon,
             color = categorias.color
         )

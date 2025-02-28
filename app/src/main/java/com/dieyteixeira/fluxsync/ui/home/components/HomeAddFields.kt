@@ -2,6 +2,7 @@ package com.dieyteixeira.fluxsync.ui.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -10,13 +11,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -28,18 +29,27 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
+import com.dieyteixeira.fluxsync.app.components.IconCategoria
+import com.dieyteixeira.fluxsync.app.components.IconConta
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
+import com.dieyteixeira.fluxsync.app.theme.ColorGray
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
+import com.dieyteixeira.fluxsync.app.theme.ColorNegative
+import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
+import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
+import com.exyte.animatednavbar.animation.indendshape.Height
 
 @Composable
 fun HomeAddFieldsTextLeanding(
@@ -56,12 +66,15 @@ fun HomeAddFieldsTextLeanding(
     keyboardController: SoftwareKeyboardController?
 ) {
     if (divider) {
-        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(ColorLine))
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(ColorLine))
     }
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(25.dp, 20.dp, 25.dp, 5.dp)
+            .padding(25.dp, 15.dp, 25.dp, 0.dp)
     ) {
         Text(
             text = text,
@@ -134,6 +147,112 @@ fun HomeAddFieldsTextLeanding(
 }
 
 @Composable
+fun HomeAddFieldsTextLongLeanding(
+    divider: Boolean,
+    text: String,
+    textValue: String,
+    onValueChange: (String) -> Unit,
+    icon: Int,
+    placeholder: String,
+    heightMin: Dp = 30.dp,
+    colorBorder: Color = Color.Transparent,
+    singleLine: Boolean = true,
+    maxLength: Int,
+    focusRequester: FocusRequester,
+    onClickKeyboard: () -> Unit,
+    keyboardController: SoftwareKeyboardController?
+) {
+    if (divider) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(ColorLine))
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(25.dp, 15.dp, 25.dp, 7.dp)
+    ) {
+        Text(
+            text = text,
+            fontSize = 18.sp,
+            color = ColorFontesDark,
+            fontWeight = FontWeight.Bold
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(modifier = Modifier.width(7.dp))
+            Box(
+                modifier = Modifier
+                    .size(30.dp)
+                    .background(
+                        color = Color.Transparent
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(23.dp),
+                    colorFilter = ColorFilter.tint(LightColor2)
+                )
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            TextField(
+                value = textValue,
+                onValueChange = { newValue ->
+                    if (newValue.length <= maxLength) {
+                        onValueChange(newValue)
+                    }
+                },
+                placeholder = {
+                    Text(
+                        text = placeholder,
+                        fontSize = 18.sp,
+                        color = ColorFontesLight
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = heightMin)
+                    .padding(end = 5.dp)
+                    .border(
+                        width = 1.dp,
+                        color = colorBorder,
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .focusRequester(focusRequester)
+                    .onFocusChanged { focusState ->
+                        if (focusState.isFocused) {
+                            onClickKeyboard()
+                        }
+                    },
+                textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                singleLine = singleLine,
+                keyboardOptions = KeyboardOptions.Default,
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                    }
+                ),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    disabledBorderColor = Color.Transparent,
+                    textColor = ColorFontesDark,
+                    cursorColor = ColorFontesDark
+                )
+            )
+        }
+    }
+}
+
+@Composable
 fun HomeAddFieldsTextImage(
     interactionSource: MutableInteractionSource,
     divider: Boolean,
@@ -147,7 +266,10 @@ fun HomeAddFieldsTextImage(
     keyboardController: SoftwareKeyboardController?
 ) {
     if (divider) {
-        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(ColorLine))
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(ColorLine))
     }
     Column(
         modifier = Modifier
@@ -193,7 +315,11 @@ fun HomeAddFieldsTextImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester)
-                    .onFocusChanged { focusState -> if (focusState.isFocused) { onClickKeyboard() } },
+                    .onFocusChanged { focusState ->
+                        if (focusState.isFocused) {
+                            onClickKeyboard()
+                        }
+                    },
                 textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
                 singleLine = false,
                 keyboardOptions = KeyboardOptions.Default,
@@ -221,12 +347,15 @@ fun HomeAddFieldsTextIcon(
     onClick: () -> Unit = {},
 ) {
     if (divider) {
-        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(ColorLine))
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(ColorLine))
     }
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(25.dp, 20.dp, 25.dp, 20.dp)
+            .padding(25.dp, 15.dp, 25.dp, 15.dp)
     ) {
         Text(
             text = text,
@@ -273,6 +402,77 @@ fun HomeAddFieldsTextIcon(
 }
 
 @Composable
+fun HomeAddFieldsInsert(
+    interactionSource: MutableInteractionSource,
+    divider: Boolean,
+    text: String,
+    textValue: String,
+    textSaldo: Double = 0.0,
+    color: Color,
+    icon: Int,
+    onClick: () -> Unit
+) {
+    if (divider) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(ColorLine))
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(25.dp, 15.dp, 25.dp, 15.dp)
+    ) {
+        Text(
+            text = text,
+            fontSize = 18.sp,
+            color = ColorFontesDark,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ) {
+                    onClick()
+                },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(modifier = Modifier.width(4.dp))
+            if (text == "Categoria") {
+                IconCategoria(
+                    icon = icon,
+                    color = color
+                )
+            } else {
+                IconConta(
+                    icon = icon,
+                    color = color
+                )
+            }
+            Spacer(modifier = Modifier.width(14.dp))
+            Text(
+                text = textValue,
+                fontSize = 18.sp,
+                color = ColorFontesDark
+            )
+            if (text != "Categoria" && textValue != "Selecionar Conta") {
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = "(${formatarValor(textSaldo)})",
+                    fontSize = 16.sp,
+                    fontStyle = FontStyle.Italic,
+                    color = if (textSaldo > 0) ColorPositive else ColorNegative
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun HomeAddFieldsTextButtons(
     divider: Boolean,
     text: String,
@@ -293,12 +493,15 @@ fun HomeAddFieldsTextButtons(
     onClick3: () -> Unit = {}
 ) {
     if (divider) {
-        Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(ColorLine))
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(ColorLine))
     }
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(25.dp, 20.dp, 25.dp, 20.dp)
+            .padding(25.dp, 15.dp, 25.dp, 15.dp)
     ) {
         Text(
             text = text,
@@ -341,6 +544,60 @@ fun HomeAddFieldsTextButtons(
                 colorBorder = colorBorder3,
                 height = 35.dp,
                 width = 100.dp
+            )
+        }
+    }
+}
+
+@Composable
+fun ButtonsIncDec(
+    valueParcelas: Int,
+    onClickMenos: () -> Unit,
+    onClickMais: () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(35.dp)
+                .background(color = LightColor2, shape = RoundedCornerShape(15.dp, 0.dp, 0.dp, 15.dp))
+                .clickable() { onClickMenos() },
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.icon_menos_p),
+                contentDescription = "Menos",
+                modifier = Modifier.size(25.dp),
+                colorFilter = ColorFilter.tint(Color.White)
+            )
+        }
+        Box(
+            modifier = Modifier
+                .height(35.dp)
+                .width(50.dp)
+                .background(ColorGray),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "$valueParcelas",
+                fontSize = 18.sp,
+                color = ColorFontesDark,
+                modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 0.dp)
+            )
+        }
+        Box(
+            modifier = Modifier
+                .size(35.dp)
+                .background(color = LightColor2, shape = RoundedCornerShape(0.dp, 15.dp, 15.dp, 0.dp))
+                .clickable() { onClickMais() },
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.icon_mais_p),
+                contentDescription = "Mais",
+                modifier = Modifier.size(25.dp),
+                colorFilter = ColorFilter.tint(Color.White)
             )
         }
     }

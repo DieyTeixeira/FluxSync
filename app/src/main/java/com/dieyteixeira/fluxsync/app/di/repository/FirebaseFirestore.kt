@@ -10,9 +10,9 @@ import com.dieyteixeira.fluxsync.app.di.replace.stringToColorCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.stringToColorConta
 import com.dieyteixeira.fluxsync.app.di.replace.stringToIconCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.stringToIconConta
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
 import java.util.Calendar
-import java.util.Date
 
 @Suppress("UNCHECKED_CAST")
 class FirestoreRepository {
@@ -141,51 +141,65 @@ class FirestoreRepository {
     suspend fun salvarTransacao(
         descricao: String,
         valor: Double,
-        tipo: String, // "receita" ou "despesa"
+        tipo: String,
+        situacao: String,
         categoriaId: String,
         contaId: String,
-        data: Date,
-        lancamento: String, // "único", "fixo" ou "parcelado"
-        parcelas: Int = 0,
-        observacao: String = ""
+        data: Timestamp,
+        lancamento: String,
+        parcelas: Int,
+        dataVencimento: Timestamp,
+        dataPagamento: Timestamp,
+        observacao: String
     ) {
         val user = auth.currentUser
         val userEmail = user?.email ?: return
 
         try {
-            val transacoesRef = db.collection(userEmail)
-                .document("Transacoes")
-                .collection("Lançamentos")
+            val transacoesRef = db.collection(userEmail).document("Lancamento").collection("Lancamentos") // Correção do caminho da coleção
 
             when (lancamento) {
-                "único" -> {
+                "Único" -> {
                     val novoId = transacoesRef.document().id
-                    val transacaoMap = criarTransacaoMap(novoId, descricao, valor, tipo, categoriaId, contaId, data, lancamento, observacao)
+                    val transacaoMap = criarTransacaoMap(
+                        novoId, descricao, valor, tipo, situacao, categoriaId, contaId,
+                        data, lancamento, parcelas.toString(), dataVencimento, dataPagamento, observacao
+                    )
                     transacoesRef.document(novoId).set(transacaoMap).await()
                 }
 
-                "fixo" -> {
+                "Fixo" -> {
                     val calendar = Calendar.getInstance()
-                    calendar.time = data
+                    calendar.time = data.toDate()
 
-                    for (i in 0..11) { // Criando para os próximos 12 meses
+                    for (i in 0..11) {
                         val novoId = transacoesRef.document().id
-                        val transacaoMap = criarTransacaoMap(novoId, descricao, valor, tipo, categoriaId, contaId, calendar.time, lancamento, observacao)
+                        val transacaoMap = criarTransacaoMap(
+                            novoId, descricao, valor, tipo, situacao, categoriaId, contaId,
+                            Timestamp(calendar.time), lancamento, i.toString(),
+                            Timestamp(calendar.time), Timestamp(calendar.time), observacao
+                        )
                         transacoesRef.document(novoId).set(transacaoMap).await()
-                        calendar.add(Calendar.MONTH, 1) // Avança um mês
+                        calendar.add(Calendar.MONTH, 1)
                     }
                 }
 
-                "parcelado" -> {
-                    val valorParcela = valor / parcelas
+                "Parcelado" -> {
+                    val parcelasInt = parcelas.toInt()
+                    val valorParcela = valor / parcelasInt
                     val calendar = Calendar.getInstance()
-                    calendar.time = data
+                    calendar.time = data.toDate()
 
-                    for (i in 1..parcelas) {
+                    for (i in 1..parcelasInt) {
                         val novoId = transacoesRef.document().id
-                        val transacaoMap = criarTransacaoMap(novoId, descricao, valorParcela, tipo, categoriaId, contaId, calendar.time, lancamento, observacao, i)
+                        val numParcelas = i.toString() + "/" + parcelas.toString()
+                        val transacaoMap = criarTransacaoMap(
+                            novoId, descricao, valorParcela, tipo, situacao, categoriaId, contaId,
+                            Timestamp(calendar.time), lancamento, numParcelas,
+                            Timestamp(calendar.time), Timestamp(calendar.time), observacao
+                        )
                         transacoesRef.document(novoId).set(transacaoMap).await()
-                        calendar.add(Calendar.MONTH, 1) // Avança um mês para a próxima parcela
+                        calendar.add(Calendar.MONTH, 1)
                     }
                 }
             }
@@ -196,32 +210,36 @@ class FirestoreRepository {
         }
     }
 
-    // Função auxiliar para criar o map da transação
     private fun criarTransacaoMap(
         id: String,
         descricao: String,
         valor: Double,
         tipo: String,
+        situacao: String,
         categoriaId: String,
         contaId: String,
-        data: Date,
+        data: Timestamp,
         lancamento: String,
-        observacao: String,
-        parcela: Int = 0
+        parcelas: String,
+        dataVencimento: Timestamp,
+        dataPagamento: Timestamp,
+        observacao: String
+
     ): Map<String, Any> {
         return mapOf(
             "id" to id,
             "descricao" to descricao,
             "valor" to valor,
             "tipo" to tipo,
+            "situacao" to situacao,
             "categoriaId" to categoriaId,
             "contaId" to contaId,
             "data" to data,
             "lancamento" to lancamento,
-            "parcelas" to parcela,
-            "observacao" to observacao,
-            "situacao" to "pendente", // Inicialmente, todas as transações ficam como "pendente"
-            "dataPagamento" to null // Será preenchido quando for marcado como pago
-        ) as Map<String, Any>
+            "parcelas" to parcelas,
+            "dataVencimento" to dataVencimento,
+            "dataPagamento" to dataPagamento,
+            "observacao" to observacao
+        )
     }
 }

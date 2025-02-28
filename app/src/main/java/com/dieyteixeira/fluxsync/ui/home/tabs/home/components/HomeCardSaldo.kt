@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
+import com.dieyteixeira.fluxsync.app.components.IconConta
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
@@ -179,22 +180,10 @@ fun SaldoItem(
             .padding(10.dp, 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(30.dp)
-                .background(
-                    color = contas.color,
-                    shape = RoundedCornerShape(100)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(id = contas.icon),
-                contentDescription = "Ícone de banco",
-                modifier = Modifier
-                    .size(20.dp)
-            )
-        }
+        IconConta(
+            color = contas.color,
+            icon = contas.icon
+        )
         Spacer(modifier = Modifier.width(10.dp))
         Row(
             modifier = Modifier.weight(1f),
