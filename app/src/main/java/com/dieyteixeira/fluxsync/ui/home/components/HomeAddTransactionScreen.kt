@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -54,7 +53,6 @@ import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.CustomField
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.components.DatePickerCustom
-import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.components.formatCurrencyInput
 import com.dieyteixeira.fluxsync.app.components.removeLastDigit
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
@@ -62,7 +60,6 @@ import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
-import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
@@ -73,7 +70,7 @@ import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
-@SuppressLint("DefaultLocale")
+@SuppressLint("DefaultLocale", "UseOfNonLambdaOffsetOverload")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeAddTransactionScreen(
@@ -325,7 +322,7 @@ fun HomeAddTransactionScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                                 ButtonsIncDec(
-                                    valueParcelas = valueParcelas,
+                                    value = valueParcelas,
                                     onClickMenos = {
                                         valueParcelas =
                                             if (valueParcelas > 1) valueParcelas - 1 else 1

@@ -25,33 +25,19 @@ fun formatarValor(valor: Double): String {
     return formato.format(valor)
 }
 
-data class Transacao(
+data class Transacao1(
     val descricao: String,
     val valor: String,
     val tipo: String
 )
 
-val transacoes = listOf(
-    Transacao("Supermercado", "R$ 250,00", "despesa"),
-    Transacao("Salário", "R$ 5.000,00", "receita"),
-    Transacao("Internet", "R$ 100,00", "despesa"),
-    Transacao("Transporte", "R$ 50,00", "despesa"),
-    Transacao("Venda Online", "R$ 300,00", "receita"),
-    Transacao("Energia Elétrica", "R$ 180,00", "despesa"),
-    Transacao("Aluguel", "R$ 1.200,00", "despesa"),
-    Transacao("Restaurante", "R$ 90,00", "despesa"),
-    Transacao("Freelance Design", "R$ 1.500,00", "receita"),
-    Transacao("Plano de Saúde", "R$ 250,00", "despesa"),
-    Transacao("Assinatura Netflix", "R$ 39,90", "despesa"),
-    Transacao("Venda de Móveis", "R$ 700,00", "receita"),
-    Transacao("Academia", "R$ 120,00", "despesa"),
-    Transacao("Seguro do Carro", "R$ 500,00", "despesa"),
-    Transacao("Dividendos Ações", "R$ 200,00", "receita"),
-    Transacao("Curso Online", "R$ 300,00", "despesa"),
-    Transacao("Reembolso Viagem", "R$ 400,00", "receita"),
-    Transacao("Cinema", "R$ 60,00", "despesa"),
-    Transacao("Jogo Steam", "R$ 80,00", "despesa"),
-    Transacao("Venda de Celular", "R$ 1.000,00", "receita")
+val transacoes1 = listOf(
+    Transacao1("Supermercado", "R$ 250,00", "despesa"),
+    Transacao1("Salário", "R$ 5.000,00", "receita"),
+    Transacao1("Restaurante", "R$ 50,00", "despesa"),
+    Transacao1("Cinema", "R$ 30,00", "despesa"),
+    Transacao1("Transporte", "R$ 20,00", "despesa"),
+    Transacao1("Academia", "R$ 80,00", "despesa"),
 )
 
 data class ItemAjuste(

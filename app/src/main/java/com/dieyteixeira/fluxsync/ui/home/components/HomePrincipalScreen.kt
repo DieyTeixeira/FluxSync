@@ -20,7 +20,7 @@ import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.ui.home.tabs.chart.ChartTab
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.screen.HomeTabScreen
 import com.dieyteixeira.fluxsync.ui.home.tabs.settings.SettingsTab
-import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.TransactionTab
+import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.screen.TransactionTab
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
 

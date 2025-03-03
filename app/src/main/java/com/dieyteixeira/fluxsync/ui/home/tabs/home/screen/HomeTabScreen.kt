@@ -164,6 +164,7 @@ fun HomeTabScreen(
                     onClickCategorias = { showCategorias = true }
                 )
                 "Histórico" -> HomeCardHistorico(
+                    homeViewModel = homeViewModel,
                     isSaldoVisivel = isSaldoVisivel
                 )
                 "Ajustes" -> HomeCardAjusts(

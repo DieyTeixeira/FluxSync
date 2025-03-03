@@ -3,6 +3,7 @@ package com.dieyteixeira.fluxsync.app.di.repository
 import android.util.Log
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
+import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -13,6 +14,7 @@ import com.dieyteixeira.fluxsync.app.di.replace.stringToIconConta
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
 import java.util.Calendar
+import java.util.Date
 
 @Suppress("UNCHECKED_CAST")
 class FirestoreRepository {
@@ -138,6 +140,56 @@ class FirestoreRepository {
         }
     }
 
+    suspend fun getTransacoes(): List<Transacoes> {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return emptyList()
+
+        return try {
+            val querySnapshot: QuerySnapshot = db.collection(userEmail)
+                .document("Lancamento")
+                .collection("Lancamentos")
+                .get()
+                .await()
+
+            querySnapshot.documents.mapNotNull { document ->
+                val id = document.id
+                val descricao = document.getString("descricao") ?: return@mapNotNull null
+                val valorString = document.getString("valor") ?: return@mapNotNull null
+                val tipo = document.getString("tipo") ?: return@mapNotNull null
+                val situacao = document.getString("situacao") ?: return@mapNotNull null
+                val categoriaId = document.getString("categoriaId") ?: return@mapNotNull null
+                val contaId = document.getString("contaId") ?: return@mapNotNull null
+                val data = document.getTimestamp("data")?.toDate() ?: return@mapNotNull null
+                val lancamento = document.getString("lancamento") ?: return@mapNotNull null
+                val parcelas = document.getString("parcelas") ?: return@mapNotNull null
+                val dataVencimento = document.getTimestamp("dataVencimento")?.toDate() ?: Date()
+                val dataPagamento = document.getTimestamp("dataPagamento")?.toDate() ?: Date()
+                val observacao = document.getString("observacao") ?: ""
+
+                val valor = valorString.replace(",", ".").toDoubleOrNull() ?: return@mapNotNull null
+
+                Transacoes(
+                    id = id,
+                    descricao = descricao,
+                    valor = valor,
+                    tipo = tipo,
+                    situacao = situacao,
+                    categoriaId = categoriaId,
+                    contaId = contaId,
+                    data = data,
+                    lancamento = lancamento,
+                    parcelas = parcelas,
+                    dataVencimento = dataVencimento,
+                    dataPagamento = dataPagamento,
+                    observacao = observacao
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("FirestoreRepository", "Erro ao recuperar transações", e)
+            emptyList()
+        }
+    }
+
     suspend fun salvarTransacao(
         descricao: String,
         valor: Double,
@@ -147,7 +199,7 @@ class FirestoreRepository {
         contaId: String,
         data: Timestamp,
         lancamento: String,
-        parcelas: Int,
+        parcelas: String,
         dataVencimento: Timestamp,
         dataPagamento: Timestamp,
         observacao: String
@@ -192,7 +244,7 @@ class FirestoreRepository {
 
                     for (i in 1..parcelasInt) {
                         val novoId = transacoesRef.document().id
-                        val numParcelas = i.toString() + "/" + parcelas.toString()
+                        val numParcelas = i.toString() + "/" + parcelas
                         val transacaoMap = criarTransacaoMap(
                             novoId, descricao, valorParcela, tipo, situacao, categoriaId, contaId,
                             Timestamp(calendar.time), lancamento, numParcelas,

@@ -49,7 +49,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
-import com.exyte.animatednavbar.animation.indendshape.Height
 
 @Composable
 fun HomeAddFieldsTextLeanding(
@@ -551,7 +550,8 @@ fun HomeAddFieldsTextButtons(
 
 @Composable
 fun ButtonsIncDec(
-    valueParcelas: Int,
+    value: Int,
+    width: Dp = 50.dp,
     onClickMenos: () -> Unit,
     onClickMais: () -> Unit
 ) {
@@ -575,12 +575,12 @@ fun ButtonsIncDec(
         Box(
             modifier = Modifier
                 .height(35.dp)
-                .width(50.dp)
+                .width(width)
                 .background(ColorGray),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "$valueParcelas",
+                text = "$value",
                 fontSize = 18.sp,
                 color = ColorFontesDark,
                 modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 0.dp)
