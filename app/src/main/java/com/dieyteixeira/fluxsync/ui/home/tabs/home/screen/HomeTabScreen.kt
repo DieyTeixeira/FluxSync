@@ -62,7 +62,6 @@ fun HomeTabScreen(
     onSignOutClick: () -> Unit
 ) {
 
-    val interactionSource = remember { MutableInteractionSource() }
     val coroutineScope = rememberCoroutineScope()
     val preferences by userPreferences.userPreferences.collectAsState(
         initial = Pair(
@@ -98,7 +97,7 @@ fun HomeTabScreen(
             .padding(bottom = 5.dp)
             .clickable(
                 indication = null,
-                interactionSource = interactionSource
+                interactionSource = remember { MutableInteractionSource() }
             ) {
                 coroutineScope.launch {
                     mostrarContas = false

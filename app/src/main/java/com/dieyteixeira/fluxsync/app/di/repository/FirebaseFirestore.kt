@@ -153,6 +153,7 @@ class FirestoreRepository {
 
             querySnapshot.documents.mapNotNull { document ->
                 val id = document.id
+                val grupoId = document.getString("grupoId") ?: return@mapNotNull null
                 val descricao = document.getString("descricao") ?: return@mapNotNull null
                 val valorString = document.getString("valor") ?: return@mapNotNull null
                 val tipo = document.getString("tipo") ?: return@mapNotNull null
@@ -170,6 +171,7 @@ class FirestoreRepository {
 
                 Transacoes(
                     id = id,
+                    grupoId = grupoId,
                     descricao = descricao,
                     valor = valor,
                     tipo = tipo,
@@ -209,13 +211,14 @@ class FirestoreRepository {
 
         try {
             val transacoesRef = db.collection(userEmail).document("Lancamento").collection("Lancamentos") // Correção do caminho da coleção
+            val grupoId = transacoesRef.document().id
 
             when (lancamento) {
                 "Único" -> {
                     val novoId = transacoesRef.document().id
                     val transacaoMap = criarTransacaoMap(
-                        novoId, descricao, valor, tipo, situacao, categoriaId, contaId,
-                        data, lancamento, parcelas.toString(), dataVencimento, dataPagamento, observacao
+                        novoId, grupoId, descricao, valor.toString(), tipo, situacao, categoriaId, contaId,
+                        data, lancamento, parcelas, dataVencimento, dataPagamento, observacao
                     )
                     transacoesRef.document(novoId).set(transacaoMap).await()
                 }
@@ -227,7 +230,7 @@ class FirestoreRepository {
                     for (i in 0..11) {
                         val novoId = transacoesRef.document().id
                         val transacaoMap = criarTransacaoMap(
-                            novoId, descricao, valor, tipo, situacao, categoriaId, contaId,
+                            novoId, grupoId, descricao, valor.toString(), tipo, situacao, categoriaId, contaId,
                             Timestamp(calendar.time), lancamento, i.toString(),
                             Timestamp(calendar.time), Timestamp(calendar.time), observacao
                         )
@@ -238,7 +241,7 @@ class FirestoreRepository {
 
                 "Parcelado" -> {
                     val parcelasInt = parcelas.toInt()
-                    val valorParcela = valor / parcelasInt
+                    val valorParcela = (valor / parcelasInt).toString()
                     val calendar = Calendar.getInstance()
                     calendar.time = data.toDate()
 
@@ -246,7 +249,7 @@ class FirestoreRepository {
                         val novoId = transacoesRef.document().id
                         val numParcelas = i.toString() + "/" + parcelas
                         val transacaoMap = criarTransacaoMap(
-                            novoId, descricao, valorParcela, tipo, situacao, categoriaId, contaId,
+                            novoId, grupoId, descricao, valorParcela, tipo, situacao, categoriaId, contaId,
                             Timestamp(calendar.time), lancamento, numParcelas,
                             Timestamp(calendar.time), Timestamp(calendar.time), observacao
                         )
@@ -264,8 +267,9 @@ class FirestoreRepository {
 
     private fun criarTransacaoMap(
         id: String,
+        grupoId: String,
         descricao: String,
-        valor: Double,
+        valor: String,
         tipo: String,
         situacao: String,
         categoriaId: String,
@@ -280,6 +284,7 @@ class FirestoreRepository {
     ): Map<String, Any> {
         return mapOf(
             "id" to id,
+            "grupoId" to grupoId,
             "descricao" to descricao,
             "valor" to valor,
             "tipo" to tipo,
@@ -293,5 +298,25 @@ class FirestoreRepository {
             "dataPagamento" to dataPagamento,
             "observacao" to observacao
         )
+    }
+
+    suspend fun excluirTransacao(grupoId: String) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        try {
+            val transacoesRef = db.collection(userEmail).document("Lancamento").collection("Lancamentos")
+
+            val querySnapshot = transacoesRef.whereEqualTo("grupoId", grupoId).get().await()
+
+            for (document in querySnapshot.documents) {
+                transacoesRef.document(document.id).delete().await()
+            }
+
+            Log.d("FirestoreRepository", "Transações do grupo $grupoId excluídas com sucesso!")
+
+        } catch (e: Exception) {
+            Log.e("FirestoreRepository", "Erro ao excluir transações", e)
+        }
     }
 }

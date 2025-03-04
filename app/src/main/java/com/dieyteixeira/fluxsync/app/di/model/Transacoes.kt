@@ -4,6 +4,7 @@ import java.util.Date
 
 data class Transacoes(
     var id: String = "",
+    var grupoId: String = "", // ID do grupo ao qual o lançamento pertence
     var descricao: String = "", // descricao do lançamento
     var valor: Double = 0.0, // valor do lançamento
     var tipo: String = "", // tipo do lançamento (entrada ou saída)

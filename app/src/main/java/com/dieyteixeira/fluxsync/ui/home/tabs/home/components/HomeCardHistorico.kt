@@ -78,7 +78,7 @@ fun HomeCardHistorico(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Histórico de " + nomeMesAtual(),
+                    text = "Histórico de " + nomeMesAtual(mesAtual()),
                     color = ColorFontesDark,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
@@ -95,7 +95,7 @@ fun HomeCardHistorico(
         ) {
             items(transacoesDoMesAtual.size) { index ->
                 val backgroundColor = if (index % 2 == 0) ColorBackground.copy(alpha = 0.4f) else Color.Transparent
-                TransacaoItem(
+                HistoricoItem(
                     transacao = transacoesDoMesAtual[index],
                     visibility = isSaldoVisivel,
                     backgroundColor = backgroundColor
@@ -106,7 +106,7 @@ fun HomeCardHistorico(
 }
 
 @Composable
-fun TransacaoItem(
+fun HistoricoItem(
     transacao: Transacoes,
     visibility: Boolean,
     backgroundColor: Color

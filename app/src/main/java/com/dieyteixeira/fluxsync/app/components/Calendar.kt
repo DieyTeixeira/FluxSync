@@ -16,9 +16,8 @@ fun anoAtual(): Int {
     return anoAtual
 }
 
-fun nomeMesAtual(): String {
+fun nomeMesAtual(mesAtual: Int): String {
 
-    val mesAtual = Calendar.getInstance().get(Calendar.MONTH)
     val meses = listOf(
         "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
         "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -27,9 +26,7 @@ fun nomeMesAtual(): String {
     return meses[mesAtual]
 }
 
-fun listarMeses(
-    anoAtual: Int
-): List<String> {
+fun listarMeses(): List<String> {
 
     val meses = listOf(
         "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -38,18 +35,8 @@ fun listarMeses(
     val listaMeses = mutableListOf<String>()
 
     for (i in 0 until 12) {
-        val calendar = Calendar.getInstance().apply {
-            set(Calendar.MONTH, i)
-        }
         val mes = meses[i]
-        val ano = calendar.get(Calendar.YEAR)
-
-        if (ano == anoAtual) {
-            listaMeses.add(mes)
-        } else {
-            val anoAbreviado = anoAtual.toString().takeLast(2)
-            listaMeses.add("${mes.take(3)}-$anoAbreviado")
-        }
+        listaMeses.add(mes)
     }
 
     return listaMeses

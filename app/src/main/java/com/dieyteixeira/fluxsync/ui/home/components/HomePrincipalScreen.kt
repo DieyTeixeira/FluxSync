@@ -65,7 +65,7 @@ enum class NavigationBarItems(
     ),
     Transaction(
         icon = R.drawable.icon_documento,
-        screen = { _, _, _, _ -> TransactionTab() }
+        screen = { _, homeViewModel, _, _ -> TransactionTab(homeViewModel) }
     ),
     Add(
         icon = R.drawable.icon_mais,
