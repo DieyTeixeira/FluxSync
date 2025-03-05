@@ -43,7 +43,7 @@ import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.components.IconConta
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
-import com.dieyteixeira.fluxsync.app.theme.ColorGray
+import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
@@ -576,7 +576,7 @@ fun ButtonsIncDec(
             modifier = Modifier
                 .height(35.dp)
                 .width(width)
-                .background(ColorGray),
+                .background(ColorGrayDark),
             contentAlignment = Alignment.Center
         ) {
             Text(

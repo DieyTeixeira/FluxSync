@@ -51,7 +51,7 @@ import com.dieyteixeira.fluxsync.app.di.replace.colorToStringCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.iconToStringCategoria
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
-import com.dieyteixeira.fluxsync.app.theme.ColorGray
+import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
@@ -240,7 +240,7 @@ fun AddCategoriasDialog(
                             painter = painterResource(id = listIconsCategorias[index]),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp),
-                            colorFilter = ColorFilter.tint(if (selectedIcon) ColorFontesDark else ColorGray)
+                            colorFilter = ColorFilter.tint(if (selectedIcon) ColorFontesDark else ColorGrayDark)
                         )
                     }
                 }

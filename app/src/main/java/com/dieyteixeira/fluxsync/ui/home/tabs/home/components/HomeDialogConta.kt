@@ -22,9 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
@@ -53,23 +51,18 @@ import com.dieyteixeira.fluxsync.app.components.TextInput
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.listBancos
 import com.dieyteixeira.fluxsync.app.di.model.listColorsConta
-import com.dieyteixeira.fluxsync.app.di.replace.colorToStringCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.colorToStringConta
-import com.dieyteixeira.fluxsync.app.di.replace.iconToStringCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.iconToStringConta
 import com.dieyteixeira.fluxsync.app.theme.BlackCont
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
-import com.dieyteixeira.fluxsync.app.theme.ColorGray
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
 @Composable

@@ -21,7 +21,7 @@ fun iconToStringCategoria(icon: Int): String {
         R.drawable.icon_computador -> "icon_computador"
         R.drawable.icon_editar -> "icon_editar"
         R.drawable.icon_ciclismo -> "icon_ciclismo"
-        R.drawable.icon_envelope -> "icon_envelope"
+        R.drawable.icon_combustivel -> "icon_combustivel"
         R.drawable.icon_academia -> "icon_academia"
         R.drawable.icon_casa -> "icon_casa"
         R.drawable.icon_compras -> "icon_compras"
@@ -55,7 +55,7 @@ fun stringToIconCategoria(iconString: String): Int {
         "icon_computador" -> R.drawable.icon_computador
         "icon_editar" -> R.drawable.icon_editar
         "icon_ciclismo" -> R.drawable.icon_ciclismo
-        "icon_envelope" -> R.drawable.icon_envelope
+        "icon_combustivel" -> R.drawable.icon_combustivel
         "icon_academia" -> R.drawable.icon_academia
         "icon_casa" -> R.drawable.icon_casa
         "icon_compras" -> R.drawable.icon_compras

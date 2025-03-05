@@ -36,7 +36,9 @@ val BlueCategory = Color(0xFF84E0EF)
 val PurpleCategory = Color(0xFFD6B4E8)
 
 // cores auxiliares
-val ColorGray = Color(0xFFCACBC6)
+val ColorGrayDark = Color(0xFFCACBC6)
+val ColorGrayMedium = Color(0xFFDEDFDD)
+val ColorGrayLight = Color(0xFFE6E7E6)
 val ColorBackground = Color(0xFFF0F1F2)
 val ColorLine = Color(0xFFF3F4F5)
 val ColorCards = Color(0xFFFDFDFD)

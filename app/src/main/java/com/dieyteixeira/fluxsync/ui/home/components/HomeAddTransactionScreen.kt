@@ -78,7 +78,6 @@ fun HomeAddTransactionScreen(
     onClose: () -> Unit
 ) {
 
-    val scope = rememberCoroutineScope()
     val interactionSource = remember { MutableInteractionSource() }
     val screenWidth = with(LocalDensity.current) { LocalConfiguration.current.screenWidthDp.dp }
 
@@ -99,8 +98,6 @@ fun HomeAddTransactionScreen(
     )
 
     var descriptionText by remember { mutableStateOf("") }
-    var categoryText by remember { mutableStateOf("") }
-    var contaText by remember { mutableStateOf("") }
     var dateSelected by remember { mutableStateOf(LocalDate.now()) }
     var dateRegistro by remember { mutableStateOf("") }
     var showCustomDatePicker by remember { mutableStateOf(false) }
@@ -232,6 +229,7 @@ fun HomeAddTransactionScreen(
                         onClickVisibility = {
                             isKeyboardVisible = true
                             keyboardController?.hide()
+                            focusManager.clearFocus()
                         }
                     )
                 }
@@ -263,7 +261,10 @@ fun HomeAddTransactionScreen(
                             textSaldo = selectedAccount?.saldo ?: 0.0,
                             color = selectedAccount?.color ?: GrayCont,
                             icon = selectedAccount?.icon ?: R.drawable.icon_banco,
-                            onClick = { showAccountDialog = true }
+                            onClick = {
+                                showAccountDialog = true
+                                focusManager.clearFocus()
+                            }
                         )
                     }
                     item { // CATEGORIA
@@ -274,7 +275,10 @@ fun HomeAddTransactionScreen(
                             textValue = selectedCategory?.descricao ?: "Selecionar Categoria",
                             color = selectedCategory?.color ?: GrayCont,
                             icon = selectedCategory?.icon ?: R.drawable.icon_cubo,
-                            onClick = { showCategoryDialog = true }
+                            onClick = {
+                                showCategoryDialog = true
+                                focusManager.clearFocus()
+                            }
                         )
                     }
                     item { // DATA
@@ -284,7 +288,10 @@ fun HomeAddTransactionScreen(
                             text = "Data do lançamento",
                             textValue = formattedDate,
                             icon = R.drawable.icon_calendario,
-                            onClick = { showCustomDatePicker = true }
+                            onClick = {
+                                showCustomDatePicker = true
+                                focusManager.clearFocus()
+                            }
                         )
                     }
                     item { // TIPO DE LANÇAMENTO

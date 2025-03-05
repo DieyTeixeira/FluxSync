@@ -11,8 +11,6 @@ import com.dieyteixeira.fluxsync.app.di.repository.FirestoreRepository
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class HomeViewModel(
@@ -95,21 +93,39 @@ class HomeViewModel(
                 val parcelasString = parcelas.toString()
 
                 firestoreRepository.salvarTransacao(
-                    descricao = descricao,
-                    valor = valor,
-                    tipo = tipo,
-                    situacao = situacao,
-                    categoriaId = categoriaId,
-                    contaId = contaId,
-                    data = timestampDate,
-                    lancamento = lancamento,
-                    parcelas = parcelasString,
-                    dataVencimento = timestampDateV,
-                    dataPagamento = timestampDateP,
-                    observacao = observacao
+                    descricao, valor, tipo, situacao, categoriaId, contaId, timestampDate,
+                    lancamento, parcelasString, timestampDateV, timestampDateP, observacao
                 )
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Erro ao salvar transação", e)
+            }
+        }
+    }
+
+    fun editarTransacaoSituacao(
+        transacaoId: String,
+        transacaoSituacao: String,
+        transacaoTipo: String,
+        transacaoValor: Double,
+        contaId: String,
+        contaSaldo: Double
+    ) {
+        viewModelScope.launch {
+            firestoreRepository.editarSituacao(
+                transacaoId, transacaoSituacao, transacaoTipo,
+                transacaoValor, contaId, contaSaldo
+            )
+            getAtualizar()
+        }
+    }
+
+    fun excluirTransacao(grupoId: String) {
+        viewModelScope.launch {
+            try {
+                firestoreRepository.excluirTransacao(grupoId)
+                getAtualizar()  // Para atualizar a lista de transações após a exclusão
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Erro ao excluir transação", e)
             }
         }
     }

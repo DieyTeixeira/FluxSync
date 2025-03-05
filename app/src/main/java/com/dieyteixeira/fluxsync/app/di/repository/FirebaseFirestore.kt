@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.app.di.repository
 
+import android.annotation.SuppressLint
 import android.util.Log
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
@@ -300,14 +301,59 @@ class FirestoreRepository {
         )
     }
 
+    @SuppressLint("DefaultLocale")
+    suspend fun editarSituacao(
+        transacaoId: String,
+        transacaoSituacao: String,
+        transacaoTipo: String,
+        transacaoValor: Double,
+        contaId: String,
+        contaSaldo: Double
+    ) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        val novaSituacao = if (transacaoSituacao == "pendente") "efetivado" else "pendente"
+
+        val calculo = if (transacaoTipo == "receita") transacaoValor else -transacaoValor
+        val saldoCalculado = if (transacaoSituacao == "pendente") {
+            contaSaldo + calculo
+        } else {
+            contaSaldo - calculo
+        }
+        val novoSaldo = String.format("%.2f", saldoCalculado).replace(".", ",")
+
+        try {
+            db.collection(userEmail).document("Lancamento").collection("Lancamentos")
+                .document(transacaoId)
+                .update("situacao", novaSituacao)
+                .await()
+
+            db.collection(userEmail).document("Conta").collection("Contas")
+                .document(contaId)
+                .update("saldo", novoSaldo)
+                .await()
+
+            Log.d("Firebase", "Situação atualizada com sucesso!")
+
+        } catch (e: Exception) {
+            Log.e("Firebase", "Erro ao atualizar situação", e)
+        }
+    }
+
     suspend fun excluirTransacao(grupoId: String) {
         val user = auth.currentUser
         val userEmail = user?.email ?: return
 
         try {
-            val transacoesRef = db.collection(userEmail).document("Lancamento").collection("Lancamentos")
+            val transacoesRef = db.collection(userEmail)
+                .document("Lancamento")
+                .collection("Lancamentos")
 
-            val querySnapshot = transacoesRef.whereEqualTo("grupoId", grupoId).get().await()
+            val querySnapshot = transacoesRef
+                .whereEqualTo("grupoId", grupoId)
+                .get()
+                .await()
 
             for (document in querySnapshot.documents) {
                 transacoesRef.document(document.id).delete().await()
