@@ -102,7 +102,25 @@ class HomeViewModel(
         }
     }
 
-    fun editarTransacaoSituacao(
+    fun editarTransacao(
+        transacao: Transacoes,
+        alterarTodas: Boolean
+    ) {
+        viewModelScope.launch {
+            try {
+                if (alterarTodas) {
+                    firestoreRepository.editarTransacoesDoGrupo(transacao.grupoId, transacao)
+                } else {
+                    firestoreRepository.editarTransacaoUnica(transacao)
+                }
+                getAtualizar()
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Erro ao editar transação", e)
+            }
+        }
+    }
+
+    fun editarSituacao(
         transacaoId: String,
         transacaoSituacao: String,
         transacaoTipo: String,

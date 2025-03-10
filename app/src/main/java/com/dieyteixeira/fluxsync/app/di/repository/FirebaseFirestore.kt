@@ -213,12 +213,13 @@ class FirestoreRepository {
         try {
             val transacoesRef = db.collection(userEmail).document("Lancamento").collection("Lancamentos") // Correção do caminho da coleção
             val grupoId = transacoesRef.document().id
+            val grupoIdNull = ""
 
             when (lancamento) {
                 "Único" -> {
                     val novoId = transacoesRef.document().id
                     val transacaoMap = criarTransacaoMap(
-                        novoId, grupoId, descricao, valor.toString(), tipo, situacao, categoriaId, contaId,
+                        novoId, grupoIdNull, descricao, valor.toString(), tipo, situacao, categoriaId, contaId,
                         data, lancamento, parcelas, dataVencimento, dataPagamento, observacao
                     )
                     transacoesRef.document(novoId).set(transacaoMap).await()
@@ -299,6 +300,45 @@ class FirestoreRepository {
             "dataPagamento" to dataPagamento,
             "observacao" to observacao
         )
+    }
+
+    suspend fun editarTransacaoUnica(transacao: Transacoes) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        val transacaoRef = db.collection(userEmail).document("Lancamento").collection("Lancamentos").document(transacao.id)
+
+        transacaoRef.update(
+            mapOf(
+                "descricao" to transacao.descricao,
+                "valor" to transacao.valor,
+                "categoriaId" to transacao.categoriaId,
+                "contaId" to transacao.contaId,
+                "observacao" to transacao.observacao
+            )
+        )
+    }
+
+    suspend fun editarTransacoesDoGrupo(grupoId: String, transacao: Transacoes) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        val transacoes = db.collection(userEmail).document("Lancamento").collection("Lancamentos")
+            .whereEqualTo("grupoId", grupoId)
+            .get()
+            .await()
+
+        for (doc in transacoes.documents) {
+            doc.reference.update(
+                mapOf(
+                    "descricao" to transacao.descricao,
+                    "valor" to transacao.valor,
+                    "categoriaId" to transacao.categoriaId,
+                    "contaId" to transacao.contaId,
+                    "observacao" to transacao.observacao
+                )
+            )
+        }
     }
 
     @SuppressLint("DefaultLocale")

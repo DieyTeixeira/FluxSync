@@ -25,9 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorError
 import com.dieyteixeira.fluxsync.app.theme.DarkColorError
+import com.dieyteixeira.fluxsync.app.theme.LightColor3
 
 @Composable
 fun CustomDialogButton(
@@ -139,6 +141,80 @@ fun CustomDialog(
                     contentDescription = "Fechar",
                     tint = Color.White,
                     modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CustomDialogButtonEdit(
+    onClickClose: () -> Unit,
+    onClickButton: () -> Unit,
+    textButton: String,
+    content: @Composable () -> Unit
+) {
+    Dialog(
+        onDismissRequest = {}
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.95f),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = ColorCards,
+                        shape = RoundedCornerShape(15.dp)
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .heightIn(min = 300.dp, max = 600.dp)
+                        .padding(15.dp)
+                ) {
+                    content()
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .background(
+                        color = ColorError,
+                        shape = RoundedCornerShape(0.dp, 15.dp, 0.dp, 15.dp)
+                    )
+                    .padding(5.dp)
+                    .clickable(onClick = onClickClose),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Fechar",
+                    tint = Color.White,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .align(Alignment.BottomCenter)
+                    .background(
+                        color = ColorBackground,
+                        shape = RoundedCornerShape(0.dp, 0.dp, 15.dp, 15.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                ButtonPersonalFilled(
+                    onClick = onClickButton,
+                    text = textButton,
+                    colorText = Color.White,
+                    color = LightColor3,
+                    height = 40.dp,
+                    width = 150.dp
                 )
             }
         }

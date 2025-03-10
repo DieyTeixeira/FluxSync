@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
+import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.CustomField
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.components.DatePickerCustom
@@ -64,6 +65,7 @@ import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
+import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.CategoriasList
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasList
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
@@ -397,32 +399,33 @@ fun HomeAddTransactionScreen(
 
             // Diálogo para seleção de conta
             if (showAccountDialog) {
-                Dialog(onDismissRequest = { showAccountDialog = false }) {
-                    Card(
+                CustomDialog(
+                    onClickClose = { showAccountDialog = false }
+                ) {
+                    Column(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
-                        elevation = 8.dp
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                "Selecione uma Conta",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            LazyColumn(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                items(homeViewModel.contas.value.size) { index ->
-                                    ContasList(
-                                        contas = homeViewModel.contas.value[index],
-                                        onClickConta = {
-                                            showAccountDialog = false
-                                            selectedAccount = it
-                                        }
-                                    )
-                                }
+                        Text(
+                            text = "Selecione uma Conta",
+                            fontSize = 20.sp,
+                            color = LightColor3,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(homeViewModel.contas.value.size) { index ->
+                                ContasList(
+                                    contas = homeViewModel.contas.value[index],
+                                    onClickConta = {
+                                        showAccountDialog = false
+                                        selectedAccount = it
+                                    }
+                                )
                             }
                         }
                     }
@@ -431,32 +434,33 @@ fun HomeAddTransactionScreen(
 
             // Diálogo para seleção de categoria
             if (showCategoryDialog) {
-                Dialog(onDismissRequest = { showCategoryDialog = false }) {
-                    Card(
+                CustomDialog(
+                    onClickClose = { showCategoryDialog = false }
+                ) {
+                    Column(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
-                        elevation = 8.dp
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                "Selecione uma Conta",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            LazyColumn(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                items(homeViewModel.categorias.value.size) { index ->
-                                    CategoriasList(
-                                        categorias = homeViewModel.categorias.value[index],
-                                        onClickCategoria = {
-                                            showCategoryDialog = false
-                                            selectedCategory = it
-                                        }
-                                    )
-                                }
+                        Text(
+                            text = "Selecione uma Categoria",
+                            fontSize = 20.sp,
+                            color = LightColor3,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(homeViewModel.categorias.value.size) { index ->
+                                CategoriasList(
+                                    categorias = homeViewModel.categorias.value[index],
+                                    onClickCategoria = {
+                                        showCategoryDialog = false
+                                        selectedCategory = it
+                                    }
+                                )
                             }
                         }
                     }

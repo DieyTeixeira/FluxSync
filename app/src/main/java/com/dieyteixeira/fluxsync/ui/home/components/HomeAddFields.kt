@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,6 +50,71 @@ import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
+
+@Composable
+fun HomeAddFieldsText(
+    text: String,
+    textValue: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    singleLine: Boolean = true,
+    maxLength: Int = 100
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = text,
+                fontSize = 18.sp,
+                color = ColorFontesDark,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            TextField(
+                value = textValue,
+                onValueChange = { newValue ->
+                    if (newValue.length <= maxLength) {
+                        onValueChange(newValue)
+                    }
+                },
+                placeholder = {
+                    Text(
+                        text = placeholder,
+                        fontSize = 18.sp,
+                        color = ColorFontesLight
+                    )
+                },
+                textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                singleLine = singleLine,
+                keyboardOptions = KeyboardOptions.Default,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    disabledBorderColor = Color.Transparent,
+                    textColor = ColorFontesDark,
+                    cursorColor = ColorFontesDark
+                )
+            )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(ColorLine)
+        )
+    }
+}
 
 @Composable
 fun HomeAddFieldsTextLeanding(

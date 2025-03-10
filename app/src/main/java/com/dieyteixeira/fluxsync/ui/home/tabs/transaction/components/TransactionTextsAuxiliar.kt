@@ -10,3 +10,10 @@ val textExcluir = "A confirmação refletirá\n" +
         "dessa transação e caso haja,\n" +
         "das transações subsequentes.\n\n" +
         "Confirma a exclusão?"
+
+val textSalvar = "A transação editada fez parte\n" +
+        "de um grupo de ocorrências.\n\n" +
+        "Deseja ajustar todas\n" +
+        "as transações desse grupo?\n\n" +
+        "*Caso opte por não alterará\n" +
+        "apenas essa transação"
