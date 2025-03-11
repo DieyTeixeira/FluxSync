@@ -156,7 +156,7 @@ class FirestoreRepository {
                 val id = document.id
                 val grupoId = document.getString("grupoId") ?: return@mapNotNull null
                 val descricao = document.getString("descricao") ?: return@mapNotNull null
-                val valorString = document.getString("valor") ?: return@mapNotNull null
+                val valor = document.getDouble("valor") ?: return@mapNotNull null
                 val tipo = document.getString("tipo") ?: return@mapNotNull null
                 val situacao = document.getString("situacao") ?: return@mapNotNull null
                 val categoriaId = document.getString("categoriaId") ?: return@mapNotNull null
@@ -167,8 +167,6 @@ class FirestoreRepository {
                 val dataVencimento = document.getTimestamp("dataVencimento")?.toDate() ?: Date()
                 val dataPagamento = document.getTimestamp("dataPagamento")?.toDate() ?: Date()
                 val observacao = document.getString("observacao") ?: ""
-
-                val valor = valorString.replace(",", ".").toDoubleOrNull() ?: return@mapNotNull null
 
                 Transacoes(
                     id = id,
@@ -219,7 +217,7 @@ class FirestoreRepository {
                 "Único" -> {
                     val novoId = transacoesRef.document().id
                     val transacaoMap = criarTransacaoMap(
-                        novoId, grupoIdNull, descricao, valor.toString(), tipo, situacao, categoriaId, contaId,
+                        novoId, grupoIdNull, descricao, valor, tipo, situacao, categoriaId, contaId,
                         data, lancamento, parcelas, dataVencimento, dataPagamento, observacao
                     )
                     transacoesRef.document(novoId).set(transacaoMap).await()
@@ -232,7 +230,7 @@ class FirestoreRepository {
                     for (i in 0..11) {
                         val novoId = transacoesRef.document().id
                         val transacaoMap = criarTransacaoMap(
-                            novoId, grupoId, descricao, valor.toString(), tipo, situacao, categoriaId, contaId,
+                            novoId, grupoId, descricao, valor, tipo, situacao, categoriaId, contaId,
                             Timestamp(calendar.time), lancamento, i.toString(),
                             Timestamp(calendar.time), Timestamp(calendar.time), observacao
                         )
@@ -243,7 +241,7 @@ class FirestoreRepository {
 
                 "Parcelado" -> {
                     val parcelasInt = parcelas.toInt()
-                    val valorParcela = (valor / parcelasInt).toString()
+                    val valorParcela = (valor / parcelasInt)
                     val calendar = Calendar.getInstance()
                     calendar.time = data.toDate()
 
@@ -271,7 +269,7 @@ class FirestoreRepository {
         id: String,
         grupoId: String,
         descricao: String,
-        valor: String,
+        valor: Double,
         tipo: String,
         situacao: String,
         categoriaId: String,

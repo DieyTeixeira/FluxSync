@@ -130,8 +130,7 @@ fun TransactionAddFieldsTextLeanding(
     maxLength: Int,
     focusRequester: FocusRequester,
     onClickKeyboard: () -> Unit,
-    keyboardController: SoftwareKeyboardController?,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardController: SoftwareKeyboardController?
 ) {
     if (divider) {
         Box(modifier = Modifier
@@ -195,7 +194,7 @@ fun TransactionAddFieldsTextLeanding(
                     },
                 textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
                 singleLine = singleLine,
-                keyboardOptions = keyboardOptions,
+                keyboardOptions = KeyboardOptions.Default,
                 keyboardActions = KeyboardActions(
                     onDone = {
                         keyboardController?.hide()

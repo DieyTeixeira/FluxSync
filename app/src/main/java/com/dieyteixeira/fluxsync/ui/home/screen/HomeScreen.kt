@@ -86,6 +86,7 @@ fun HomeScreen(
     var selectedIndex by remember { mutableStateOf(0) }
     var pulseEffect by remember { mutableStateOf(false) }
     var showTransactionScreen by remember { mutableStateOf(false) }
+    var showEditScreen by remember { mutableStateOf(false) }
     val scaleAnim by animateFloatAsState(targetValue = if (showTransactionScreen) 0.95f else 1.0f)
     val clipAnim by animateDpAsState(targetValue = if (showTransactionScreen) 25.dp else 0.dp)
 
@@ -125,112 +126,111 @@ fun HomeScreen(
                         barColor = ColorCards,
                         ballColor = LightColor4
                     )     {
-                            navigationBarItems.forEach { item ->
-                                if (item.ordinal == 2) {
-                                    val pulseScale by animateFloatAsState(
-                                        targetValue = if (pulseEffect) 1.1f else 1f,
-                                        animationSpec = tween(
-                                            durationMillis = 100,
-                                            easing = FastOutSlowInEasing
-                                        )
+                        navigationBarItems.forEach { item ->
+                            if (item.ordinal == 2) {
+                                val pulseScale by animateFloatAsState(
+                                    targetValue = if (pulseEffect) 1.1f else 1f,
+                                    animationSpec = tween(
+                                        durationMillis = 100,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .noRippleClickable {
+                                            pulseEffect = true
+                                            showTransactionScreen = true
+                                        },
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxSize(0.85f * pulseScale)
+                                            .background(
+                                                color = LightColor3,
+                                                shape = RoundedCornerShape(50)
+                                            )
                                     )
                                     Box(
                                         modifier = Modifier
-                                            .fillMaxSize()
-                                            .noRippleClickable {
-                                                pulseEffect = true
-                                                showTransactionScreen = true
+                                            .fillMaxSize(0.85f * pulseScale)
+                                            .border(
+                                                width = 5.dp,
+                                                brush = LightBackground,
+                                                shape = RoundedCornerShape(50)
+                                            )
+                                    )
+                                    Image(
+                                        painter = painterResource(id = item.icon),
+                                        contentDescription = "Bottom Bar Icon",
+                                        modifier = Modifier.size(20.dp * pulseScale),
+                                        colorFilter = ColorFilter.tint(Color.White)
+                                    )
+                                }
+                            } else {
+                                val isSelected = selectedIndex == item.ordinal
+                                val revealProgress by animateFloatAsState(
+                                    targetValue = if (isSelected) 1f else 0f,
+                                    animationSpec = tween(
+                                        durationMillis = 1000,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                )
+                                val shapeForm by animateIntAsState(
+                                    targetValue = if (isSelected) 100 else 0,
+                                    animationSpec = tween(
+                                        durationMillis = 1000,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                )
+
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .noRippleClickable { selectedIndex = item.ordinal },
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = item.icon),
+                                        contentDescription = "Bottom Bar Icon",
+                                        modifier = Modifier.size(20.dp),
+                                        colorFilter = ColorFilter.tint(Color.Gray.copy(alpha = 0.75f))
+                                    )
+                                    Box(
+                                        modifier = Modifier
+                                            .size(45.dp)
+                                            .drawWithContent {
+                                                val height = size.height * revealProgress
+                                                clipRect(top = 0f, bottom = height) {
+                                                    this@drawWithContent.drawContent()
+                                                }
                                             },
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Box(
                                             modifier = Modifier
-                                                .fillMaxSize(0.85f * pulseScale)
-                                                .background(
-                                                    color = LightColor3,
-                                                    shape = RoundedCornerShape(50)
-                                                )
-                                        )
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxSize(0.85f * pulseScale)
+                                                .size(37.dp)
+                                                .rotate(45f)
                                                 .border(
-                                                    width = 5.dp,
-                                                    brush = LightBackground,
-                                                    shape = RoundedCornerShape(50)
+                                                    width = 2.dp,
+                                                    color = LightColor2.copy(alpha = revealProgress),
+                                                    shape = RoundedCornerShape(
+                                                        shapeForm, 100, 100, 100
+                                                    )
                                                 )
                                         )
-                                        Image(
-                                            painter = painterResource(id = item.icon),
-                                            contentDescription = "Bottom Bar Icon",
-                                            modifier = Modifier.size(20.dp * pulseScale),
-                                            colorFilter = ColorFilter.tint(Color.White)
-                                        )
-                                    }
-                                } else {
-                                    val isSelected = selectedIndex == item.ordinal
-                                    val revealProgress by animateFloatAsState(
-                                        targetValue = if (isSelected) 1f else 0f,
-                                        animationSpec = tween(
-                                            durationMillis = 1000,
-                                            easing = FastOutSlowInEasing
-                                        )
-                                    )
-                                    val shapeForm by animateIntAsState(
-                                        targetValue = if (isSelected) 100 else 0,
-                                        animationSpec = tween(
-                                            durationMillis = 1000,
-                                            easing = FastOutSlowInEasing
-                                        )
-                                    )
-
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .noRippleClickable { selectedIndex = item.ordinal },
-                                        contentAlignment = Alignment.Center
-                                    ) {
                                         Image(
                                             painter = painterResource(id = item.icon),
                                             contentDescription = "Bottom Bar Icon",
                                             modifier = Modifier.size(20.dp),
-                                            colorFilter = ColorFilter.tint(Color.Gray.copy(alpha = 0.75f))
+                                            colorFilter = ColorFilter.tint(LightColor2.copy(alpha = revealProgress))
                                         )
-                                        Box(
-                                            modifier = Modifier
-                                                .size(45.dp)
-                                                .drawWithContent {
-                                                    val height = size.height * revealProgress
-                                                    clipRect(top = 0f, bottom = height) {
-                                                        this@drawWithContent.drawContent()
-                                                    }
-                                                },
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Box(
-                                                modifier = Modifier
-                                                    .size(37.dp)
-                                                    .rotate(45f)
-                                                    .border(
-                                                        width = 2.dp,
-                                                        color = LightColor2.copy(alpha = revealProgress),
-                                                        shape = RoundedCornerShape(
-                                                            shapeForm, 100, 100, 100
-                                                        )
-                                                    )
-                                            )
-                                            Image(
-                                                painter = painterResource(id = item.icon),
-                                                contentDescription = "Bottom Bar Icon",
-                                                modifier = Modifier.size(20.dp),
-                                                colorFilter = ColorFilter.tint(LightColor2.copy(alpha = revealProgress))
-                                            )
-                                        }
                                     }
                                 }
                             }
                         }
-
+                    }
                 }
             ) {
                 Column {
@@ -281,6 +281,34 @@ fun HomeScreen(
                         HomeAddTransactionScreen(
                             homeViewModel = homeViewModel,
                             onClose = { showTransactionScreen = false }
+                        )
+                    }
+                }
+            }
+            this@Column.AnimatedVisibility(
+                visible = showEditScreen,
+                enter = slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = tween(durationMillis = 300)
+                ) + fadeIn(),
+                exit = slideOutVertically(
+                    targetOffsetY = { it },
+                    animationSpec = tween(durationMillis = 300)
+                ) + fadeOut()
+            ) {
+                Column {
+                    Spacer(modifier = Modifier.height(50.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                            )
+                    ) {
+                        HomeAddTransactionScreen(
+                            homeViewModel = homeViewModel,
+                            onClose = { showEditScreen = false }
                         )
                     }
                 }

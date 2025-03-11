@@ -31,11 +31,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -53,6 +56,7 @@ import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.SelectAnoDi
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionEditDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionItem
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
+import kotlinx.coroutines.delay
 import java.util.Calendar
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -60,7 +64,9 @@ import java.util.Calendar
 @Composable
 fun TransactionTab(
     homeViewModel: HomeViewModel,
+    onClickEditar: (Transacoes) -> Unit
 ) {
+
     var showTransactionAno by remember { mutableStateOf(false) }
     var showTransactionEdit by remember { mutableStateOf(false) }
     var transacaoSelecionada by remember { mutableStateOf<Transacoes?>(null) }
@@ -249,6 +255,7 @@ fun TransactionTab(
         }
 
         if (showTransactionEdit && transacaoSelecionada != null) {
+
             TransactionEditDialog(
                 homeViewModel = homeViewModel,
                 transacao = transacaoSelecionada!!,

@@ -354,7 +354,10 @@ fun HomeAddTransactionScreen(
                             colorBorder = Color.LightGray,
                             maxLength = 150,
                             focusRequester = focusRequester,
-                            onClickKeyboard = { isKeyboardVisible = false },
+                            onClickKeyboard = {
+                                isKeyboardVisible = false
+                                focusManager.clearFocus()
+                            },
                             keyboardController = keyboardController
                         )
                     }
@@ -373,6 +376,7 @@ fun HomeAddTransactionScreen(
                 ) {
                     ButtonPersonalFilled(
                         onClick = {
+                            focusManager.clearFocus()
                             homeViewModel.salvarTransacao(
                                 descricao = descriptionText,
                                 valor = value.replace(",", ".").toDoubleOrNull() ?: 0.0,

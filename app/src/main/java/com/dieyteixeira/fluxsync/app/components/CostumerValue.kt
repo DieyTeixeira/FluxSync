@@ -66,7 +66,10 @@ fun CustomField(
             .height(80.dp)
             .background(Color.Transparent)
             .padding(horizontal = 35.dp)
-            .clickable{
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
                 clickVisibility = true
             },
         verticalAlignment = Alignment.CenterVertically,
@@ -89,7 +92,11 @@ fun CustomField(
 
 @Composable
 fun CustomFieldEdit(
+    divider: Boolean,
+    text: String,
     value: String,
+    icon: Int,
+    color: Color,
     onClickVisibility: () -> Unit = {}
 ) {
 
@@ -103,30 +110,71 @@ fun CustomFieldEdit(
         }
     }
 
-    Row(
+    if (divider) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(ColorLine))
+    }
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
-            .background(Color.Transparent)
-            .padding(horizontal = 35.dp)
-            .clickable{
-                clickVisibility = true
-            },
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.End
+            .padding(top = 15.dp)
     ) {
         Text(
-            text = "R$ ",
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
+            text = text,
+            fontSize = 18.sp,
+            color = ColorFontesDark,
+            fontWeight = FontWeight.Bold
         )
-        Text(
-            text = value.ifEmpty { "0,00" },
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.width(7.dp))
+            Box(
+                modifier = Modifier
+                    .size(30.dp)
+                    .background(
+                        color = Color.Transparent
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(23.dp),
+                    colorFilter = ColorFilter.tint(LightColor2)
+                )
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            Row(
+                modifier = Modifier
+                    .background(color, RoundedCornerShape(20))
+                    .padding(5.dp)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {
+                        clickVisibility = true
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "R$  ",
+                    fontSize = 18.sp,
+                    color = ColorFontesDark
+                )
+                Text(
+                    text = value.ifEmpty { "0,00" },
+                    fontSize = 18.sp,
+                    color = ColorFontesDark
+                )
+            }
+        }
     }
 }
 
@@ -155,6 +203,36 @@ fun CustomKeyboard(
                     when (num) {
                         -1 -> IconButton(Icons.Filled.Backspace, 30, onClickBackspace, Modifier.weight(1f))
                         -2 -> IconButton(Icons.Filled.ExpandCircleDown, 35, onClickClose, Modifier.weight(1f))
+                        else -> NumberButton(num, onClick, Modifier.weight(1f))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CustomKeyboardEdit(
+    onClick: (digit: Int) -> Unit,
+    onClickClose: () -> Unit,
+    onClickBackspace: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .height(150.dp)
+            .padding(5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        listOf(
+            listOf(1, 2, 3, 4, 5, 6),
+            listOf(-2, 7, 8, 9, 0, -1)
+        ).forEach { row ->
+            Row(modifier = Modifier.fillMaxWidth()) {
+                row.forEach { num ->
+                    when (num) {
+                        -1 -> IconButton(Icons.Filled.Backspace, 20, onClickBackspace, Modifier.weight(1f))
+                        -2 -> IconButton(Icons.Filled.ExpandCircleDown, 25, onClickClose, Modifier.weight(1f))
                         else -> NumberButton(num, onClick, Modifier.weight(1f))
                     }
                 }
