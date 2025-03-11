@@ -9,6 +9,9 @@ import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.di.repository.FirestoreRepository
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -23,6 +26,14 @@ class HomeViewModel(
     val categorias = _categorias
     private val _transacoes = mutableStateOf<List<Transacoes>>(emptyList())
     val transacoes = _transacoes
+
+    private val _selectedTransaction = MutableStateFlow<Transacoes?>(null)
+    val selectedTransaction: StateFlow<Transacoes?> = _selectedTransaction.asStateFlow()
+
+    private val _message = MutableStateFlow<String?>(null)
+    val message: StateFlow<String?> = _message.asStateFlow()
+    private val _tipoMessage = MutableStateFlow<String?>(null)
+    val tipoMessage: StateFlow<String?> = _tipoMessage.asStateFlow()
 
     init {
         getAtualizar()
@@ -96,10 +107,20 @@ class HomeViewModel(
                     descricao, valor, tipo, situacao, categoriaId, contaId, timestampDate,
                     lancamento, parcelasString, timestampDateV, timestampDateP, observacao
                 )
+
+                _message.value = "Transação salva com sucesso!"
+                _tipoMessage.value = "success"
+
+                getAtualizar()
             } catch (e: Exception) {
-                Log.e("HomeViewModel", "Erro ao salvar transação", e)
+                _message.value = "Erro ao salvar a transação: ${e.message}"
+                _tipoMessage.value = "error"
             }
         }
+    }
+
+    fun selectTransaction(transaction: Transacoes) {
+        _selectedTransaction.value = transaction
     }
 
     fun editarTransacao(
@@ -113,9 +134,14 @@ class HomeViewModel(
                 } else {
                     firestoreRepository.editarTransacaoUnica(transacao)
                 }
+
+                _message.value = "Transação editada com sucesso!"
+                _tipoMessage.value = "success"
+
                 getAtualizar()
             } catch (e: Exception) {
-                Log.e("HomeViewModel", "Erro ao editar transação", e)
+                _message.value = "Erro ao editar a transação: ${e.message}"
+                _tipoMessage.value = "error"
             }
         }
     }
@@ -129,11 +155,16 @@ class HomeViewModel(
         contaSaldo: Double
     ) {
         viewModelScope.launch {
-            firestoreRepository.editarSituacao(
-                transacaoId, transacaoSituacao, transacaoTipo,
-                transacaoValor, contaId, contaSaldo
-            )
-            getAtualizar()
+            try {
+                firestoreRepository.editarSituacao(
+                    transacaoId, transacaoSituacao, transacaoTipo,
+                    transacaoValor, contaId, contaSaldo
+                )
+                getAtualizar()
+            } catch (e: Exception) {
+                _message.value = "Erro ao editar a situação da transação: ${e.message}"
+                _tipoMessage.value = "error"
+            }
         }
     }
 
@@ -141,9 +172,14 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 firestoreRepository.excluirTransacao(grupoId)
-                getAtualizar()  // Para atualizar a lista de transações após a exclusão
+
+                _message.value = "Transação excluída com sucesso!"
+                _tipoMessage.value = "success"
+
+                getAtualizar()
             } catch (e: Exception) {
-                Log.e("HomeViewModel", "Erro ao excluir transação", e)
+                _message.value = "Erro ao excluir a transação: ${e.message}"
+                _tipoMessage.value = "error"
             }
         }
     }

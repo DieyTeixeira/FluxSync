@@ -29,6 +29,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,7 +56,9 @@ import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.app.theme.LightColor4
 import com.dieyteixeira.fluxsync.app.theme.LightColor5
 import com.dieyteixeira.fluxsync.app.theme.ManageStatusBarIcons
+import com.dieyteixeira.fluxsync.ui.home.components.FirebaseMensagem
 import com.dieyteixeira.fluxsync.ui.home.components.HomeAddTransactionScreen
+import com.dieyteixeira.fluxsync.ui.home.components.HomeEditTransactionScreen
 import com.dieyteixeira.fluxsync.ui.home.components.HomePrincipalScreen
 import com.dieyteixeira.fluxsync.ui.home.components.NavigationBarItems
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
@@ -69,7 +72,7 @@ import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalAnimationApi::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
 @Composable
 fun HomeScreen(
     loginViewModel: LoginViewModel,
@@ -87,8 +90,8 @@ fun HomeScreen(
     var pulseEffect by remember { mutableStateOf(false) }
     var showTransactionScreen by remember { mutableStateOf(false) }
     var showEditScreen by remember { mutableStateOf(false) }
-    val scaleAnim by animateFloatAsState(targetValue = if (showTransactionScreen) 0.95f else 1.0f)
-    val clipAnim by animateDpAsState(targetValue = if (showTransactionScreen) 25.dp else 0.dp)
+    val scaleAnim by animateFloatAsState(targetValue = if (showTransactionScreen || showEditScreen) 0.95f else 1.0f)
+    val clipAnim by animateDpAsState(targetValue = if (showTransactionScreen || showEditScreen) 25.dp else 0.dp)
 
     LaunchedEffect(pulseEffect) {
         if (pulseEffect) {
@@ -251,7 +254,8 @@ fun HomeScreen(
                                 loginViewModel = loginViewModel,
                                 homeViewModel = homeViewModel,
                                 userPreferences = userPreferences,
-                                onSignOutClick = onSignOutClick
+                                onSignOutClick = onSignOutClick,
+                                onEditClick = { showEditScreen = true }
                             )
                         }
                     }
@@ -306,8 +310,11 @@ fun HomeScreen(
                                 shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
                             )
                     ) {
-                        HomeAddTransactionScreen(
+                        HomeEditTransactionScreen(
                             homeViewModel = homeViewModel,
+                            transacao = homeViewModel.selectedTransaction.value,
+                            contas = homeViewModel.contas.value,
+                            categorias = homeViewModel.categorias.value,
                             onClose = { showEditScreen = false }
                         )
                     }

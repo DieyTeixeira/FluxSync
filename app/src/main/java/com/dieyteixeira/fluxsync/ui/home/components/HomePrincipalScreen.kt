@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
+import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.ui.home.tabs.chart.ChartTab
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.screen.HomeTabScreen
@@ -34,7 +35,7 @@ fun HomePrincipalScreen(
     homeViewModel: HomeViewModel,
     userPreferences: UserPreferences,
     onSignOutClick: () -> Unit,
-    onEditScreen: () -> Unit
+    onEditClick: () -> Unit
 ) {
 
     Column(
@@ -51,14 +52,21 @@ fun HomePrincipalScreen(
                         fadeOut(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
             }
         ) { targetState ->
-            NavigationBarItems.entries[targetState].screen(loginViewModel, homeViewModel, userPreferences, onSignOutClick, onEditScreen)
+            NavigationBarItems.entries[targetState].screen(
+                loginViewModel,
+                homeViewModel,
+                userPreferences,
+                onSignOutClick,
+                onEditClick
+            )
         }
     }
 }
 
 enum class NavigationBarItems(
     val icon: Int,
-    val screen: @Composable ((LoginViewModel, HomeViewModel, UserPreferences, () -> Unit, () -> Unit) -> Unit),
+    val screen: @Composable (
+        (LoginViewModel, HomeViewModel, UserPreferences, () -> Unit, () -> Unit) -> Unit),
 ) {
     Home(
         icon = R.drawable.icon_casa,
@@ -69,7 +77,7 @@ enum class NavigationBarItems(
     @RequiresApi(Build.VERSION_CODES.O)
     Transaction(
         icon = R.drawable.icon_documento,
-        screen = { _, homeViewModel, _, _, onEditScreen -> TransactionTab(homeViewModel, onEditScreen) }
+        screen = { _, homeViewModel, _, _, onEditClick -> TransactionTab(homeViewModel, onEditClick) }
     ),
     Add(
         icon = R.drawable.icon_mais,

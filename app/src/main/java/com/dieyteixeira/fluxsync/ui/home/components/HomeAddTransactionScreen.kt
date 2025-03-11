@@ -391,6 +391,7 @@ fun HomeAddTransactionScreen(
                                 dataPagamento = dateSelected.toString(),
                                 observacao = observacaoText
                             )
+                            onClose()
                         },
                         text = "Efetivar Lançamento",
                         colorText = Color.White,
