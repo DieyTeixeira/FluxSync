@@ -34,8 +34,9 @@ fun HomePrincipalScreen(
     loginViewModel: LoginViewModel,
     homeViewModel: HomeViewModel,
     userPreferences: UserPreferences,
-    onSignOutClick: () -> Unit,
-    onEditClick: () -> Unit
+    onAddClick: () -> Unit,
+    onEditClick: (String) -> Unit,
+    onSignOutClick: () -> Unit
 ) {
 
     Column(
@@ -56,8 +57,9 @@ fun HomePrincipalScreen(
                 loginViewModel,
                 homeViewModel,
                 userPreferences,
-                onSignOutClick,
-                onEditClick
+                onAddClick,
+                onEditClick,
+                onSignOutClick
             )
         }
     }
@@ -66,29 +68,36 @@ fun HomePrincipalScreen(
 enum class NavigationBarItems(
     val icon: Int,
     val screen: @Composable (
-        (LoginViewModel, HomeViewModel, UserPreferences, () -> Unit, () -> Unit) -> Unit),
+        (LoginViewModel, HomeViewModel, UserPreferences, () -> Unit, (String) -> Unit, () -> Unit) -> Unit),
 ) {
     Home(
         icon = R.drawable.icon_casa,
-        screen = { loginViewModel, homeViewModel, userPreferences, onSignOutClick, _ ->
-            HomeTabScreen(loginViewModel, homeViewModel, userPreferences, onSignOutClick)
+        screen = { loginViewModel, homeViewModel, userPreferences, onAddClick, onEditClick, onSignOutClick ->
+            HomeTabScreen(
+                loginViewModel, homeViewModel, userPreferences,
+                onAddClick, onEditClick, onSignOutClick
+            )
         }
     ),
     @RequiresApi(Build.VERSION_CODES.O)
     Transaction(
         icon = R.drawable.icon_documento,
-        screen = { _, homeViewModel, _, _, onEditClick -> TransactionTab(homeViewModel, onEditClick) }
+        screen = { _, homeViewModel, _, _, onEditClick, _ ->
+            TransactionTab(
+                homeViewModel, onEditClick
+            )
+        }
     ),
     Add(
         icon = R.drawable.icon_mais,
-        screen = { _, _, _, _, _ -> }
+        screen = { _, _, _, _, _, _ -> }
     ),
     Chart(
         icon = R.drawable.icon_estatisticas,
-        screen = { _, _, _, _, _ -> ChartTab() }
+        screen = { _, _, _, _, _, _ -> ChartTab() }
     ),
     Settings(
         icon = R.drawable.icon_ferramenta,
-        screen = { _, _, _, _, _ -> SettingsTab() }
+        screen = { _, _, _, _, _, _ -> SettingsTab() }
     )
 }

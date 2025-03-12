@@ -10,13 +10,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -91,7 +89,7 @@ fun CustomField(
 }
 
 @Composable
-fun CustomFieldEdit(
+fun CustomFieldIconEdit(
     divider: Boolean,
     text: String,
     value: String,
@@ -175,6 +173,49 @@ fun CustomFieldEdit(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun CustomFieldEdit(
+    value: String,
+    color: Color,
+    onClickVisibility: () -> Unit = {}
+) {
+
+    var clickVisibility by remember { mutableStateOf(false) }
+
+    LaunchedEffect(clickVisibility) {
+        if (clickVisibility) {
+            delay(100)
+            onClickVisibility()
+            clickVisibility = false
+        }
+    }
+
+    Row(
+        modifier = Modifier
+            .background(color, RoundedCornerShape(20))
+            .padding(5.dp)
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                clickVisibility = true
+            },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "R$  ",
+            fontSize = 18.sp,
+            color = ColorFontesDark
+        )
+        Text(
+            text = value.ifEmpty { "0,00" },
+            fontSize = 18.sp,
+            color = ColorFontesDark
+        )
     }
 }
 

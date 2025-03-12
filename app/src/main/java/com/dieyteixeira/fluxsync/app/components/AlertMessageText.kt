@@ -1,4 +1,4 @@
-package com.dieyteixeira.fluxsync.ui.home.components
+package com.dieyteixeira.fluxsync.app.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -11,9 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,17 +27,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.theme.ColorError
 import com.dieyteixeira.fluxsync.app.theme.ColorSuccess
-import com.dieyteixeira.fluxsync.app.theme.DarkColorError
 import com.dieyteixeira.fluxsync.app.theme.DarkColorSuccess
 import kotlinx.coroutines.delay
 
 @Composable
-fun FirebaseMensagem(
+fun AlertFirebaseMensagem(
     message: String,
     tipo: String,
     onClickCancel: () -> Unit
@@ -47,9 +43,11 @@ fun FirebaseMensagem(
     var isVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(message) {
+        delay(500)
         isVisible = true
-        delay(2000)
+        delay(3000)
         isVisible = false
+        delay(1000)
         onClickCancel()
     }
 
@@ -57,12 +55,12 @@ fun FirebaseMensagem(
         visible = isVisible,
         enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
                 slideInVertically(
-                    initialOffsetY = { it },
+                    initialOffsetY = { 300 },
                     animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
                 ),
         exit = fadeOut(animationSpec = tween(durationMillis = 300)) +
                 slideOutVertically(
-                    targetOffsetY = { it },
+                    targetOffsetY = { 300 },
                     animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
                 )
     ) {
@@ -74,13 +72,15 @@ fun FirebaseMensagem(
                     width = 2.dp,
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            if (tipo == "success") {
-                                ColorSuccess
-                                DarkColorSuccess
-                            } else {
-                                ColorError
-                                DarkColorError
-                            }
+                            ColorSuccess,
+                            DarkColorSuccess
+//                            if (tipo == "success") {
+//                                ColorSuccess
+//                                DarkColorSuccess
+//                            } else {
+//                                ColorError
+//                                DarkColorError
+//                            }
                         )
                     ),
                     shape = RoundedCornerShape(15.dp)

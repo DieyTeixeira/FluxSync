@@ -64,7 +64,7 @@ import java.util.Calendar
 @Composable
 fun TransactionTab(
     homeViewModel: HomeViewModel,
-    onEditClick: () -> Unit
+    onEditClick: (String) -> Unit
 ) {
 
     var showTransactionAno by remember { mutableStateOf(false) }
@@ -238,8 +238,8 @@ fun TransactionTab(
                             }
                         },
                         onClickEditar = {
-                            onEditClick()  // Navega para a tela de edição
-                            homeViewModel.selectTransaction(transacao) // Define a transação selecionada
+                            onEditClick("transacao")
+                            homeViewModel.selectTransaction(transacao)
                         }
                     )
                 }

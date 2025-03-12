@@ -1,6 +1,5 @@
 package com.dieyteixeira.fluxsync.ui.home.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,6 +26,8 @@ class HomeViewModel(
     private val _transacoes = mutableStateOf<List<Transacoes>>(emptyList())
     val transacoes = _transacoes
 
+    private val _selectedConta = MutableStateFlow<Conta?>(null)
+    val selectedConta: StateFlow<Conta?> = _selectedConta.asStateFlow()
     private val _selectedTransaction = MutableStateFlow<Transacoes?>(null)
     val selectedTransaction: StateFlow<Transacoes?> = _selectedTransaction.asStateFlow()
 
@@ -52,9 +53,31 @@ class HomeViewModel(
         }
     }
 
-    fun salvarConta(icon: String, color: String, descricao: String, saldo: String) {
+    fun salvarConta(icon: String, color: String, descricao: String, saldo: Double) {
         viewModelScope.launch {
             firestoreRepository.salvarConta(icon, color, descricao, saldo)
+        }
+    }
+
+    fun selectConta(conta: Conta) {
+        _selectedConta.value = conta
+    }
+
+    fun editarConta(
+        conta: Conta
+    ) {
+        viewModelScope.launch {
+            try {
+                firestoreRepository.editarConta(conta)
+
+                _message.value = "Conta editada com sucesso!"
+                _tipoMessage.value = "success"
+
+                getAtualizar()
+            } catch (e: Exception) {
+                _message.value = "Erro ao editar a conta: ${e.message}"
+                _tipoMessage.value = "error"
+            }
         }
     }
 
@@ -182,5 +205,10 @@ class HomeViewModel(
                 _tipoMessage.value = "error"
             }
         }
+    }
+
+    fun clearMessage() {
+        _message.value = null
+        _tipoMessage.value = null
     }
 }

@@ -88,7 +88,10 @@ fun TextInputIcon(
 fun TextInput(
     textValue: String,
     onValueChange: (String) -> Unit,
-    placeholder: String
+    placeholder: String,
+    focusRequester: FocusRequester = FocusRequester(),
+    onClickKeyboard: () -> Unit = {},
+    keyboardController: SoftwareKeyboardController? = null
 ) {
     BasicTextField(
         value = textValue,
@@ -101,7 +104,13 @@ fun TextInput(
         modifier = Modifier
             .fillMaxWidth()
             .height(30.dp)
-            .background(Color.Transparent),
+            .background(Color.Transparent)
+            .focusRequester(focusRequester)
+            .onFocusChanged { focusState ->
+                if (focusState.isFocused) {
+                    onClickKeyboard()
+                }
+            },
         decorationBox = { innerTextField ->
             Box(
                 modifier = Modifier
@@ -118,6 +127,12 @@ fun TextInput(
                 }
                 innerTextField()
             }
-        }
+        },
+        keyboardOptions = KeyboardOptions.Default,
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide()
+            }
+        )
     )
 }

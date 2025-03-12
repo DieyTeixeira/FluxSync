@@ -48,7 +48,7 @@ fun TransactionItem(
     backgroundColor: Color,
     isMostrarButtons: Boolean,
     onClickExibirTransaction: () -> Unit,
-    onClickEditar: () -> Unit,
+    onClickEditar: () -> Unit
 ) {
 
     var excluirDialog by remember { mutableStateOf(false) }

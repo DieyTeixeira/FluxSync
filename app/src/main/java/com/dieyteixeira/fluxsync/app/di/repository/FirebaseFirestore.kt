@@ -5,6 +5,8 @@ import android.util.Log
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
+import com.dieyteixeira.fluxsync.app.di.replace.colorToStringConta
+import com.dieyteixeira.fluxsync.app.di.replace.iconToStringConta
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -39,11 +41,10 @@ class FirestoreRepository {
                 val iconString = document.getString("icon") ?: return@mapNotNull null
                 val colorString = document.getString("color") ?: return@mapNotNull null
                 val descricao = document.getString("descricao") ?: return@mapNotNull null
-                val saldoString  = document.getString("saldo") ?: return@mapNotNull null
+                val saldo  = document.getDouble("saldo") ?: return@mapNotNull null
 
                 val icon = stringToIconConta(iconString)
                 val color = stringToColorConta(colorString)
-                val saldo = saldoString.replace(",", ".").toDoubleOrNull() ?: return@mapNotNull null
 
                 Conta(id = id, icon = icon, color = color, descricao = descricao, saldo = saldo)
             }
@@ -57,7 +58,7 @@ class FirestoreRepository {
         icon: String,
         color: String,
         descricao: String,
-        saldo: String
+        saldo: Double
     ) {
         val user = auth.currentUser
         val userEmail = user?.email ?: return
@@ -82,6 +83,22 @@ class FirestoreRepository {
         } catch (e: Exception) {
             Log.e("FirestoreRepository", "Erro ao salvar conta", e)
         }
+    }
+
+    suspend fun editarConta(conta: Conta) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        val transacaoRef = db.collection(userEmail).document("Conta").collection("Contas").document(conta.id)
+
+        transacaoRef.update(
+            mapOf(
+                "icon" to iconToStringConta(conta.icon),
+                "color" to colorToStringConta(conta.color),
+                "descricao" to conta.descricao,
+                "saldo" to conta.saldo
+            )
+        )
     }
 
     suspend fun getCategorias(): List<Categoria> {

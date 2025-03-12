@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.home.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -44,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
+import com.dieyteixeira.fluxsync.app.components.ButtonPersonalIcon
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.IconConta
@@ -55,22 +58,30 @@ import com.dieyteixeira.fluxsync.app.di.replace.colorToStringConta
 import com.dieyteixeira.fluxsync.app.di.replace.iconToStringConta
 import com.dieyteixeira.fluxsync.app.theme.BlackCont
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
+import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
+import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
+import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
+@SuppressLint("MutableCollectionMutableState", "StateFlowValueCalledInComposition")
 @Composable
 fun ContasDialog(
     homeViewModel: HomeViewModel,
+    onAddClick: () -> Unit,
+    onEditClick: () -> Unit,
     onClickClose: () -> Unit
 ) {
     var showAddContas by remember { mutableStateOf(false) }
+    var showEditContas by remember { mutableStateOf(false) }
+    val mostrarContasMap = remember { mutableStateOf(mapOf<String, Boolean>()) }
 
     CustomDialog(
         onClickClose = onClickClose
@@ -87,7 +98,11 @@ fun ContasDialog(
             )
             Spacer(modifier = Modifier.height(20.dp))
             ButtonPersonalMaxWidth(
-                onClick = { showAddContas = true },
+                onClick = {
+                    onClickClose()
+                    onAddClick()
+//                    showAddContas = true
+                },
                 text = "Adicionar conta",
                 colorText = LightColor3,
                 colorBorder = LightColor3,
@@ -100,7 +115,29 @@ fun ContasDialog(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(homeViewModel.contas.value.size) { index ->
-                    ContasList(contas = homeViewModel.contas.value[index])
+                    val conta = homeViewModel.contas.value[index] // Agora pegamos pelo índice
+                    val isMostrarButtons = mostrarContasMap.value[conta.id] ?: false
+
+                    ContasList(
+                        contas = conta,
+                        isMostrarButtons = isMostrarButtons,
+                        onClickConta = {
+                            mostrarContasMap.value = mostrarContasMap.value.toMutableMap().apply {
+                                if (this[conta.id] == true) {
+                                    remove(conta.id)
+                                } else {
+                                    clear()
+                                    put(conta.id, true)
+                                }
+                            }
+                        },
+                        onClickEditar = {
+                            onClickClose()
+                            onEditClick()
+//                            showEditContas = true
+                            homeViewModel.selectConta(conta)
+                        }
+                    )
                 }
             }
         }
@@ -116,54 +153,105 @@ fun ContasDialog(
 @Composable
 fun ContasList(
     contas: Conta,
-    onClickConta: (Conta) -> Unit = {}
+    isMostrarButtons: Boolean = false,
+    onClickConta: (Conta) -> Unit,
+    onClickEditar: () -> Unit = {}
 ) {
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .background(
-                color = ColorBackground.copy(alpha = 0.7f),
-                shape = RoundedCornerShape(15.dp)
-            )
-            .padding(horizontal = 15.dp)
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                onClickConta(contas)
-            },
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        IconConta(
-            icon = contas.icon,
-            color = contas.color
-        )
-        Spacer(modifier = Modifier.width(15.dp))
-        Column(
+        Row(
             modifier = Modifier
-                .fillMaxHeight()
-                .weight(1f),
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Text(
-                text = contas.descricao,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
-            )
-            Row {
-                Text(
-                    text = "Saldo:  ",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = ColorFontesLight
+                .fillMaxWidth()
+                .height(60.dp)
+                .background(
+                    color = ColorBackground.copy(alpha = 0.7f),
+                    shape = RoundedCornerShape(15.dp)
                 )
+                .padding(horizontal = 15.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    onClickConta(contas)
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconConta(
+                icon = contas.icon,
+                color = contas.color
+            )
+            Spacer(modifier = Modifier.width(15.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
                 Text(
-                    text = formatarValor(contas.saldo),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = if (contas.saldo > 0) ColorPositive else ColorNegative
+                    text = contas.descricao,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                Row {
+                    Text(
+                        text = "Saldo:  ",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = ColorFontesLight
+                    )
+                    Text(
+                        text = formatarValor(contas.saldo),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = if (contas.saldo > 0) ColorPositive else ColorNegative
+                    )
+                }
+            }
+        }
+        if (isMostrarButtons) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(50.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            0f to Color.Transparent,
+                            0.3f to Color.Transparent,
+                            1f to ColorCards
+                        ),
+                        shape = RoundedCornerShape(20.dp)
+                    )
+                    .border(
+                        width = 1.dp,
+                        brush = Brush.verticalGradient(
+                            0f to Color.Transparent,
+                            0.3f to Color.Transparent,
+                            1f to ColorGrayDark
+                        ),
+                        shape = RoundedCornerShape(20.dp)
+                    ),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ButtonPersonalIcon( // editar
+                    onClick = {
+                        onClickEditar()
+                    },
+                    icon = R.drawable.icon_editar,
+                    color = LightColor2,
+                    size = 35.dp,
+                    sizeIcon = 18.dp
+                )
+                ButtonPersonalIcon( // excluir
+                    onClick = {
+
+                    },
+                    icon = R.drawable.icon_excluir,
+                    color = LightColor2,
+                    size = 35.dp
                 )
             }
         }
@@ -369,7 +457,8 @@ fun AddContasDialog(
                             icon = iconToStringConta(icon),
                             color = colorToStringConta(color),
                             descricao = descricao,
-                            saldo = saldo.toString()
+                            saldo = saldo.replace(",", ".").toDoubleOrNull()
+                                ?: 0.0
                         )
                         homeViewModel.getContas()
                         onClickClose()

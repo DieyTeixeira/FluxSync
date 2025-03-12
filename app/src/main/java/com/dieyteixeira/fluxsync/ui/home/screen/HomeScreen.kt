@@ -25,11 +25,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,9 +55,9 @@ import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.app.theme.LightColor4
 import com.dieyteixeira.fluxsync.app.theme.LightColor5
 import com.dieyteixeira.fluxsync.app.theme.ManageStatusBarIcons
-import com.dieyteixeira.fluxsync.ui.home.components.FirebaseMensagem
-import com.dieyteixeira.fluxsync.ui.home.components.HomeAddTransactionScreen
-import com.dieyteixeira.fluxsync.ui.home.components.HomeEditTransactionScreen
+import com.dieyteixeira.fluxsync.ui.home.components.AddTransactionForm
+import com.dieyteixeira.fluxsync.ui.home.components.EditContaForm
+import com.dieyteixeira.fluxsync.ui.home.components.EditTransactionForm
 import com.dieyteixeira.fluxsync.ui.home.components.HomePrincipalScreen
 import com.dieyteixeira.fluxsync.ui.home.components.NavigationBarItems
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
@@ -72,7 +71,9 @@ import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalAnimationApi::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "StateFlowValueCalledInComposition",
+    "UnrememberedMutableState"
+)
 @Composable
 fun HomeScreen(
     loginViewModel: LoginViewModel,
@@ -88,10 +89,18 @@ fun HomeScreen(
     val navigationBarItems = remember { NavigationBarItems.values() }
     var selectedIndex by remember { mutableStateOf(0) }
     var pulseEffect by remember { mutableStateOf(false) }
-    var showTransactionScreen by remember { mutableStateOf(false) }
-    var showEditScreen by remember { mutableStateOf(false) }
-    val scaleAnim by animateFloatAsState(targetValue = if (showTransactionScreen || showEditScreen) 0.95f else 1.0f)
-    val clipAnim by animateDpAsState(targetValue = if (showTransactionScreen || showEditScreen) 25.dp else 0.dp)
+    var showAddTransaction by remember { mutableStateOf(false) }
+    var showEditTransaction by remember { mutableStateOf(false) }
+    var showEditConta by remember { mutableStateOf(false) }
+    var showEditCategoria by remember { mutableStateOf(false) }
+
+    val showForm by derivedStateOf {
+        showAddTransaction || showEditTransaction ||
+                showEditConta || showEditCategoria
+    }
+
+    val scaleAnim by animateFloatAsState(targetValue = if (showForm) 0.95f else 1.0f)
+    val clipAnim by animateDpAsState(targetValue = if (showForm) 25.dp else 0.dp)
 
     LaunchedEffect(pulseEffect) {
         if (pulseEffect) {
@@ -143,7 +152,7 @@ fun HomeScreen(
                                         .fillMaxSize()
                                         .noRippleClickable {
                                             pulseEffect = true
-                                            showTransactionScreen = true
+                                            showAddTransaction = true
                                         },
                                     contentAlignment = Alignment.Center
                                 ) {
@@ -254,15 +263,22 @@ fun HomeScreen(
                                 loginViewModel = loginViewModel,
                                 homeViewModel = homeViewModel,
                                 userPreferences = userPreferences,
-                                onSignOutClick = onSignOutClick,
-                                onEditClick = { showEditScreen = true }
+                                onAddClick = { },
+                                onEditClick = { origem ->
+                                    when (origem) {
+                                        "transacao" -> showEditTransaction = true
+                                        "conta" -> showEditConta = true
+                                        "categoria" -> showEditCategoria = true
+                                    }
+                                },
+                                onSignOutClick = onSignOutClick
                             )
                         }
                     }
                 }
             }
             this@Column.AnimatedVisibility(
-                visible = showTransactionScreen,
+                visible = showForm,
                 enter = slideInVertically(
                     initialOffsetY = { it },
                     animationSpec = tween(durationMillis = 300)
@@ -282,41 +298,30 @@ fun HomeScreen(
                                 shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
                             )
                     ) {
-                        HomeAddTransactionScreen(
-                            homeViewModel = homeViewModel,
-                            onClose = { showTransactionScreen = false }
-                        )
-                    }
-                }
-            }
-            this@Column.AnimatedVisibility(
-                visible = showEditScreen,
-                enter = slideInVertically(
-                    initialOffsetY = { it },
-                    animationSpec = tween(durationMillis = 300)
-                ) + fadeIn(),
-                exit = slideOutVertically(
-                    targetOffsetY = { it },
-                    animationSpec = tween(durationMillis = 300)
-                ) + fadeOut()
-            ) {
-                Column {
-                    Spacer(modifier = Modifier.height(50.dp))
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                color = Color.White,
-                                shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                        if (showAddTransaction) {
+                            AddTransactionForm(
+                                homeViewModel = homeViewModel,
+                                onClose = { showAddTransaction = false }
                             )
-                    ) {
-                        HomeEditTransactionScreen(
-                            homeViewModel = homeViewModel,
-                            transacao = homeViewModel.selectedTransaction.value,
-                            contas = homeViewModel.contas.value,
-                            categorias = homeViewModel.categorias.value,
-                            onClose = { showEditScreen = false }
-                        )
+                        }
+
+                        if (showEditTransaction) {
+                            EditTransactionForm(
+                                homeViewModel = homeViewModel,
+                                transacao = homeViewModel.selectedTransaction.value,
+                                contas = homeViewModel.contas.value,
+                                categorias = homeViewModel.categorias.value,
+                                onClose = { showEditTransaction = false }
+                            )
+                        }
+
+                        if (showEditConta) {
+                            EditContaForm(
+                                homeViewModel = homeViewModel,
+                                conta = homeViewModel.selectedConta.value,
+                                onClose = { showEditConta = false }
+                            )
+                        }
                     }
                 }
             }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,15 +27,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.CustomDialogButtonEdit
-import com.dieyteixeira.fluxsync.app.components.CustomField
-import com.dieyteixeira.fluxsync.app.components.CustomFieldEdit
-import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
+import com.dieyteixeira.fluxsync.app.components.CustomFieldIconEdit
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboardEdit
 import com.dieyteixeira.fluxsync.app.components.formatCurrencyInput
 import com.dieyteixeira.fluxsync.app.components.removeLastDigit
@@ -169,7 +165,7 @@ fun TransactionEditDialog(
                             )
                         }
                         item { // VALOR
-                            CustomFieldEdit(
+                            CustomFieldIconEdit(
                                 divider = true,
                                 text = "Valor",
                                 value = valorEditado,
@@ -281,6 +277,7 @@ fun TransactionEditDialog(
                     items(homeViewModel.contas.value.size) { index ->
                         ContasList(
                             contas = homeViewModel.contas.value[index],
+                            isMostrarButtons = false,
                             onClickConta = {
                                 showAccountDialog = false
                                 selectedAccount = it
