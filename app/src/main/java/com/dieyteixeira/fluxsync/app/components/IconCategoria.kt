@@ -17,17 +17,20 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun IconCategoria(
     color: Color,
-    icon: Int
+    icon: Int,
+    sizeBoxExt: Int = 35,
+    sizeBoxInt: Int = 28,
+    sizeIcon: Int = 23
 ) {
     Box(
         modifier = Modifier
-            .size(35.dp),
+            .size(sizeBoxExt.dp),
         contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
                 .offset(y = -2.dp)
-                .size(28.dp)
+                .size(sizeBoxInt.dp)
                 .background(
                     color = color,
                     shape = RoundedCornerShape(100)
@@ -38,7 +41,7 @@ fun IconCategoria(
             contentDescription = null,
             modifier = Modifier
                 .offset(y = 3.dp)
-                .size(23.dp),
+                .size(sizeIcon.dp),
             colorFilter = ColorFilter.tint(Color.Black)
         )
     }
@@ -47,11 +50,13 @@ fun IconCategoria(
 @Composable
 fun IconConta(
     color: Color,
-    icon: Int
+    icon: Int,
+    sizeBox: Int = 35,
+    sizeIcon: Int = 23
 ) {
     Box(
         modifier = Modifier
-            .size(35.dp)
+            .size(sizeBox.dp)
             .background(
                 color = color,
                 shape = RoundedCornerShape(100)
@@ -62,7 +67,7 @@ fun IconConta(
             painter = painterResource(icon),
             contentDescription = "Ícone",
             modifier = Modifier
-                .size(23.dp)
+                .size(sizeIcon.dp)
         )
     }
 }

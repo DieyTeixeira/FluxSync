@@ -41,6 +41,7 @@ import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
+import com.dieyteixeira.fluxsync.ui.home.components.ConfirmDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.CategoriasList
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasList
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel

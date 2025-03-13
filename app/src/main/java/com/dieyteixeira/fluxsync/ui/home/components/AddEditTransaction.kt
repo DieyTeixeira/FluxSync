@@ -67,7 +67,6 @@ import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.CategoriasList
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasList
-import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.ConfirmDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsInsert
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLeanding
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLongLeanding
@@ -529,6 +528,7 @@ fun EditTransactionForm(
     var isKeyboardVisible by remember { mutableStateOf(false) }
     var isClickClose by remember { mutableStateOf(false) }
 
+    var transacaoTipo by remember { mutableStateOf(transacao?.tipo ?: "") }
     var valorEditado by remember { mutableStateOf(formatarValorEdit(transacao?.valor ?: 0.0)) }
     var descricaoEditada by remember { mutableStateOf(transacao?.descricao ?: "") }
     var observacaoEditada by remember { mutableStateOf(transacao?.observacao ?: "") }
@@ -608,12 +608,12 @@ fun EditTransactionForm(
                         .fillMaxWidth()
                         .height(50.dp)
                         .background(
-                            if (typeTransaction.value == "despesa") ColorNegative else ColorPositive,
+                            if (transacaoTipo == "despesa") ColorNegative else ColorPositive,
                         ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Editar Transação",
+                        text = "Editar " + if (transacaoTipo == "despesa") "Despesa" else "Receita",
                         fontSize = 20.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold
@@ -657,7 +657,7 @@ fun EditTransactionForm(
                         TransactionAddFieldsInsert(
                             interactionSource = interactionSource,
                             divider = true,
-                            text = if (typeTransaction.value == "receita") "Entrada em" else "Saída de",
+                            text = if (transacaoTipo == "receita") "Entrada em" else "Saída de",
                             textValue = contaEditada.descricao,
                             textSaldo = contaEditada.saldo,
                             color = contaEditada.color,
@@ -751,7 +751,7 @@ fun EditTransactionForm(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        androidx.compose.material3.Text(
+                        Text(
                             text = "Selecione uma Conta",
                             fontSize = 20.sp,
                             color = LightColor3,

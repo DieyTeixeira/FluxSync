@@ -72,19 +72,11 @@ import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@SuppressLint("DefaultLocale", "UseOfNonLambdaOffsetOverload")
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddContaForm(
     homeViewModel: HomeViewModel,
     onClose: () -> Unit
 ) {
-
-    val interactionSource = remember { MutableInteractionSource() }
-
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
 
     var descricao by remember { mutableStateOf("") }
     var color by remember { mutableStateOf(Color.LightGray) }
@@ -96,13 +88,20 @@ fun AddContaForm(
 
     val listState = rememberLazyListState()
 
-//    LaunchedEffect(isClickClose) {
-//        if (isClickClose) {
-//            delay(200)
-//            isKeyboardVisible = false
-//            isClickClose = false
-//        }
-//    }
+    val interactionSource = remember { MutableInteractionSource() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+    var isKeyboardVisible by remember { mutableStateOf(false) }
+    var isClickClose by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isClickClose) {
+        if (isClickClose) {
+            delay(200)
+            isKeyboardVisible = false
+            isClickClose = false
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -115,7 +114,7 @@ fun AddContaForm(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable{
+                .clickable {
                     onClose()
                 },
             contentAlignment = Alignment.Center
@@ -128,6 +127,283 @@ fun AddContaForm(
             )
         }
 
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .background(LightColor3),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Adicionar Conta",
+                        fontSize = 20.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(horizontal = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = 1.5.dp,
+                                color = Color.LightGray,
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .padding(10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Box(
+                            modifier = Modifier
+                                .size(35.dp)
+                                .background(
+                                    color = color,
+                                    shape = RoundedCornerShape(100)
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(id = icon),
+                                contentDescription = "Ícone de banco",
+                                modifier = Modifier
+                                    .size(25.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                        ) {
+                            TextInput(
+                                textValue = descricao,
+                                onValueChange = { descricao = it },
+                                placeholder = "Conta",
+                                focusRequester = focusRequester,
+                                onClickKeyboard = { isKeyboardVisible = false },
+                                keyboardController = keyboardController
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        CustomFieldEdit(
+                            value = saldo,
+                            color = if (isKeyboardVisible) Color.LightGray else Color.Transparent,
+                            onClickVisibility = {
+                                focusManager.clearFocus()
+                                keyboardController?.hide()
+                                isKeyboardVisible = true
+                            }
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(25.dp))
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth(0.85f),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        items(listColorsConta.size) { index ->
+                            val selectedColor = listColorsConta[index] == color
+                            val blackColor = listColorsConta[index] == BlackCont
+                            Box(
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .background(
+                                        color = listColorsConta[index],
+                                        shape = RoundedCornerShape(100)
+                                    )
+                                    .clickable {
+                                        color = listColorsConta[index]
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.icon_verificar),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp),
+                                    colorFilter = ColorFilter.tint(
+                                        if (blackColor && selectedColor) Color.White
+                                        else if (selectedColor) Color.Black
+                                        else Color.Transparent
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.95f)
+                            .heightIn(max = 350.dp)
+                    ) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    color = ColorBackground.copy(alpha = 0.7f),
+                                    shape = RoundedCornerShape(15.dp)
+                                )
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(5.dp),
+                            state = listState
+                        ) {
+                            items(listBancos.size) { index ->
+                                val selectedIconConta = listBancos[index].icon == icon
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(end = 15.dp)
+                                        .border(
+                                            width = 1.5.dp,
+                                            color = if (selectedIconConta) ColorFontesLight else Color.Transparent,
+                                            shape = RoundedCornerShape(20.dp)
+                                        )
+                                        .padding(5.dp)
+                                        .clickable {
+                                            icon = listBancos[index].icon
+                                            descricao =
+                                                if (descricao == "") listBancos[index].name else ""
+                                        },
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(30.dp)
+                                            .background(
+                                                color = GrayCont.copy(alpha = 0.5f),
+                                                shape = RoundedCornerShape(100)
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Image(
+                                            painter = painterResource(id = listBancos[index].icon),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(18.dp)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        text = listBancos[index].name,
+                                        fontSize = 18.sp,
+                                        color = ColorFontesDark
+                                    )
+                                }
+                            }
+                        }
+                        // Barra de rolagem personalizada
+                        val firstVisibleIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
+                        val itemCount = listBancos.size
+                        val progress =
+                            if (itemCount > 0) firstVisibleIndex.toFloat() / (itemCount - 1) else 0f
+
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
+                                .height(330.dp)
+                                .width(8.dp)
+                                .offset(x = (-10).dp)
+                                .background(
+                                    Color.LightGray.copy(alpha = 0.3f),
+                                    shape = RoundedCornerShape(100)
+                                )
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .width(8.dp)
+                                    .height(40.dp)
+                                    .offset(y = ((progress * 342).dp).coerceIn(0.dp, 342.dp))
+                                    .background(ColorFontesLight, shape = RoundedCornerShape(100))
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(55.dp)
+                ) {
+                    SnackbarHost(hostState = snackbarHostState)
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(70.dp)
+                        .background(
+                            ColorBackground,
+                            RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ButtonPersonalFilled(
+                        onClick = {
+                            if (icon != R.drawable.icon_mais && color != Color.LightGray && descricao.isNotEmpty()) {
+                                homeViewModel.salvarConta(
+                                    icon = iconToStringConta(icon),
+                                    color = colorToStringConta(color),
+                                    descricao = descricao,
+                                    saldo = saldo.replace(",", ".").toDoubleOrNull()
+                                        ?: 0.0
+                                )
+                                homeViewModel.getContas()
+                                onClose()
+                            } else {
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = if (descricao.isEmpty()) "Preencha a descrição!"
+                                        else if (icon == R.drawable.icon_mais) "Selecione um ícone!"
+                                        else if (color == Color.LightGray) "Selecione uma cor!"
+                                        else if (saldo.isEmpty()) "Preencha o saldo!"
+                                        else "",
+                                        duration = SnackbarDuration.Short
+                                    )
+                                }
+                            }
+                        },
+                        text = "Salvar",
+                        colorText = Color.White,
+                        color = LightColor3,
+                        height = 40.dp,
+                        width = 100.dp
+                    )
+                }
+            }
+
+            if (isKeyboardVisible) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = ColorBackground,
+                            shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                        )
+                        .align(Alignment.BottomCenter),
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CustomKeyboard(
+                        onClick = { digit -> saldo = formatCurrencyInput(saldo, digit) },
+                        onClickClose = { isClickClose = true },
+                        onClickBackspace = { saldo = removeLastDigit(saldo) }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -155,20 +431,11 @@ fun EditContaForm(
     var isKeyboardVisible by remember { mutableStateOf(false) }
     var isClickClose by remember { mutableStateOf(false) }
 
-    val onClosed by remember { mutableStateOf(false) }
-
     LaunchedEffect(isClickClose) {
         if (isClickClose) {
             delay(200)
             isKeyboardVisible = false
             isClickClose = false
-        }
-    }
-
-    LaunchedEffect(onClosed) {
-        if (onClosed) {
-            delay(200)
-            onClose()
         }
     }
 
@@ -346,7 +613,7 @@ fun EditContaForm(
                                         .clickable {
                                             iconEditada = listBancos[index].icon
                                             descricaoEditada =
-                                                if (descricaoEditada == "") listBancos[index].name else ""
+                                                if (descricaoEditada == "") listBancos[index].name else descricaoEditada
                                         },
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {

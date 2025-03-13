@@ -52,6 +52,7 @@ import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.LightColor1
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
+import com.dieyteixeira.fluxsync.ui.home.components.InfoDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.SelectAnoDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionEditDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionItem
@@ -68,8 +69,8 @@ fun TransactionTab(
 ) {
 
     var showTransactionAno by remember { mutableStateOf(false) }
-    var showTransactionEdit by remember { mutableStateOf(false) }
-    var transacaoSelecionada by remember { mutableStateOf<Transacoes?>(null) }
+    var infoDialog by remember { mutableStateOf(false) }
+    var selectedTransaction by remember { mutableStateOf("") }
     var transacoesFiltradas by remember { mutableStateOf(emptyList<Transacoes>()) }
     val mostrarTransacoesMap = remember { mutableStateOf(mutableMapOf<String, Boolean>()) }
     var anoSelecionado by remember { mutableStateOf(Calendar.getInstance().get(Calendar.YEAR)) }
@@ -227,7 +228,7 @@ fun TransactionTab(
                         conta = homeViewModel.contas.value.first { it.id == transacao.contaId },
                         backgroundColor = backgroundColor,
                         isMostrarButtons = isMostrarButtons,
-                        onClickExibirTransaction = {
+                        onClickTransaction = {
                             mostrarTransacoesMap.value = mostrarTransacoesMap.value.toMutableMap().apply {
                                 if (this[transacao.id] == true) {
                                     remove(transacao.id)
@@ -240,6 +241,10 @@ fun TransactionTab(
                         onClickEditar = {
                             onEditClick("transacao")
                             homeViewModel.selectTransaction(transacao)
+                        },
+                        onClickInfo = {
+                            infoDialog = true
+                            selectedTransaction = transacao.id
                         }
                     )
                 }
@@ -254,14 +259,11 @@ fun TransactionTab(
             )
         }
 
-        if (showTransactionEdit && transacaoSelecionada != null) {
-
-            TransactionEditDialog(
+        if (infoDialog) {
+            InfoDialog(
+                selectTransaction = selectedTransaction,
                 homeViewModel = homeViewModel,
-                transacao = transacaoSelecionada!!,
-                contas = homeViewModel.contas.value,
-                categorias = homeViewModel.categorias.value,
-                onClickClose = { showTransactionEdit = false }
+                onClickClose = { infoDialog = false }
             )
         }
     }

@@ -59,7 +59,7 @@ fun HomeTabScreen(
     loginViewModel: LoginViewModel,
     homeViewModel: HomeViewModel,
     userPreferences: UserPreferences,
-    onAddClick: () -> Unit,
+    onAddClick: (String) -> Unit,
     onEditClick: (String) -> Unit,
     onSignOutClick: () -> Unit
 ) {
@@ -225,7 +225,7 @@ fun HomeTabScreen(
     if (showContas) {
         ContasDialog(
             homeViewModel = homeViewModel,
-            onAddClick = onAddClick,
+            onAddClick = { onAddClick("conta") },
             onEditClick = { onEditClick("conta") },
             onClickClose = { showContas = false }
         )
@@ -233,6 +233,8 @@ fun HomeTabScreen(
     if (showCategorias) {
         CategoriasDialog(
             homeViewModel = homeViewModel,
+            onAddClick = { onAddClick("categoria") },
+            onEditClick = { onEditClick("categoria") },
             onClickClose = { showCategorias = false }
         )
     }

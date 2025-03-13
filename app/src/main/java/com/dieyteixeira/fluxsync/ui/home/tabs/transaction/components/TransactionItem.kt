@@ -37,6 +37,9 @@ import com.dieyteixeira.fluxsync.app.theme.ColorGrayLight
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
+import com.dieyteixeira.fluxsync.ui.home.components.AlertDialog
+import com.dieyteixeira.fluxsync.ui.home.components.ConfirmDialog
+import com.dieyteixeira.fluxsync.ui.home.components.InfoDialog
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 
@@ -47,8 +50,9 @@ fun TransactionItem(
     conta: Conta,
     backgroundColor: Color,
     isMostrarButtons: Boolean,
-    onClickExibirTransaction: () -> Unit,
-    onClickEditar: () -> Unit
+    onClickTransaction: () -> Unit,
+    onClickEditar: () -> Unit,
+    onClickInfo: () -> Unit
 ) {
 
     var excluirDialog by remember { mutableStateOf(false) }
@@ -63,7 +67,7 @@ fun TransactionItem(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
             ) {
-                onClickExibirTransaction()
+                onClickTransaction()
             },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -141,6 +145,12 @@ fun TransactionItem(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                ButtonPersonalIcon( // info
+                    onClick = { onClickInfo() },
+                    icon = R.drawable.icon_info,
+                    color = LightColor2,
+                    size = 35.dp
+                )
                 ButtonPersonalIcon( // excluir
                     onClick = { if (transacao.situacao == "pendente") {
                         excluirDialog = true

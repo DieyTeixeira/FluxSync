@@ -5,7 +5,9 @@ import android.util.Log
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
+import com.dieyteixeira.fluxsync.app.di.replace.colorToStringCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.colorToStringConta
+import com.dieyteixeira.fluxsync.app.di.replace.iconToStringCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.iconToStringConta
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,6 +18,8 @@ import com.dieyteixeira.fluxsync.app.di.replace.stringToIconCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.stringToIconConta
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.Calendar
 import java.util.Date
 
@@ -85,7 +89,7 @@ class FirestoreRepository {
         }
     }
 
-    suspend fun editarConta(conta: Conta) {
+    fun editarConta(conta: Conta) {
         val user = auth.currentUser
         val userEmail = user?.email ?: return
 
@@ -99,6 +103,13 @@ class FirestoreRepository {
                 "saldo" to conta.saldo
             )
         )
+    }
+
+    fun excluirConta(contaId: String) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        db.collection(userEmail).document("Conta").collection("Contas").document(contaId).delete()
     }
 
     suspend fun getCategorias(): List<Categoria> {
@@ -156,6 +167,28 @@ class FirestoreRepository {
         } catch (e: Exception) {
             Log.e("FirestoreRepository", "Erro ao salvar categoria", e)
         }
+    }
+
+    fun editarCategoria(categoria: Categoria) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        val transacaoRef = db.collection(userEmail).document("Categoria").collection("Categorias").document(categoria.id)
+
+        transacaoRef.update(
+            mapOf(
+                "icon" to iconToStringCategoria(categoria.icon),
+                "color" to colorToStringCategoria(categoria.color),
+                "descricao" to categoria.descricao
+            )
+        )
+    }
+
+    fun excluirCategoria(categoriaId: String) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        db.collection(userEmail).document("Categoria").collection("Categorias").document(categoriaId).delete()
     }
 
     suspend fun getTransacoes(): List<Transacoes> {
@@ -371,12 +404,13 @@ class FirestoreRepository {
         val novaSituacao = if (transacaoSituacao == "pendente") "efetivado" else "pendente"
 
         val calculo = if (transacaoTipo == "receita") transacaoValor else -transacaoValor
-        val saldoCalculado = if (transacaoSituacao == "pendente") {
-            contaSaldo + calculo
-        } else {
-            contaSaldo - calculo
-        }
-        val novoSaldo = String.format("%.2f", saldoCalculado).replace(".", ",")
+        val saldoCalculado = BigDecimal(
+            if (transacaoSituacao == "pendente") {
+                contaSaldo + calculo
+            } else {
+                contaSaldo - calculo
+            }
+        ).setScale(2, RoundingMode.HALF_EVEN).toDouble()
 
         try {
             db.collection(userEmail).document("Lancamento").collection("Lancamentos")
@@ -386,7 +420,7 @@ class FirestoreRepository {
 
             db.collection(userEmail).document("Conta").collection("Contas")
                 .document(contaId)
-                .update("saldo", novoSaldo)
+                .update("saldo", saldoCalculado)
                 .await()
 
             Log.d("Firebase", "Situação atualizada com sucesso!")

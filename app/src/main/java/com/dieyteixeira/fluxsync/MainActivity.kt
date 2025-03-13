@@ -98,7 +98,7 @@ class MainActivity : ComponentActivity() {
                             .align(Alignment.BottomCenter),
                         contentAlignment = Alignment.TopCenter
                     ) {
-                        if (messageReturn != null) {
+                        if (messageReturn != null && tipoMessage != "vinculo") {
                             AlertFirebaseMensagem(
                                 message = messageReturn.toString(),
                                 tipo = tipoMessage.toString(),

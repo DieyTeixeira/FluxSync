@@ -34,7 +34,7 @@ fun HomePrincipalScreen(
     loginViewModel: LoginViewModel,
     homeViewModel: HomeViewModel,
     userPreferences: UserPreferences,
-    onAddClick: () -> Unit,
+    onAddClick: (String) -> Unit,
     onEditClick: (String) -> Unit,
     onSignOutClick: () -> Unit
 ) {
@@ -68,7 +68,7 @@ fun HomePrincipalScreen(
 enum class NavigationBarItems(
     val icon: Int,
     val screen: @Composable (
-        (LoginViewModel, HomeViewModel, UserPreferences, () -> Unit, (String) -> Unit, () -> Unit) -> Unit),
+        (LoginViewModel, HomeViewModel, UserPreferences, (String) -> Unit, (String) -> Unit, () -> Unit) -> Unit),
 ) {
     Home(
         icon = R.drawable.icon_casa,
@@ -94,7 +94,11 @@ enum class NavigationBarItems(
     ),
     Chart(
         icon = R.drawable.icon_estatisticas,
-        screen = { _, _, _, _, _, _ -> ChartTab() }
+        screen = { _, homeViewModel, _, _, _, _ ->
+            ChartTab(
+                homeViewModel
+            )
+        }
     ),
     Settings(
         icon = R.drawable.icon_ferramenta,

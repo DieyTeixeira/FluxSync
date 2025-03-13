@@ -25,6 +25,8 @@ import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +34,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -40,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
+import com.dieyteixeira.fluxsync.app.components.ButtonPersonalIcon
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
@@ -50,18 +54,33 @@ import com.dieyteixeira.fluxsync.app.di.model.listIconsCategorias
 import com.dieyteixeira.fluxsync.app.di.replace.colorToStringCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.iconToStringCategoria
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
+import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
+import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
+import com.dieyteixeira.fluxsync.ui.home.components.AlertDialog
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun CategoriasDialog(
     homeViewModel: HomeViewModel,
+    onAddClick: () -> Unit,
+    onEditClick: () -> Unit,
     onClickClose: () -> Unit
 ) {
-    var showAddCategorias by remember { mutableStateOf(false) }
+
+    val messageReturn by homeViewModel.message.collectAsState()
+    val tipoMessage by homeViewModel.tipoMessage.collectAsState()
+    val mostrarCategoriasMap = remember { mutableStateOf(mapOf<String, Boolean>()) }
+    var showDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(tipoMessage) {
+        if (tipoMessage == "vinculo") {
+            showDialog = true
+        }
+    }
 
     CustomDialog(
         onClickClose = onClickClose
@@ -78,7 +97,10 @@ fun CategoriasDialog(
             )
             Spacer(modifier = Modifier.height(20.dp))
             ButtonPersonalMaxWidth(
-                onClick = { showAddCategorias = true },
+                onClick = {
+                    onClickClose()
+                    onAddClick()
+                },
                 text = "Adicionar categoria",
                 colorText = LightColor3,
                 colorBorder = LightColor3,
@@ -91,14 +113,45 @@ fun CategoriasDialog(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(homeViewModel.categorias.value.size) { index ->
-                    CategoriasList(categorias = homeViewModel.categorias.value[index])
+                    val categoria = homeViewModel.categorias.value[index]
+                    val isMostrarButtons = mostrarCategoriasMap.value[categoria.id] ?: false
+
+                    CategoriasList(
+                        categorias = homeViewModel.categorias.value[index],
+                        isMostrarButtons = isMostrarButtons,
+                        onClickCategoria = {
+                            mostrarCategoriasMap.value = mostrarCategoriasMap.value.toMutableMap().apply {
+                                if (this[categoria.id] == true) {
+                                    remove(categoria.id)
+                                } else {
+                                    clear()
+                                    put(categoria.id, true)
+                                }
+                            }
+                        },
+                        onClickEditar = {
+                            onClickClose()
+                            onEditClick()
+                            homeViewModel.selectCategoria(categoria)
+                        },
+                        onClickDelete = {
+                            homeViewModel.excluirCategoria(categoria.id)
+                        }
+                    )
                 }
             }
         }
-        if (showAddCategorias) {
-            AddCategoriasDialog(
-                homeViewModel = homeViewModel,
-                onClickClose = { showAddCategorias = false }
+    }
+    if (showDialog) {
+        messageReturn?.let {
+            AlertDialog(
+                text = it,
+                onClickClose = {
+                    showDialog = false
+                    homeViewModel.clearMessage()
+                    mostrarCategoriasMap.value = mostrarCategoriasMap.value
+                        .toMutableMap().apply { clear() }
+                }
             )
         }
     }
@@ -107,36 +160,88 @@ fun CategoriasDialog(
 @Composable
 fun CategoriasList(
     categorias: Categoria,
-    onClickCategoria: (Categoria) -> Unit = {}
+    isMostrarButtons: Boolean = false,
+    onClickCategoria: (Categoria) -> Unit = {},
+    onClickEditar: () -> Unit = {},
+    onClickDelete: () -> Unit = {}
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(40.dp)
-            .background(
-                color = ColorBackground.copy(alpha = 0.7f),
-                shape = RoundedCornerShape(15.dp)
-            )
-            .padding(horizontal = 15.dp)
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                onClickCategoria(categorias)
-            },
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        IconCategoria(
-            color = categorias.color,
-            icon = categorias.icon
-        )
-        Spacer(modifier = Modifier.width(15.dp))
-        Text(
-            text = categorias.descricao,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.weight(1f)
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .background(
+                    color = ColorBackground.copy(alpha = 0.7f),
+                    shape = RoundedCornerShape(15.dp)
+                )
+                .padding(horizontal = 15.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    onClickCategoria(categorias)
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconCategoria(
+                color = categorias.color,
+                icon = categorias.icon
+            )
+            Spacer(modifier = Modifier.width(15.dp))
+            Text(
+                text = categorias.descricao,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        if (isMostrarButtons) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(50.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            0f to Color.Transparent,
+                            0.3f to Color.Transparent,
+                            1f to ColorCards
+                        ),
+                        shape = RoundedCornerShape(20.dp)
+                    )
+                    .border(
+                        width = 1.dp,
+                        brush = Brush.verticalGradient(
+                            0f to Color.Transparent,
+                            0.3f to Color.Transparent,
+                            1f to ColorGrayDark
+                        ),
+                        shape = RoundedCornerShape(20.dp)
+                    ),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ButtonPersonalIcon( // editar
+                    onClick = {
+                        onClickEditar()
+                    },
+                    icon = R.drawable.icon_editar,
+                    color = LightColor2,
+                    size = 35.dp,
+                    sizeIcon = 18.dp
+                )
+                ButtonPersonalIcon( // excluir
+                    onClick = {
+                        onClickDelete()
+                    },
+                    icon = R.drawable.icon_excluir,
+                    color = LightColor2,
+                    size = 35.dp
+                )
+            }
+        }
     }
 }
 

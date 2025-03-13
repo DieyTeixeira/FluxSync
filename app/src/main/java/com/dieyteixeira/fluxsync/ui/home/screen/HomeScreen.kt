@@ -55,7 +55,10 @@ import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.app.theme.LightColor4
 import com.dieyteixeira.fluxsync.app.theme.LightColor5
 import com.dieyteixeira.fluxsync.app.theme.ManageStatusBarIcons
+import com.dieyteixeira.fluxsync.ui.home.components.AddCategoriaForm
+import com.dieyteixeira.fluxsync.ui.home.components.AddContaForm
 import com.dieyteixeira.fluxsync.ui.home.components.AddTransactionForm
+import com.dieyteixeira.fluxsync.ui.home.components.EditCategoriaForm
 import com.dieyteixeira.fluxsync.ui.home.components.EditContaForm
 import com.dieyteixeira.fluxsync.ui.home.components.EditTransactionForm
 import com.dieyteixeira.fluxsync.ui.home.components.HomePrincipalScreen
@@ -89,14 +92,19 @@ fun HomeScreen(
     val navigationBarItems = remember { NavigationBarItems.values() }
     var selectedIndex by remember { mutableStateOf(0) }
     var pulseEffect by remember { mutableStateOf(false) }
+
     var showAddTransaction by remember { mutableStateOf(false) }
+    var showAddConta by remember { mutableStateOf(false) }
+    var showAddCategoria by remember { mutableStateOf(false) }
+
     var showEditTransaction by remember { mutableStateOf(false) }
     var showEditConta by remember { mutableStateOf(false) }
     var showEditCategoria by remember { mutableStateOf(false) }
 
     val showForm by derivedStateOf {
         showAddTransaction || showEditTransaction ||
-                showEditConta || showEditCategoria
+                showAddConta || showEditConta ||
+                showAddCategoria || showEditCategoria
     }
 
     val scaleAnim by animateFloatAsState(targetValue = if (showForm) 0.95f else 1.0f)
@@ -263,9 +271,15 @@ fun HomeScreen(
                                 loginViewModel = loginViewModel,
                                 homeViewModel = homeViewModel,
                                 userPreferences = userPreferences,
-                                onAddClick = { },
-                                onEditClick = { origem ->
-                                    when (origem) {
+                                onAddClick = { add ->
+                                    when (add) {
+                                        "transacao" -> showAddTransaction = true
+                                        "conta" -> showAddConta = true
+                                        "categoria" -> showAddCategoria = true
+                                    }
+                                },
+                                onEditClick = { edit ->
+                                    when (edit) {
                                         "transacao" -> showEditTransaction = true
                                         "conta" -> showEditConta = true
                                         "categoria" -> showEditCategoria = true
@@ -315,11 +329,33 @@ fun HomeScreen(
                             )
                         }
 
+                        if (showAddConta) {
+                            AddContaForm(
+                                homeViewModel = homeViewModel,
+                                onClose = { showAddConta = false }
+                            )
+                        }
+
                         if (showEditConta) {
                             EditContaForm(
                                 homeViewModel = homeViewModel,
                                 conta = homeViewModel.selectedConta.value,
                                 onClose = { showEditConta = false }
+                            )
+                        }
+
+                        if (showAddCategoria) {
+                            AddCategoriaForm(
+                                homeViewModel = homeViewModel,
+                                onClose = { showAddCategoria = false }
+                            )
+                        }
+
+                        if (showEditCategoria) {
+                            EditCategoriaForm(
+                                homeViewModel = homeViewModel,
+                                categoria = homeViewModel.selectedCategoria.value,
+                                onClose = { showEditCategoria = false }
                             )
                         }
                     }

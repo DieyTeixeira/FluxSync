@@ -1,4 +1,4 @@
-package com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components
+package com.dieyteixeira.fluxsync.ui.home.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -72,6 +72,38 @@ fun ConfirmDialog(
                     width = 100.dp
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun AlertDialog(
+    text: String,
+    onClickClose: () -> Unit = {}
+) {
+
+    CustomDialog(
+        onClickClose = { onClickClose() }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Atenção!!",
+                fontSize = 20.sp,
+                color = LightColor3,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(25.dp))
+            Text(
+                text = text,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                color = ColorFontesLight,
+                modifier = Modifier.fillMaxWidth(0.8f)
+            )
         }
     }
 }
