@@ -18,9 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
-import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
-import com.dieyteixeira.fluxsync.ui.home.tabs.chart.ChartTab
+import com.dieyteixeira.fluxsync.ui.home.tabs.chart.screen.ChartTab
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.screen.HomeTabScreen
 import com.dieyteixeira.fluxsync.ui.home.tabs.settings.SettingsTab
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.screen.TransactionTab

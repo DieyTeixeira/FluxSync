@@ -1,14 +1,20 @@
 package com.dieyteixeira.fluxsync.ui.home.viewmodel
 
+import androidx.compose.ui.graphics.Color
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
+import com.dieyteixeira.fluxsync.app.di.model.Grafico
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
+import com.dieyteixeira.fluxsync.app.di.replace.stringToColorCategoria
+import com.dieyteixeira.fluxsync.app.di.replace.stringToIconCategoria
 import com.dieyteixeira.fluxsync.app.di.repository.FirestoreRepository
+import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -309,15 +315,28 @@ class HomeViewModel(
         _tipoMessage.value = null
     }
 
-    private val _somaPorCategoria = MutableStateFlow<Map<String, Double>>(emptyMap())
-    val somaPorCategoria: StateFlow<Map<String, Double>> = _somaPorCategoria.asStateFlow()
+    private val _somaPorCategoria = MutableStateFlow<Map<String, Grafico>>(emptyMap())
+    val somaPorCategoria: StateFlow<Map<String, Grafico>> = _somaPorCategoria.asStateFlow()
 
     fun calcularSomaPorCategoria() {
         viewModelScope.launch {
+            val categoria = _categorias.value
             val somaCategorias = _transacoes.value
                 .filter { it.tipo == "despesa" }
                 .groupBy { it.categoriaId }
-                .mapValues { (_, transacoes) -> transacoes.sumOf { it.valor } }
+                .mapValues { (_, transacoes) ->
+                    val valor = transacoes.sumOf { it.valor }
+                    val nome = categoria.firstOrNull { it.id == transacoes.firstOrNull()?.categoriaId }?.descricao ?: "Desconhecida"
+                    val icon = categoria.firstOrNull { it.id == transacoes.firstOrNull()?.categoriaId }?.icon ?: R.drawable.icon_mais
+                    val color = categoria.firstOrNull { it.id == transacoes.firstOrNull()?.categoriaId }?.color ?: LightColor2
+
+                    Grafico(
+                        nome = nome,
+                        valor = valor,
+                        icon = icon,
+                        color = color
+                    )
+                }
 
             _somaPorCategoria.value = somaCategorias
 
