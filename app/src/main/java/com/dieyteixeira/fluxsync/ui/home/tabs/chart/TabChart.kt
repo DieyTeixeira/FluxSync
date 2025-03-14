@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.chart
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,8 +41,13 @@ import kotlin.random.Random
 @Composable
 fun ChartTab(homeViewModel: HomeViewModel) {
 
-    val percentuais by homeViewModel.percentuaisParaGrafico.collectAsState(initial = emptyList())
-    val categorias by homeViewModel.categoriasParaGrafico.collectAsState(initial = emptyList())
+    val somaPorCategoria by homeViewModel.somaPorCategoria.collectAsState()
+    val categorias = homeViewModel.categorias.value.associateBy { it.id }
+
+    val labels = somaPorCategoria.keys.mapNotNull { categorias[it]?.descricao }.toTypedArray()
+    val valores = somaPorCategoria.values.map { it.toFloat() }.toTypedArray()
+    Log.d("ChartTab", "labels: ${labels.joinToString()}")
+    Log.d("ChartTab", "valores: ${valores.joinToString()}")
 
     Column(
         modifier = Modifier
@@ -57,14 +65,14 @@ fun ChartTab(homeViewModel: HomeViewModel) {
                 color = LightColor1,
                 modifier = Modifier.clickable(
                     onClick = {
-
+                        homeViewModel.calcularSomaPorCategoria()
                     }
                 )
             )
-            if (percentuais.isNotEmpty() && categorias.isNotEmpty()) {
-                ChartPie(
-                    porcentajes = percentuais.toTypedArray()
-                )
+            if (labels.isNotEmpty() && valores.isNotEmpty() && valores.sum() > 0) {
+                ChartPie(categorias = labels, porcentajes = valores)
+            } else {
+                Text("Nenhuma transação encontrada para exibir o gráfico.", color = Color.Gray)
             }
         }
     }
@@ -72,66 +80,58 @@ fun ChartTab(homeViewModel: HomeViewModel) {
 
 @Composable
 fun ChartPie(
-    porcentajes:Array<Float>
+    categorias: Array<String>,
+    porcentajes: Array<Float>
 ) {
-    val anguloInicial = -90f
-    var anguloActual = anguloInicial
-    var anguloFinal = 0f
+    if (categorias.isEmpty() || porcentajes.isEmpty() || porcentajes.sum() == 0f) {
+        Log.e("ChartPie", "Nenhum dado válido para desenhar o gráfico.")
+        return
+    }
+
     val total = porcentajes.sum()
+    var anguloAtual = -90f
 
     val cores = listOf(
-        BrownCategory,
-        RedCategory,
-        OrangeCategory,
-        YellowCategory,
-        GreenCategory,
-        BlueCategory,
-        PurpleCategory
+        BrownCategory, RedCategory, OrangeCategory, YellowCategory,
+        GreenCategory, BlueCategory, PurpleCategory
     )
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(4.dp)){
-        porcentajes.forEachIndexed {index, element->
+    Box(modifier = Modifier.fillMaxSize().padding(4.dp)) {
+        porcentajes.forEachIndexed { index, valor ->
             Canvas(modifier = Modifier.size(400.dp)) {
-                val centerX = size.width / 2
-                val centerY = size.height / 2
-                //cuantos grados va aumentar
-
-                anguloFinal = (element / total) * 360
-                val midAngle = anguloActual + anguloFinal / 2
-
+                val anguloFinal = (valor / total) * 360
+                val midAngle = anguloAtual + anguloFinal / 2
                 val corFatia = cores[index % cores.size]
+                val categoriaNome = categorias[index]
+                val percentual = (valor / total) * 100
 
                 drawArc(
                     color = corFatia,
-                    startAngle = anguloActual,
+                    startAngle = anguloAtual,
                     sweepAngle = anguloFinal,
                     useCenter = true,
                     style = Fill
                 )
 
-                anguloActual += anguloFinal
+                // Exibir texto no centro da fatia
+                val centerX = size.width / 2
+                val centerY = size.height / 2
+                val textX = centerX + (size.width / 3) * cos(Math.toRadians(midAngle.toDouble()).toFloat())
+                val textY = centerY + (size.height / 3) * sin(Math.toRadians(midAngle.toDouble()).toFloat())
 
-                // Calcula las coordenadas para el texto
-                val textX =
-                    centerX + (size.width / 3) * cos(Math.toRadians(midAngle.toDouble()).toFloat())
-                val textY =
-                    centerY + (size.height / 3) * sin(Math.toRadians(midAngle.toDouble()).toFloat())
+                val textPaint = Paint().asFrameworkPaint().apply {
+                    color = Color.Black.toArgb()
+                    textSize = 30f
+                    isFakeBoldText = true
+                    textAlign = android.graphics.Paint.Align.CENTER
+                }
 
-                // Dibuja el texto con el porcentaje
-                val textPaint = Paint().asFrameworkPaint()
-                textPaint.color = Color.Black.toArgb()
-                textPaint.textSize = 55f
-                textPaint.isFakeBoldText = true
+                drawContext.canvas.nativeCanvas.apply {
+                    drawText(categoriaNome, textX, textY, textPaint)
+                    drawText("%.1f%%".format(percentual), textX, textY + 30, textPaint)
+                }
 
-                // Desenhando o texto
-                drawContext.canvas.nativeCanvas.drawText(
-                    "${(element / total * 100).toInt()}%",
-                    textX - textPaint.measureText("${(element / total * 100).toInt()}%") / 2, // Corrige o deslocamento
-                    textY,
-                    textPaint
-                )
+                anguloAtual += anguloFinal
             }
         }
     }

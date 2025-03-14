@@ -23,7 +23,6 @@ import java.math.RoundingMode
 import java.util.Calendar
 import java.util.Date
 
-@Suppress("UNCHECKED_CAST")
 class FirestoreRepository {
 
     private val db = FirebaseFirestore.getInstance()

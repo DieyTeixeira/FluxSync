@@ -40,12 +40,6 @@ class HomeViewModel(
     private val _tipoMessage = MutableStateFlow<String?>(null)
     val tipoMessage: StateFlow<String?> = _tipoMessage.asStateFlow()
 
-    private val _percentuaisParaGrafico = MutableStateFlow<List<Float>>(emptyList())
-    val percentuaisParaGrafico: StateFlow<List<Float>> = _percentuaisParaGrafico
-
-    private val _categoriasParaGrafico = MutableStateFlow<List<String>>(emptyList())
-    val categoriasParaGrafico: StateFlow<List<String>> = _categoriasParaGrafico
-
     init {
         getAtualizar()
     }
@@ -192,6 +186,8 @@ class HomeViewModel(
         viewModelScope.launch {
             val transacoesFirestore = firestoreRepository.getTransacoes()
             _transacoes.value = transacoesFirestore
+
+            calcularSomaPorCategoria()
         }
     }
 
@@ -313,35 +309,19 @@ class HomeViewModel(
         _tipoMessage.value = null
     }
 
-    fun getTransacoesAgrupadasPorCategoria() {
+    private val _somaPorCategoria = MutableStateFlow<Map<String, Double>>(emptyMap())
+    val somaPorCategoria: StateFlow<Map<String, Double>> = _somaPorCategoria.asStateFlow()
+
+    fun calcularSomaPorCategoria() {
         viewModelScope.launch {
-            if (_transacoes.value.isEmpty()) {
-                _message.value = "Transações não carregadas!"
-                _tipoMessage.value = "error"
-                return@launch
-            }
+            val somaCategorias = _transacoes.value
+                .filter { it.tipo == "despesa" }
+                .groupBy { it.categoriaId }
+                .mapValues { (_, transacoes) -> transacoes.sumOf { it.valor } }
 
-            val totalValor = _transacoes.value.sumOf {
-                it.valor ?: 0.0
-            }
+            _somaPorCategoria.value = somaCategorias
 
-            val transacoesAgrupadas = _transacoes.value.groupBy { it.categoriaId }
-                .mapValues { entry ->
-                    entry.value.sumOf { it.valor ?: 0.0 }
-                }
-
-            val transacoesComPercentuais = transacoesAgrupadas.mapValues { entry ->
-                val percentual = if (totalValor > 0) (entry.value / totalValor) * 100 else 0.0
-                percentual
-            }
-
-            val percentuais = transacoesComPercentuais.values.toList().map { it.toFloat() }
-
-            val categorias = transacoesComPercentuais.keys.toList()
-
-            // Atualizando o gráfico com as categorias e valores
-            _percentuaisParaGrafico.value = percentuais
-            _categoriasParaGrafico.value = categorias
+            Log.d("HomeViewModel", "Soma por categoria calculada: $somaCategorias")
         }
     }
 }
