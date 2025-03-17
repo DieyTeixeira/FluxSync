@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
+import com.dieyteixeira.fluxsync.app.components.ButtonSinal
 import com.dieyteixeira.fluxsync.app.components.CustomFieldEdit
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
@@ -69,7 +70,10 @@ import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
+import com.dieyteixeira.fluxsync.app.theme.ColorNegative
+import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
+import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.formatarValorEdit
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
@@ -85,11 +89,10 @@ fun AddCategoriaForm(
     var descricao by remember { mutableStateOf("") }
     var color by remember { mutableStateOf(Color.LightGray) }
     var icon by remember { mutableStateOf(R.drawable.icon_mais) }
+    var typeLancamento by remember { mutableStateOf("despesa") }
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-
-    val interactionSource = remember { MutableInteractionSource() }
 
     Column(
         modifier = Modifier
@@ -164,14 +167,46 @@ fun AddCategoriaForm(
                                 color = color,
                                 icon = icon
                             )
-                            TextInput(
-                                textValue = descricao,
-                                onValueChange = { descricao = it },
-                                placeholder = "Descrição"
-                            )
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                            ) {
+                                TextInput(
+                                    textValue = descricao,
+                                    onValueChange = { descricao = it },
+                                    placeholder = "Descrição"
+                                )
+                            }
+                            ButtonSinal(typeLancamento)
                         }
                     }
-                    Spacer(modifier = Modifier.height(25.dp))
+                    Spacer(modifier = Modifier.height(35.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(0.65f),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        ButtonPersonalFilled(
+                            onClick = { typeLancamento = "despesa" },
+                            text = "Despesa",
+                            colorText = if (typeLancamento == "despesa") Color.White else ColorFontesLight,
+                            color = if (typeLancamento == "despesa") LightColor2 else Color.Transparent,
+                            colorBorder = if (typeLancamento == "despesa") Color.Transparent else ColorFontesLight,
+                            height = 35.dp,
+                            width = 100.dp
+                        )
+                        ButtonPersonalFilled(
+                            onClick = { typeLancamento = "receita" },
+                            text = "Receita",
+                            colorText = if (typeLancamento == "receita") Color.White else ColorFontesLight,
+                            color = if (typeLancamento == "receita") LightColor2 else Color.Transparent,
+                            colorBorder = if (typeLancamento == "receita") Color.Transparent else ColorFontesLight,
+                            height = 35.dp,
+                            width = 100.dp
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
                     LazyRow(
                         modifier = Modifier
                             .fillMaxWidth(0.9f),
@@ -258,7 +293,8 @@ fun AddCategoriaForm(
                                 homeViewModel.salvarCategoria(
                                     icon = iconToStringCategoria(icon),
                                     color = colorToStringCategoria(color),
-                                    descricao = descricao
+                                    descricao = descricao,
+                                    tipo = typeLancamento
                                 )
                                 homeViewModel.getCategorias()
                                 onClose()
@@ -296,6 +332,7 @@ fun EditCategoriaForm(
     var descricaoEditada by remember { mutableStateOf(categoria?.descricao ?: "") }
     var colorEditada by remember { mutableStateOf(categoria?.color ?: Color.LightGray) }
     var iconEditada by remember { mutableStateOf(categoria?.icon ?: R.drawable.icon_mais) }
+    var typeLancamento by remember { mutableStateOf(categoria?.tipo ?: "Despesa") }
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -373,14 +410,46 @@ fun EditCategoriaForm(
                                 color = colorEditada,
                                 icon = iconEditada
                             )
-                            TextInput(
-                                textValue = descricaoEditada,
-                                onValueChange = { descricaoEditada = it },
-                                placeholder = "Descrição"
-                            )
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                            ) {
+                                TextInput(
+                                    textValue = descricaoEditada,
+                                    onValueChange = { descricaoEditada = it },
+                                    placeholder = "Descrição"
+                                )
+                            }
+                            ButtonSinal(typeLancamento)
                         }
                     }
-                    Spacer(modifier = Modifier.height(25.dp))
+                    Spacer(modifier = Modifier.height(35.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(0.65f),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        ButtonPersonalFilled(
+                            onClick = { typeLancamento = "Despesa" },
+                            text = "Despesa",
+                            colorText = if (typeLancamento == "Despesa") Color.White else ColorFontesLight,
+                            color = if (typeLancamento == "Despesa") LightColor2 else Color.Transparent,
+                            colorBorder = if (typeLancamento == "Despesa") Color.Transparent else ColorFontesLight,
+                            height = 35.dp,
+                            width = 100.dp
+                        )
+                        ButtonPersonalFilled(
+                            onClick = { typeLancamento = "Receita" },
+                            text = "Receita",
+                            colorText = if (typeLancamento == "Receita") Color.White else ColorFontesLight,
+                            color = if (typeLancamento == "Receita") LightColor2 else Color.Transparent,
+                            colorBorder = if (typeLancamento == "Receita") Color.Transparent else ColorFontesLight,
+                            height = 35.dp,
+                            width = 100.dp
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
                     LazyRow(
                         modifier = Modifier
                             .fillMaxWidth(0.9f),
@@ -469,7 +538,8 @@ fun EditCategoriaForm(
                                         it.copy(
                                             icon = iconEditada,
                                             color = colorEditada,
-                                            descricao = descricaoEditada
+                                            descricao = descricaoEditada,
+                                            tipo = typeLancamento
                                         )
                                     )
                                 }

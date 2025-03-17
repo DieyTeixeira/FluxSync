@@ -391,8 +391,6 @@ fun AddTransactionForm(
                                 data = dateSelected.toString(),
                                 lancamento = typeLancamento.value,
                                 parcelas = valueParcelas,
-                                dataVencimento = dateSelected.toString(),
-                                dataPagamento = dateSelected.toString(),
                                 observacao = observacaoText
                             )
                             onClose()
@@ -528,20 +526,20 @@ fun EditTransactionForm(
     var isKeyboardVisible by remember { mutableStateOf(false) }
     var isClickClose by remember { mutableStateOf(false) }
 
-    var transacaoTipo by remember { mutableStateOf(transacao?.tipo ?: "") }
+    val transacaoTipo by remember { mutableStateOf(transacao?.tipo ?: "") }
     var valorEditado by remember { mutableStateOf(formatarValorEdit(transacao?.valor ?: 0.0)) }
     var descricaoEditada by remember { mutableStateOf(transacao?.descricao ?: "") }
     var observacaoEditada by remember { mutableStateOf(transacao?.observacao ?: "") }
-    var contaEditada by remember {
+
+    val contaAtual by remember {
         mutableStateOf(
             contas.firstOrNull { it.id == transacao!!.contaId } ?: contas.first())
     }
-    var categoriaEditada by remember {
+    val categoriaAtual by remember {
         mutableStateOf(
             categorias.firstOrNull { it.id == transacao!!.categoriaId } ?: categorias.first())
     }
 
-    val typeTransaction = remember { mutableStateOf("receita") }
     var showCategoryDialog by remember { mutableStateOf(false) }
     var showAccountDialog by remember { mutableStateOf(false) }
     var selectedCategory by remember { mutableStateOf<Categoria?>(null) }
@@ -551,9 +549,6 @@ fun EditTransactionForm(
     var alterarTodas by remember { mutableStateOf(false) }
 
     var onClosed by remember { mutableStateOf(false) }
-
-//    val messageReturn by homeViewModel.message.collectAsState()
-//    val tipoMessage by homeViewModel.tipoMessage.collectAsState()
 
     LaunchedEffect(isClickClose) {
         if (isClickClose) {
@@ -658,10 +653,10 @@ fun EditTransactionForm(
                             interactionSource = interactionSource,
                             divider = true,
                             text = if (transacaoTipo == "receita") "Entrada em" else "Saída de",
-                            textValue = contaEditada.descricao,
-                            textSaldo = contaEditada.saldo,
-                            color = contaEditada.color,
-                            icon = contaEditada.icon,
+                            textValue = selectedAccount?.descricao ?: contaAtual.descricao,
+                            textSaldo = selectedAccount?.saldo ?: contaAtual.saldo,
+                            color = selectedAccount?.color ?: contaAtual.color,
+                            icon = selectedAccount?.icon ?: contaAtual.icon,
                             onClick = {
                                 focusManager.clearFocus()
                                 isKeyboardVisible = false
@@ -674,9 +669,9 @@ fun EditTransactionForm(
                             interactionSource = interactionSource,
                             divider = true,
                             text = "Categoria",
-                            textValue = categoriaEditada.descricao,
-                            color = categoriaEditada.color,
-                            icon = categoriaEditada.icon,
+                            textValue = selectedCategory?.descricao ?: categoriaAtual.descricao,
+                            color = selectedCategory?.color ?: categoriaAtual.color,
+                            icon = selectedCategory?.icon ?: categoriaAtual.icon,
                             onClick = {
                                 focusManager.clearFocus()
                                 isKeyboardVisible = false
@@ -722,10 +717,10 @@ fun EditTransactionForm(
                                 homeViewModel.editarTransacao(
                                     transacao.copy(
                                         descricao = descricaoEditada,
-                                        valor = valorEditado.replace(",", ".").toDoubleOrNull()
-                                            ?: 0.0,
-                                        categoriaId = categoriaEditada.id,
-                                        contaId = contaEditada.id,
+                                        valor = valorEditado.replace(",", ".")
+                                            .toDoubleOrNull() ?: 0.0,
+                                        categoriaId = selectedCategory?.id ?: categoriaAtual.id,
+                                        contaId = selectedAccount?.id ?: contaAtual.id,
                                         observacao = observacaoEditada
                                     ), alterarTodas
                                 )
@@ -840,9 +835,10 @@ fun EditTransactionForm(
                         homeViewModel.editarTransacao(
                             transacao!!.copy(
                                 descricao = descricaoEditada,
-                                valor = valorEditado.replace(",", ".").toDoubleOrNull() ?: 0.0,
-                                categoriaId = categoriaEditada.id,
-                                contaId = contaEditada.id,
+                                valor = valorEditado.replace(",", ".")
+                                    .toDoubleOrNull() ?: 0.0,
+                                categoriaId = selectedCategory?.id ?: categoriaAtual.id,
+                                contaId = selectedAccount?.id ?: contaAtual.id,
                                 observacao = observacaoEditada
                             ), alterarTodas
                         )
@@ -855,9 +851,10 @@ fun EditTransactionForm(
                         homeViewModel.editarTransacao(
                             transacao!!.copy(
                                 descricao = descricaoEditada,
-                                valor = valorEditado.replace(",", ".").toDoubleOrNull() ?: 0.0,
-                                categoriaId = categoriaEditada.id,
-                                contaId = contaEditada.id,
+                                valor = valorEditado.replace(",", ".")
+                                    .toDoubleOrNull() ?: 0.0,
+                                categoriaId = selectedCategory?.id ?: categoriaAtual.id,
+                                contaId = selectedAccount?.id ?: contaAtual.id,
                                 observacao = observacaoEditada
                             ), alterarTodas
                         )

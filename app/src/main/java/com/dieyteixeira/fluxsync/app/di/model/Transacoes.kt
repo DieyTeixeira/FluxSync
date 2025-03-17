@@ -14,7 +14,5 @@ data class Transacoes(
     var data: Date = Date(), // data do lançamento
     var lancamento: String = "", // tipo de lançamento (único, fixo ou parcelado)
     var parcelas: String = "", // número de parcelas do lançamento
-    var dataVencimento: Date = Date(), // data de vencimento do lançamento
-    var dataPagamento: Date = Date(), // data de pagamento do lançamento
     var observacao: String = "" // observação do lançamento
 )

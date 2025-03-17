@@ -10,5 +10,6 @@ data class Categoria(
     var id: String = "",
     var icon: Int = R.drawable.icon_mais,
     var color: Color = Color.Transparent,
-    var descricao: String = ""
+    var descricao: String = "",
+    var tipo: String = ""
 )

@@ -129,12 +129,14 @@ fun HistoricoItem(
                 fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = transacao.parcelas,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                color = ColorFontesLight
-            )
+            if (transacao.lancamento == "Parcelado") {
+                Text(
+                    text = transacao.parcelas,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = ColorFontesLight
+                )
+            }
         }
         Text(
             text = if (visibility) formatarValor(transacao.valor) else " R$ *****",

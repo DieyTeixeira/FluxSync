@@ -19,6 +19,7 @@ import com.google.firebase.Timestamp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -27,12 +28,12 @@ class HomeViewModel(
     private val firestoreRepository: FirestoreRepository
 ) : ViewModel() {
 
-    private val _contas = mutableStateOf<List<Conta>>(emptyList())
-    val contas = _contas
-    private val _categorias = mutableStateOf<List<Categoria>>(emptyList())
-    val categorias = _categorias
-    private val _transacoes = mutableStateOf<List<Transacoes>>(emptyList())
-    val transacoes = _transacoes
+    private val _contas = MutableStateFlow<List<Conta>>(emptyList())
+    val contas: StateFlow<List<Conta>> = _contas.asStateFlow()
+    private val _categorias = MutableStateFlow<List<Categoria>>(emptyList())
+    val categorias: StateFlow<List<Categoria>> = _categorias.asStateFlow()
+    private val _transacoes = MutableStateFlow<List<Transacoes>>(emptyList())
+    val transacoes: StateFlow<List<Transacoes>> = _transacoes.asStateFlow()
 
     private val _selectedConta = MutableStateFlow<Conta?>(null)
     val selectedConta: StateFlow<Conta?> = _selectedConta.asStateFlow()
@@ -129,10 +130,10 @@ class HomeViewModel(
         }
     }
 
-    fun salvarCategoria(icon: String, color: String, descricao: String) {
+    fun salvarCategoria(icon: String, color: String, descricao: String, tipo: String) {
         viewModelScope.launch {
             try {
-                firestoreRepository.salvarCategoria(icon, color, descricao)
+                firestoreRepository.salvarCategoria(icon, color, descricao, tipo)
 
                 _message.value = "Categoria salva com sucesso!"
                 _tipoMessage.value = "success"
@@ -214,24 +215,18 @@ class HomeViewModel(
         data: String,
         lancamento: String,
         parcelas: Int,
-        dataVencimento: String,
-        dataPagamento: String,
         observacao: String
     ) {
         viewModelScope.launch {
             try {
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val parsedDate = dateFormat.parse(data)
-                val parsedDateV = dateFormat.parse(dataVencimento)
-                val parsedDateP = dateFormat.parse(dataPagamento)
                 val timestampDate = Timestamp(parsedDate!!)
-                val timestampDateV = Timestamp(parsedDateV!!)
-                val timestampDateP = Timestamp(parsedDateP!!)
                 val parcelasString = parcelas.toString()
 
                 firestoreRepository.salvarTransacao(
                     descricao, valor, tipo, situacao, categoriaId, contaId, timestampDate,
-                    lancamento, parcelasString, timestampDateV, timestampDateP, observacao
+                    lancamento, parcelasString, observacao
                 )
 
                 _message.value = "Transação salva com sucesso!"
@@ -320,27 +315,31 @@ class HomeViewModel(
 
     fun calcularSomaPorCategoria() {
         viewModelScope.launch {
-            val categoria = _categorias.value
-            val somaCategorias = _transacoes.value
+            val categorias = _categorias.value
+            val transacoes = _transacoes.value
+
+            Log.d("DEBUG", "categorias: $categorias")
+            Log.d("DEBUG", "transacoes: $transacoes")
+
+            val somaCategorias = transacoes
                 .filter { it.tipo == "despesa" }
                 .groupBy { it.categoriaId }
                 .mapValues { (_, transacoes) ->
-                    val valor = transacoes.sumOf { it.valor }
-                    val nome = categoria.firstOrNull { it.id == transacoes.firstOrNull()?.categoriaId }?.descricao ?: "Desconhecida"
-                    val icon = categoria.firstOrNull { it.id == transacoes.firstOrNull()?.categoriaId }?.icon ?: R.drawable.icon_mais
-                    val color = categoria.firstOrNull { it.id == transacoes.firstOrNull()?.categoriaId }?.color ?: LightColor2
+                    val categoriaId = transacoes.firstOrNull()?.categoriaId
+                    val categoriaInfo = categorias.firstOrNull { it.id == categoriaId }
 
                     Grafico(
-                        nome = nome,
-                        valor = valor,
-                        icon = icon,
-                        color = color
+                        nome = categoriaInfo?.descricao ?: "Desconhecida",
+                        valor = transacoes.sumOf { it.valor ?: 0.0 },
+                        icon = categoriaInfo?.icon ?: R.drawable.icon_mais,
+                        color = categoriaInfo?.color ?: LightColor2
                     )
                 }
 
-            _somaPorCategoria.value = somaCategorias
+            Log.d("DEBUG", "somaCategorias: $somaCategorias")
 
-            Log.d("HomeViewModel", "Soma por categoria calculada: $somaCategorias")
+            _somaPorCategoria.value = emptyMap()
+            _somaPorCategoria.value = somaCategorias
         }
     }
 }

@@ -127,11 +127,12 @@ class FirestoreRepository {
                 val iconString = document.getString("icon") ?: return@mapNotNull null
                 val colorString = document.getString("color") ?: return@mapNotNull null
                 val descricao = document.getString("descricao") ?: return@mapNotNull null
+                val tipo = document.getString("tipo") ?: return@mapNotNull null
 
                 val icon = stringToIconCategoria(iconString)
                 val color = stringToColorCategoria(colorString)
 
-                Categoria(id = id, icon = icon, color = color, descricao = descricao)
+                Categoria(id = id, icon = icon, color = color, descricao = descricao, tipo = tipo)
             }
         } catch (e: Exception) {
             Log.e("FirestoreRepository", "Erro ao recuperar categorias", e)
@@ -142,7 +143,8 @@ class FirestoreRepository {
     suspend fun salvarCategoria(
         icon: String,
         color: String,
-        descricao: String
+        descricao: String,
+        tipo: String
     ) {
         val user = auth.currentUser
         val userEmail = user?.email ?: return
@@ -152,7 +154,8 @@ class FirestoreRepository {
             "id" to novoId,
             "icon" to icon,
             "color" to color,
-            "descricao" to descricao
+            "descricao" to descricao,
+            "tipo" to tipo
         )
 
         try {
@@ -178,7 +181,8 @@ class FirestoreRepository {
             mapOf(
                 "icon" to iconToStringCategoria(categoria.icon),
                 "color" to colorToStringCategoria(categoria.color),
-                "descricao" to categoria.descricao
+                "descricao" to categoria.descricao,
+                "tipo" to categoria.tipo
             )
         )
     }
@@ -213,8 +217,6 @@ class FirestoreRepository {
                 val data = document.getTimestamp("data")?.toDate() ?: return@mapNotNull null
                 val lancamento = document.getString("lancamento") ?: return@mapNotNull null
                 val parcelas = document.getString("parcelas") ?: return@mapNotNull null
-                val dataVencimento = document.getTimestamp("dataVencimento")?.toDate() ?: Date()
-                val dataPagamento = document.getTimestamp("dataPagamento")?.toDate() ?: Date()
                 val observacao = document.getString("observacao") ?: ""
 
                 Transacoes(
@@ -229,8 +231,6 @@ class FirestoreRepository {
                     data = data,
                     lancamento = lancamento,
                     parcelas = parcelas,
-                    dataVencimento = dataVencimento,
-                    dataPagamento = dataPagamento,
                     observacao = observacao
                 )
             }
@@ -250,8 +250,6 @@ class FirestoreRepository {
         data: Timestamp,
         lancamento: String,
         parcelas: String,
-        dataVencimento: Timestamp,
-        dataPagamento: Timestamp,
         observacao: String
     ) {
         val user = auth.currentUser
@@ -267,7 +265,7 @@ class FirestoreRepository {
                     val novoId = transacoesRef.document().id
                     val transacaoMap = criarTransacaoMap(
                         novoId, grupoIdNull, descricao, valor, tipo, situacao, categoriaId, contaId,
-                        data, lancamento, parcelas, dataVencimento, dataPagamento, observacao
+                        data, lancamento, parcelas, observacao
                     )
                     transacoesRef.document(novoId).set(transacaoMap).await()
                 }
@@ -280,8 +278,7 @@ class FirestoreRepository {
                         val novoId = transacoesRef.document().id
                         val transacaoMap = criarTransacaoMap(
                             novoId, grupoId, descricao, valor, tipo, situacao, categoriaId, contaId,
-                            Timestamp(calendar.time), lancamento, i.toString(),
-                            Timestamp(calendar.time), Timestamp(calendar.time), observacao
+                            Timestamp(calendar.time), lancamento, i.toString(), observacao
                         )
                         transacoesRef.document(novoId).set(transacaoMap).await()
                         calendar.add(Calendar.MONTH, 1)
@@ -299,8 +296,7 @@ class FirestoreRepository {
                         val numParcelas = i.toString() + "/" + parcelas
                         val transacaoMap = criarTransacaoMap(
                             novoId, grupoId, descricao, valorParcela, tipo, situacao, categoriaId, contaId,
-                            Timestamp(calendar.time), lancamento, numParcelas,
-                            Timestamp(calendar.time), Timestamp(calendar.time), observacao
+                            Timestamp(calendar.time), lancamento, numParcelas, observacao
                         )
                         transacoesRef.document(novoId).set(transacaoMap).await()
                         calendar.add(Calendar.MONTH, 1)
@@ -326,8 +322,6 @@ class FirestoreRepository {
         data: Timestamp,
         lancamento: String,
         parcelas: String,
-        dataVencimento: Timestamp,
-        dataPagamento: Timestamp,
         observacao: String
 
     ): Map<String, Any> {
@@ -343,8 +337,6 @@ class FirestoreRepository {
             "data" to data,
             "lancamento" to lancamento,
             "parcelas" to parcelas,
-            "dataVencimento" to dataVencimento,
-            "dataPagamento" to dataPagamento,
             "observacao" to observacao
         )
     }

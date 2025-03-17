@@ -33,7 +33,34 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayLight
+import com.dieyteixeira.fluxsync.app.theme.ColorNegative
+import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
+
+@Composable
+fun ButtonSinal(
+    typeLancamento: String
+) {
+    Box(
+        modifier = Modifier
+            .size(17.dp)
+            .border(
+                width = 1.5.dp,
+                color = if (typeLancamento == "Despesa") ColorNegative else ColorPositive,
+                shape = RoundedCornerShape(100)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .size(9.dp)
+                .background(
+                    color = if (typeLancamento == "Despesa") ColorNegative else ColorPositive,
+                    shape = RoundedCornerShape(100)
+                )
+        )
+    }
+}
 
 @Composable
 fun ButtonPersonalFilled(
