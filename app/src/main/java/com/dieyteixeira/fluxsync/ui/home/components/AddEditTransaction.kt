@@ -710,7 +710,7 @@ fun EditTransactionForm(
                     ButtonPersonalFilled(
                         onClick = {
                             focusManager.clearFocus()
-                            if (transacao!!.grupoId.isNotEmpty()) {
+                            if (transacao!!.lancamento != "Único") {
                                 salvarAjustes = true
                             } else {
                                 alterarTodas = false

@@ -2,6 +2,7 @@ package com.dieyteixeira.fluxsync.ui.home.tabs.transaction.screen
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -37,6 +38,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
@@ -95,6 +98,11 @@ fun TransactionTab(
             }
             mesesComEspacos.getOrNull(middleIndex) ?: nomeMesAtual(Calendar.getInstance().get(Calendar.MONTH))
         }
+    }
+
+    LaunchedEffect(Unit) {
+        val mesAtualIndex = Calendar.getInstance().get(Calendar.MONTH)
+        lazyListStateMes.scrollToItem(mesAtualIndex, -100)
     }
 
     LaunchedEffect(homeViewModel.transacoes.value, mesCentral, anoSelecionado) {

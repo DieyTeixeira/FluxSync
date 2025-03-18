@@ -22,18 +22,21 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class HomeViewModel(
     private val firestoreRepository: FirestoreRepository
 ) : ViewModel() {
 
-    private val _contas = MutableStateFlow<List<Conta>>(emptyList())
-    val contas: StateFlow<List<Conta>> = _contas.asStateFlow()
-    private val _categorias = MutableStateFlow<List<Categoria>>(emptyList())
-    val categorias: StateFlow<List<Categoria>> = _categorias.asStateFlow()
-    private val _transacoes = MutableStateFlow<List<Transacoes>>(emptyList())
-    val transacoes: StateFlow<List<Transacoes>> = _transacoes.asStateFlow()
+    private val _contas = mutableStateOf<List<Conta>>(emptyList())
+    val contas = _contas
+    private val _categorias = mutableStateOf<List<Categoria>>(emptyList())
+    val categorias = _categorias
+    private val _transacoes = mutableStateOf<List<Transacoes>>(emptyList())
+    val transacoes = _transacoes
 
     private val _selectedConta = MutableStateFlow<Conta?>(null)
     val selectedConta: StateFlow<Conta?> = _selectedConta.asStateFlow()
@@ -193,8 +196,6 @@ class HomeViewModel(
         viewModelScope.launch {
             val transacoesFirestore = firestoreRepository.getTransacoes()
             _transacoes.value = transacoesFirestore
-
-            calcularSomaPorCategoria()
         }
     }
 
@@ -310,36 +311,19 @@ class HomeViewModel(
         _tipoMessage.value = null
     }
 
-    private val _somaPorCategoria = MutableStateFlow<Map<String, Grafico>>(emptyMap())
-    val somaPorCategoria: StateFlow<Map<String, Grafico>> = _somaPorCategoria.asStateFlow()
+    fun verificarVencimento(dataTransacao: Date): String? {
+        val hoje = Calendar.getInstance()
+        val dataTransacaoCal = Calendar.getInstance().apply { time = dataTransacao }
 
-    fun calcularSomaPorCategoria() {
-        viewModelScope.launch {
-            val categorias = _categorias.value
-            val transacoes = _transacoes.value
+        // Calcular a diferença em milissegundos e converter para dias
+        val diferencaEmMillis = dataTransacaoCal.timeInMillis - hoje.timeInMillis
+        val diferencaEmDias = TimeUnit.MILLISECONDS.toDays(diferencaEmMillis)
 
-            Log.d("DEBUG", "categorias: $categorias")
-            Log.d("DEBUG", "transacoes: $transacoes")
-
-            val somaCategorias = transacoes
-                .filter { it.tipo == "despesa" }
-                .groupBy { it.categoriaId }
-                .mapValues { (_, transacoes) ->
-                    val categoriaId = transacoes.firstOrNull()?.categoriaId
-                    val categoriaInfo = categorias.firstOrNull { it.id == categoriaId }
-
-                    Grafico(
-                        nome = categoriaInfo?.descricao ?: "Desconhecida",
-                        valor = transacoes.sumOf { it.valor ?: 0.0 },
-                        icon = categoriaInfo?.icon ?: R.drawable.icon_mais,
-                        color = categoriaInfo?.color ?: LightColor2
-                    )
-                }
-
-            Log.d("DEBUG", "somaCategorias: $somaCategorias")
-
-            _somaPorCategoria.value = emptyMap()
-            _somaPorCategoria.value = somaCategorias
+        return when {
+            diferencaEmDias < 0 -> "Atrasada há ${-diferencaEmDias} dias" // Caso esteja vencida
+            diferencaEmDias in 1..2 -> "Vence em $diferencaEmDias dias" // Se vencer hoje ou nos próximos 2 dias
+            diferencaEmDias == 0L -> "Vence hoje" // Caso venha hoje
+            else -> null // Caso não se encaixe nesses critérios
         }
     }
 }

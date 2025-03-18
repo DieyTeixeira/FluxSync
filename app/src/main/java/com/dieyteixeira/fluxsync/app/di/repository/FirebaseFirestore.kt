@@ -258,13 +258,12 @@ class FirestoreRepository {
         try {
             val transacoesRef = db.collection(userEmail).document("Lancamento").collection("Lancamentos") // Correção do caminho da coleção
             val grupoId = transacoesRef.document().id
-            val grupoIdNull = ""
 
             when (lancamento) {
                 "Único" -> {
                     val novoId = transacoesRef.document().id
                     val transacaoMap = criarTransacaoMap(
-                        novoId, grupoIdNull, descricao, valor, tipo, situacao, categoriaId, contaId,
+                        novoId, grupoId, descricao, valor, tipo, situacao, categoriaId, contaId,
                         data, lancamento, parcelas, observacao
                     )
                     transacoesRef.document(novoId).set(transacaoMap).await()

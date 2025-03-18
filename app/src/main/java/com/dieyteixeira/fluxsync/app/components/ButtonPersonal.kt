@@ -231,7 +231,6 @@ fun ButtonPersonalIcon(
     size: Dp,
     sizeIcon: Dp = 20.dp
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
 
     Row(
         modifier = Modifier
@@ -242,7 +241,7 @@ fun ButtonPersonalIcon(
             .size(size)
             .clickable(
                 indication = null,
-                interactionSource = interactionSource
+                interactionSource = remember { MutableInteractionSource() },
             ) {
                 onClick()
             },

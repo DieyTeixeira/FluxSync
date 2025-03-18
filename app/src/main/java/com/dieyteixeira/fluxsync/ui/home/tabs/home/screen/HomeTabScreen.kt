@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,6 +38,7 @@ import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalOutline
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
+import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.LightColor1
 import com.dieyteixeira.fluxsync.app.theme.LightColor4
@@ -61,7 +63,8 @@ fun HomeTabScreen(
     userPreferences: UserPreferences,
     onAddClick: (String) -> Unit,
     onEditClick: (String) -> Unit,
-    onSignOutClick: () -> Unit
+    onSignOutClick: () -> Unit,
+    onClick: () -> Unit
 ) {
 
     val coroutineScope = rememberCoroutineScope()
@@ -113,12 +116,12 @@ fun HomeTabScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp)
+                    .heightIn(min = 220.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(160.dp)
+                        .heightIn(min = 160.dp)
                         .background(LightColor1)
                 )
                 Column(
@@ -132,15 +135,10 @@ fun HomeTabScreen(
                     )
                     Spacer(modifier = Modifier.height(22.dp))
                     HomeCardNotifications(
+                        homeViewModel = homeViewModel,
+                        transacoes = homeViewModel.transacoes.value,
                         onClick = {
-                            coroutineScope.launch {
-                                userPreferences.clearUserPreferences()
-                                userPreferences.saveUserPreferences(
-                                    listOf("Saldo", "Categorias", "Histórico", "Ajustes"),
-                                    mapOf("Saldo" to true, "Categorias" to true, "Histórico" to true, "Ajustes" to true)
-                                )
-                                delay(100)
-                            }
+                            onClick()
                         }
                     )
                 }

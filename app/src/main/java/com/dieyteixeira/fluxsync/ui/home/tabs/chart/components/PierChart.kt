@@ -44,25 +44,22 @@ import kotlin.math.sin
 
 @Composable
 fun PieChart(
-    data: Map<String, Grafico>?,
+    data: List<Grafico>,
     radiusOuter: Dp = 140.dp,
     chartBarWidth: Dp = 35.dp,
     animDuration: Int = 1000,
 ) {
 
-    if (data.isNullOrEmpty()) return
+    if (data.isEmpty()) return
 
-    val totalSum = data.values.sumOf { it.valor }.takeIf { it > 0 } ?: 1.0
+    val totalSum = data.sumOf { it.valor }.takeIf { it > 0 } ?: 1.0
 
-    val floatValue = mutableListOf<Float>()
-
-    data.values.forEachIndexed { index, grafico ->
-        val percentValue = 360 * grafico.valor.toFloat() / totalSum.toFloat()
-        floatValue.add(index, percentValue)
+    val floatValue = data.map { grafico ->
+        360 * grafico.valor.toFloat() / totalSum.toFloat()
     }
 
-    val colors = data.values.map { it.color }
-    val icon = data.values.map { it.icon }
+    val colors = data.map { it.color }
+    val icon = data.map { it.icon }
 
     var animationPlayed by remember { mutableStateOf(false) }
 
@@ -107,10 +104,11 @@ fun PieChart(
                     .rotate(animateRotationGrafic)
             ) {
                 floatValue.forEachIndexed { index, value ->
+                    val spacing = 1f
                     drawArc(
                         color = colors.getOrElse(index) { Color.Gray },
-                        startAngle = lastValue,
-                        sweepAngle = value,
+                        startAngle = lastValue + spacing,
+                        sweepAngle = value - spacing,
                         useCenter = false,
                         style = Stroke(chartBarWidth.toPx(), cap = StrokeCap.Butt)
                     )
@@ -122,7 +120,7 @@ fun PieChart(
                     .scale(animateScale)
                     .rotate(animateRotationIcon)
             ) {
-                data.values.forEachIndexed { index, grafico ->
+                data.forEachIndexed { index, grafico ->
                     val anguloMedio = floatValue.subList(0, index).sum() + floatValue[index] / 2
                     val raioInterno = ((radiusOuter - chartBarWidth / 2)).value
 
@@ -158,7 +156,7 @@ fun PieChart(
 
 @Composable
 fun DetailsPieChart(
-    data: Map<String, Grafico>,
+    data: List<Grafico>,
     colors: List<Color>
 ) {
     Column(
@@ -166,9 +164,9 @@ fun DetailsPieChart(
             .padding(top = 80.dp)
             .fillMaxWidth()
     ) {
-        data.values.forEachIndexed { index, grafico ->
-            val totalSum = data.values.sumOf { it.valor }
+        val totalSum = data.sumOf { it.valor }
 
+        data.forEachIndexed { index, grafico ->
             DetailsPieChartItem(
                 data = Triple(grafico.nome, grafico.valor, grafico.icon),
                 totalSum = totalSum,

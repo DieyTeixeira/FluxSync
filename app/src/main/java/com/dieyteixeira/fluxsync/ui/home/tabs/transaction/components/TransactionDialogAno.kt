@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -37,6 +39,7 @@ import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.anoAtual
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
+import java.util.Calendar
 
 @Composable
 fun SelectAnoDialog(
@@ -52,8 +55,10 @@ fun SelectAnoDialog(
     val snapBehaviorAno = rememberSnapFlingBehavior(lazyListStateAno)
     val verticalFadeAno = Brush.verticalGradient(
         0f to Color.Transparent,
+        0.35f to Color.Gray,
         0.5f to Color.Gray,
         0.5f to Color.Gray,
+        0.65f to Color.Gray,
         1f to Color.Transparent
     )
     val anoCentral by remember {
@@ -64,6 +69,13 @@ fun SelectAnoDialog(
                 lazyListStateAno.firstVisibleItemIndex + 2
             }
             anosComEspacos.getOrNull(middleIndex) ?: anoSelecionado
+        }
+    }
+
+    LaunchedEffect(anoSelecionado) {
+        val indexAnoSelecionado = anos.indexOf(anoSelecionado)
+        if (indexAnoSelecionado != -1) {
+            lazyListStateAno.scrollToItem(indexAnoSelecionado, -60)
         }
     }
 

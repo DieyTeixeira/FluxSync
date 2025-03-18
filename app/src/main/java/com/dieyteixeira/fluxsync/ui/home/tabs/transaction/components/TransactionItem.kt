@@ -152,26 +152,20 @@ fun TransactionItem(
                     size = 35.dp
                 )
                 ButtonPersonalIcon( // excluir
-                    onClick = { if (transacao.situacao == "pendente") {
-                        excluirDialog = true
-                    } },
+                    onClick = { if (transacao.situacao == "pendente") { excluirDialog = true } },
                     icon = R.drawable.icon_excluir,
                     color = if (transacao.situacao == "pendente") LightColor2 else ColorGrayDark,
                     size = 35.dp
                 )
                 ButtonPersonalIcon( // editar
-                    onClick = { if (transacao.situacao == "pendente") {
-                        onClickEditar()
-                    } },
+                    onClick = { if (transacao.situacao == "pendente") { onClickEditar() } },
                     icon = R.drawable.icon_editar,
                     color = if (transacao.situacao == "pendente") LightColor2 else ColorGrayDark,
                     size = 35.dp,
                     sizeIcon = 18.dp
                 )
                 ButtonPersonalIcon( // situacao
-                    onClick = {
-                        situacaoDialog = true
-                    },
+                    onClick = { situacaoDialog = true },
                     icon = if (transacao.situacao == "efetivado") R.drawable.icon_balao_check else R.drawable.icon_balao_cruz,
                     color = if (transacao.situacao == "efetivado") ColorPositive else ColorNegative,
                     size = 35.dp

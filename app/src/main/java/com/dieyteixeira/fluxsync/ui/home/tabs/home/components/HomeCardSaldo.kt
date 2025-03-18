@@ -60,7 +60,6 @@ fun HomeCardSaldo(
     onClickContas: () -> Unit
 ) {
 
-    val interactionSource = remember { MutableInteractionSource() }
     val contas = homeViewModel.contas.value
     val saldoTotal = contas.sumOf { it.saldo }
 
@@ -116,7 +115,7 @@ fun HomeCardSaldo(
                         .size(22.dp)
                         .clickable(
                             indication = null,
-                            interactionSource = interactionSource
+                            interactionSource = remember { MutableInteractionSource() },
                         ) { onVisibilityChange(!isSaldoVisivel) },
                     colorFilter = ColorFilter.tint(ColorFontesLight)
                 )

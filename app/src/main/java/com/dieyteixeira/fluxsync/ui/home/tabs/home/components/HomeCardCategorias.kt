@@ -19,35 +19,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.times
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
-import com.dieyteixeira.fluxsync.app.di.model.Grafico
+import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
-import com.dieyteixeira.fluxsync.app.theme.ColorGrayLight
+import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
@@ -62,8 +58,27 @@ fun HomeCardCategorias(
     onClickCategorias: () -> Unit
 ) {
 
-    val somaPorCategoria by homeViewModel.somaPorCategoria.collectAsState()
+    val categorias = homeViewModel.categorias.value
+    val transacoes = homeViewModel.transacoes.value
+
     var isOrdenacaoCrescente by remember { mutableStateOf(true) }
+
+    val totalGeral = transacoes.filter { it.tipo == "despesa" && it.valor > 0 }.sumOf { it.valor }
+
+    val transacoesPorCategoria = categorias.map { categoria ->
+        val transacoesDaCategoria = transacoes.filter {
+            it.categoriaId == categoria.id && it.tipo == "despesa" && it.valor > 0
+        }
+        val totalCategoria = transacoesDaCategoria.sumOf { it.valor }
+
+        categoria to totalCategoria
+    }.filter { it.second > 0 }
+
+    val categoriasOrdenadas = if (isOrdenacaoCrescente) {
+        transacoesPorCategoria.sortedBy { it.second }
+    } else {
+        transacoesPorCategoria.sortedByDescending { it.second }
+    }
 
     Column(
         modifier = Modifier
@@ -104,7 +119,7 @@ fun HomeCardCategorias(
                     painter = painterResource(id = R.drawable.icon_classification),
                     contentDescription = if (isOrdenacaoCrescente) "Ordenar: Maior → Menor" else "Ordenar: Menor → Maior",
                     modifier = Modifier
-                        .size(20.dp)
+                        .size(25.dp)
                         .padding(end = 5.dp)
                         .clickable(
                             indication = null,
@@ -115,14 +130,7 @@ fun HomeCardCategorias(
                 )
             }
         }
-
         Box(modifier = Modifier.fillMaxWidth(0.95f).height(1.dp).background(ColorLine).align(Alignment.CenterHorizontally))
-
-        val categoriasOrdenadas = homeViewModel.categorias.value
-            .filter { categoria -> categoria.tipo == "despesa" && (somaPorCategoria[categoria.id]?.valor ?: 0.0) > 0.0 }
-            .sortedBy { somaPorCategoria[it.id]?.valor ?: 0.0 }
-            .let { if (!isOrdenacaoCrescente) it.reversed() else it }
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -135,10 +143,15 @@ fun HomeCardCategorias(
                     )
                 }
         ) {
-            items(categoriasOrdenadas) { categoria ->
+            items(categoriasOrdenadas.size) { index ->
+                val categoria = categoriasOrdenadas[index].first
+                val total = categoriasOrdenadas[index].second
+                val percentual = if (totalGeral > 0) (total / totalGeral) * 100 else 0.0
+
                 CategoriasItem(
-                    categorias = categoria,
-                    data = somaPorCategoria
+                    categoria = categoria,
+                    total = total,
+                    percentual = percentual
                 )
             }
         }
@@ -166,17 +179,10 @@ fun HomeCardCategorias(
 
 @Composable
 fun CategoriasItem(
-    categorias: Categoria,
-    data: Map<String, Grafico>?,
+    categoria: Categoria,
+    total: Double,
+    percentual: Double
 ) {
-
-    if (data.isNullOrEmpty()) return
-
-    val totalSum = data.values.sumOf { it.valor }.takeIf { it > 0 } ?: 1.0
-
-    val grafico = data[categorias.id]
-    val categoriaValor = grafico?.valor ?: 0.0
-    val percentual = (categoriaValor / totalSum) * 100
 
     Row(
         modifier = Modifier
@@ -186,61 +192,51 @@ fun CategoriasItem(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
-            modifier = Modifier.weight(1f),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconCategoria(
-                icon = categorias.icon,
-                color = categorias.color
+                icon = categoria.icon,
+                color = categoria.color
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = categorias.descricao,
+                text = categoria.descricao,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium
             )
         }
-        Row(
-            modifier = Modifier
-                .width(100.dp)
-                .height(15.dp)
-                .background(ColorGrayLight),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start // Alinha a barra e texto corretamente
-        ) {
-            val fillPercentage = (percentual / 100).coerceIn(0.0, 1.0).toFloat()
 
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "%.2f".format(percentual),
+                fontSize = 14.sp,
+                color = ColorFontesLight
+            )
+            Text(
+                text = "%",
+                fontSize = 12.sp,
+                color = ColorFontesLight
+            )
+            Spacer(modifier = Modifier.width(5.dp))
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(fillPercentage)
                     .height(15.dp)
-                    .background(LightColor3),
-                contentAlignment = Alignment.CenterEnd // Alinha o texto dentro da barra
+                    .width(80.dp),
+                contentAlignment = Alignment.CenterStart
             ) {
-                if (fillPercentage > 0.5f) { // Exibir texto branco apenas se a barra for grande o suficiente
-                    Text(
-                        text = "%.1f".format(percentual),
-                        fontSize = 13.sp,
-                        color = Color.White
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.width(5.dp))
-            // Texto principal fora da barra, com cor dinâmica
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
-            ) {
-                Text(
-                    text = "%.1f".format(percentual),
-                    fontSize = 13.sp,
-                    color = if (fillPercentage > 0.5f) Color.White else LightColor3
+                Box(
+                    modifier = Modifier
+                        .height(5.dp)
+                        .width(80.dp)
+                        .background(ColorBackground, RoundedCornerShape(100))
                 )
-                Text(
-                    text = "%",
-                    fontSize = 10.sp,
-                    color = if (fillPercentage > 0.5f) Color.White else LightColor3
+                Box(
+                    modifier = Modifier
+                        .height(15.dp)
+                        .width((percentual / 100) * 80.dp)
+                        .background(LightColor3, RoundedCornerShape(3.dp))
                 )
             }
         }

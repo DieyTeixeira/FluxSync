@@ -145,7 +145,7 @@ fun HomeScreen(
                         indentAnimation = Height(tween(300)),
                         barColor = ColorCards,
                         ballColor = LightColor4
-                    )     {
+                    ) {
                         navigationBarItems.forEach { item ->
                             if (item.ordinal == 2) {
                                 val pulseScale by animateFloatAsState(
@@ -285,7 +285,10 @@ fun HomeScreen(
                                         "categoria" -> showEditCategoria = true
                                     }
                                 },
-                                onSignOutClick = onSignOutClick
+                                onSignOutClick = onSignOutClick,
+                                onClick = {
+                                    selectedIndex = 1
+                                }
                             )
                         }
                     }

@@ -5,9 +5,12 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +38,8 @@ fun HomePrincipalScreen(
     userPreferences: UserPreferences,
     onAddClick: (String) -> Unit,
     onEditClick: (String) -> Unit,
-    onSignOutClick: () -> Unit
+    onSignOutClick: () -> Unit,
+    onClick: () -> Unit
 ) {
 
     Column(
@@ -48,8 +52,8 @@ fun HomePrincipalScreen(
         AnimatedContent(
             targetState = selectedIndex,
             transitionSpec = {
-                fadeIn(animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)) with
-                        fadeOut(animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing))
+                fadeIn(animationSpec = tween(durationMillis = 800, easing = LinearOutSlowInEasing)) with
+                        fadeOut(animationSpec = tween(durationMillis = 800, easing = LinearOutSlowInEasing))
             }
         ) { targetState ->
             NavigationBarItems.entries[targetState].screen(
@@ -58,7 +62,8 @@ fun HomePrincipalScreen(
                 userPreferences,
                 onAddClick,
                 onEditClick,
-                onSignOutClick
+                onSignOutClick,
+                onClick
             )
         }
     }
@@ -67,21 +72,21 @@ fun HomePrincipalScreen(
 enum class NavigationBarItems(
     val icon: Int,
     val screen: @Composable (
-        (LoginViewModel, HomeViewModel, UserPreferences, (String) -> Unit, (String) -> Unit, () -> Unit) -> Unit),
+        (LoginViewModel, HomeViewModel, UserPreferences, (String) -> Unit, (String) -> Unit, () -> Unit, () -> Unit) -> Unit),
 ) {
     Home(
         icon = R.drawable.icon_casa,
-        screen = { loginViewModel, homeViewModel, userPreferences, onAddClick, onEditClick, onSignOutClick ->
+        screen = { loginViewModel, homeViewModel, userPreferences, onAddClick, onEditClick, onSignOutClick, onClick ->
             HomeTabScreen(
                 loginViewModel, homeViewModel, userPreferences,
-                onAddClick, onEditClick, onSignOutClick
+                onAddClick, onEditClick, onSignOutClick, onClick
             )
         }
     ),
     @RequiresApi(Build.VERSION_CODES.O)
     Transaction(
         icon = R.drawable.icon_documento,
-        screen = { _, homeViewModel, _, _, onEditClick, _ ->
+        screen = { _, homeViewModel, _, _, onEditClick, _, _ ->
             TransactionTab(
                 homeViewModel, onEditClick
             )
@@ -89,11 +94,11 @@ enum class NavigationBarItems(
     ),
     Add(
         icon = R.drawable.icon_mais,
-        screen = { _, _, _, _, _, _ -> }
+        screen = { _, _, _, _, _, _, _ -> }
     ),
     Chart(
         icon = R.drawable.icon_estatisticas,
-        screen = { _, homeViewModel, _, _, _, _ ->
+        screen = { _, homeViewModel, _, _, _, _, _ ->
             ChartTab(
                 homeViewModel
             )
@@ -101,6 +106,8 @@ enum class NavigationBarItems(
     ),
     Settings(
         icon = R.drawable.icon_ferramenta,
-        screen = { _, _, _, _, _, _ -> SettingsTab() }
+        screen = { _, _, _, _, _, _, _ ->
+            SettingsTab()
+        }
     )
 }

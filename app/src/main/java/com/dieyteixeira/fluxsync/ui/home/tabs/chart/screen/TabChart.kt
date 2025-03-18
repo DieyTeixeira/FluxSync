@@ -9,13 +9,36 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.dieyteixeira.fluxsync.app.di.model.Grafico
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import com.dieyteixeira.fluxsync.ui.home.tabs.chart.components.PieChart
 
 @Composable
 fun ChartTab(homeViewModel: HomeViewModel) {
 
-    val somaPorCategoria by homeViewModel.somaPorCategoria.collectAsState()
+    val categorias = homeViewModel.categorias.value
+    val transacoes = homeViewModel.transacoes.value
+
+    val totalGeral = transacoes.filter { it.tipo == "despesa" && it.valor > 0 }.sumOf { it.valor }
+
+    val transacoesPorCategoria = categorias.map { categoria ->
+        val transacoesDaCategoria = transacoes.filter {
+            it.categoriaId == categoria.id && it.tipo == "despesa" && it.valor > 0
+        }
+        val totalCategoria = transacoesDaCategoria.sumOf { it.valor }
+
+        categoria to totalCategoria
+    }.filter { it.second > 0 }
+
+    val graficoData = transacoesPorCategoria.map { (categoria, total) ->
+        Grafico(
+            id = categoria.id,
+            nome = categoria.descricao,
+            valor = total,
+            color = categoria.color,
+            icon = categoria.icon
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -29,7 +52,7 @@ fun ChartTab(homeViewModel: HomeViewModel) {
             contentAlignment = Alignment.Center
         ) {
             PieChart(
-                data = somaPorCategoria
+                data = graficoData
             )
         }
     }
