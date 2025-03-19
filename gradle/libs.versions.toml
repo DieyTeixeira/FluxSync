@@ -9,6 +9,7 @@ curved_bottom_navigationVersion = "latest_version"
 datastorePreferencesVersion = "1.1.2"
 dropboxCoreSdk = "7.0.0"
 firebaseBom = "33.9.0"
+firebaseMessagingVersion = "24.1.0"
 firebaseStorage = "21.0.1"
 foundation = "1.7.7"
 koinAndroid = "4.0.0"
@@ -41,6 +42,7 @@ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref
 dropbox-core-sdk = { module = "com.dropbox.core:dropbox-core-sdk", version.ref = "dropboxCoreSdk" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebaseMessagingVersion" }
 firebase-storage = { module = "com.google.firebase:firebase-storage", version.ref = "firebaseStorage" }
 firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
 google-accompanist-reorderable = { module = "com.google.accompanist:accompanist-reorderable", version.ref = "accompanistReorderableVersion" }
