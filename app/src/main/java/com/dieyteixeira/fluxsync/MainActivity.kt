@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.dieyteixeira.fluxsync.app.theme.FluxSyncTheme
 import com.dieyteixeira.fluxsync.app.components.AlertFirebaseMensagem
+import com.dieyteixeira.fluxsync.app.theme.FluxSyncTheme
 import com.dieyteixeira.fluxsync.ui.home.navigation.homeScreen
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import com.dieyteixeira.fluxsync.ui.login.navigation.loginScreen
@@ -30,7 +30,49 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.getValue
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import java.util.*
+
+fun scheduleDailyNotification(context: Context) {
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val intent = Intent(context, com.dieyteixeira.fluxsync.app.notification.NotificationEnviar::class.java)
+    val pendingIntent = PendingIntent.getBroadcast(
+        context,
+        1001,
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    // Configurar o horário (20:30)
+    val calendar = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 22)
+        set(Calendar.MINUTE, 5)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+
+        // Se a hora já passou hoje, agenda para amanhã
+        if (timeInMillis < System.currentTimeMillis()) {
+            add(Calendar.DAY_OF_YEAR, 1)
+        }
+    }
+
+    Log.d(TAG, "Agendando notificação para: ${calendar.time}")
+
+    // Agendar notificação diária
+    alarmManager.setInexactRepeating(
+        AlarmManager.RTC_WAKEUP,
+        calendar.timeInMillis,
+        AlarmManager.INTERVAL_DAY,
+        pendingIntent
+    )
+
+    Log.d(TAG, "Notificação diária agendada com sucesso")
+}
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
@@ -56,6 +98,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FluxSyncTheme {
+
+                scheduleDailyNotification(this)
 
                 val navController = rememberNavController()
                 val loginViewModel: LoginViewModel by viewModel()
