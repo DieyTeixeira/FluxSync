@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -125,11 +126,10 @@ fun SignInScreen(
                     placeholder = {
                         Text(
                             text = "Email",
+                            style = MaterialTheme.typography.bodyLarge,
                             color = Color.Gray,
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                lineHeight = 60.sp
-                            )
+                            fontSize = 16.sp,
+                            lineHeight = 60.sp
                         )
                     },
                     leadingIcon = {
@@ -141,7 +141,7 @@ fun SignInScreen(
                     },
                     shape = RoundedCornerShape(30),
                     singleLine = true,
-                    textStyle = TextStyle(
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(
                         color = Color.Black,
                         fontSize = 16.sp,
                         lineHeight = 60.sp
@@ -173,10 +173,9 @@ fun SignInScreen(
                         Text(
                             text = "Senha",
                             color = Color.Gray,
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                lineHeight = 60.sp
-                            )
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontSize = 16.sp,
+                            lineHeight = 60.sp
                         )
                     },
                     leadingIcon = {
@@ -200,7 +199,7 @@ fun SignInScreen(
                     },
                     shape = RoundedCornerShape(30),
                     singleLine = true,
-                    textStyle = TextStyle(
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(
                         color = Color.Black,
                         fontSize = 16.sp,
                         lineHeight = 60.sp
@@ -235,15 +234,15 @@ fun SignInScreen(
                 ) {
                     Text(
                         text = "Entrar",
+                        style = MaterialTheme.typography.titleMedium,
                         color = Color.White,
-                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
                 Text(
                     text = "Esqueceu a senha?",
+                    style = MaterialTheme.typography.titleMedium,
                     color = LightColor3,
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .align(Alignment.End)
                 )
@@ -261,6 +260,7 @@ fun SignInScreen(
                     ) {}
                     Text(
                         text = "Ou",
+                        style = MaterialTheme.typography.bodyLarge,
                         color = Color.Gray
                     )
                     Box(
@@ -286,8 +286,8 @@ fun SignInScreen(
                 ) {
                     Text(
                         text = "Criar conta",
+                        style = MaterialTheme.typography.titleMedium,
                         color = LightColor1,
-                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }

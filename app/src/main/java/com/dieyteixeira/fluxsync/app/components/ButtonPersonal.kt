@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -135,7 +137,7 @@ fun ButtonPersonalOutline(
         Text(
             text = text,
             color = colorText,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }
@@ -165,7 +167,7 @@ fun ButtonPersonalText(
         Text(
             text = text,
             color = colorText,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }
@@ -218,7 +220,7 @@ fun ButtonPersonalMaxWidth(
             text = text,
             color = colorText,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }

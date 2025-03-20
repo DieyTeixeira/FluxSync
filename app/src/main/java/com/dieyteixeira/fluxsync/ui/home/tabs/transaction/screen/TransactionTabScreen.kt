@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -134,8 +135,8 @@ fun TransactionTab(
             ) {
                 Text(
                     text = "Fluxo de caixa",
+                    style = MaterialTheme.typography.titleMedium,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
             }
@@ -180,7 +181,7 @@ fun TransactionTab(
                     if (mes == "") { Spacer(modifier = Modifier.width(35.dp)) }
                     Text(
                         text = mes,
-                        style = TextStyle(
+                        style = MaterialTheme.typography.bodyLarge.copy(
                             fontSize = if (mes == mesCentral) 20.sp else 14.sp,
                             fontWeight = if (mes == mesCentral) FontWeight.Bold else FontWeight.Normal,
                             color = Color.White
@@ -223,6 +224,7 @@ fun TransactionTab(
                     ) {
                         Text(
                             text = dataFormatada,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontSize = 16.sp,
                             color = ColorFontesLight
                         )

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,7 +49,11 @@ fun SplashScreen() {
         ){
             ChasingTwoDots(color = LightColor1)
             Spacer(modifier = Modifier.height(30.dp))
-            Text(text = loadingMessage, color = Color.White)
+            Text(
+                text = loadingMessage,
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White
+            )
         }
     }
 }

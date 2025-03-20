@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -79,9 +80,9 @@ fun HomeCardHistorico(
             ) {
                 Text(
                     text = "Histórico de " + nomeMesAtual(mesAtual()),
+                    style = MaterialTheme.typography.titleMedium,
                     color = ColorFontesDark,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(0.dp, 3.dp)
                 )
             }
@@ -125,23 +126,23 @@ fun HistoricoItem(
         ) {
             Text(
                 text = transacao.descricao,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 18.sp
             )
             Spacer(modifier = Modifier.width(10.dp))
             if (transacao.lancamento == "Parcelado") {
                 Text(
                     text = transacao.parcelas,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
                     color = ColorFontesLight
                 )
             }
         }
         Text(
             text = if (visibility) formatarValor(transacao.valor) else " R$ *****",
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
             color = if (transacao.tipo == "receita") ColorPositive else ColorNegative
         )
     }

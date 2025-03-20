@@ -106,8 +106,10 @@ enum class NavigationBarItems(
     ),
     Settings(
         icon = R.drawable.icon_ferramenta,
-        screen = { _, _, _, _, _, _, _ ->
-            SettingsTab()
+        screen = { _, homeViewModel, _, _, _, _, _ ->
+            SettingsTab(
+                homeViewModel
+            )
         }
     )
 }

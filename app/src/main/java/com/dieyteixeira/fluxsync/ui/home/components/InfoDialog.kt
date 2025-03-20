@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -71,9 +72,9 @@ fun InfoDialog(
         ) {
             Text(
                 text = "Detalhes da Transação",
+                style = MaterialTheme.typography.titleMedium,
                 fontSize = 20.sp,
-                color = LightColor3,
-                fontWeight = FontWeight.Bold
+                color = LightColor3
             )
             Spacer(modifier = Modifier.height(25.dp))
 
@@ -117,6 +118,7 @@ fun InfoDialog(
                 }
             } ?: Text(
                 text = "Transação não encontrada.",
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center,
                 color = ColorFontesLight
@@ -158,6 +160,7 @@ fun CardText(
             }
             Text(
                 text = textItem,
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 18.sp,
                 color = ColorFontesLight,
                 modifier = Modifier.padding(start = 15.dp)
@@ -211,6 +214,7 @@ fun CardIconText(
             Row {
                 Text(
                     text = descricao,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontSize = 18.sp,
                     color = ColorFontesLight,
                     modifier = Modifier.padding(start = 15.dp)
@@ -219,6 +223,7 @@ fun CardIconText(
                     Spacer(modifier = Modifier.width(15.dp))
                     Text(
                         text = "(${formatarValor(conta.saldo)})",
+                        style = MaterialTheme.typography.bodyLarge,
                         fontSize = 14.sp,
                         color = if (conta.saldo > 0) ColorPositive else ColorNegative,
                     )

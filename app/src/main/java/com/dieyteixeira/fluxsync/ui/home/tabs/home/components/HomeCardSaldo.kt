@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -97,14 +98,15 @@ fun HomeCardSaldo(
                 ) {
                     Text(
                         text = "Saldo",
+                        style = MaterialTheme.typography.bodyLarge,
                         color = ColorFontesLight,
                         fontSize = 16.sp
                     )
                     Text(
                         text = if (isSaldoVisivel) formatarValor(saldoTotal) else "R$ *****",
+                        style = MaterialTheme.typography.titleMedium,
                         color = ColorFontesDark,
                         fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(0.dp, 3.dp)
                     )
                 }
@@ -190,13 +192,13 @@ fun SaldoItem(
         ) {
             Text(
                 text = contas.descricao,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+                style = MaterialTheme.typography.titleSmall,
+                fontSize = 18.sp
             )
             Text(
                 text = if (visibility) formatarValor(contas.saldo) else "R$ *****",
+                style = MaterialTheme.typography.titleMedium,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
                 color = if (contas.saldo > 0) ColorPositive else ColorNegative
             )
         }

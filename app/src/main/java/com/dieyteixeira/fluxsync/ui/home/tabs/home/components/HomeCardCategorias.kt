@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -110,9 +111,9 @@ fun HomeCardCategorias(
             ) {
                 Text(
                     text = "Categorias",
+                    style = MaterialTheme.typography.titleMedium,
                     color = ColorFontesDark,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(0.dp, 3.dp)
                 )
                 Image(
@@ -201,8 +202,8 @@ fun CategoriasItem(
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = categoria.descricao,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+                style = MaterialTheme.typography.titleSmall,
+                fontSize = 18.sp
             )
         }
 
@@ -211,11 +212,13 @@ fun CategoriasItem(
         ) {
             Text(
                 text = "%.2f".format(percentual),
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 14.sp,
                 color = ColorFontesLight
             )
             Text(
                 text = "%",
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 12.sp,
                 color = ColorFontesLight
             )

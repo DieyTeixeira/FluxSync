@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,9 +40,8 @@ fun TextWithIcon(
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = textValue,
-            style = TextStyle.Default.copy(
-                fontSize = 12.sp
-            ),
+            style = MaterialTheme.typography.bodyLarge,
+            fontSize = 12.sp,
             color = Color.DarkGray
         )
     }

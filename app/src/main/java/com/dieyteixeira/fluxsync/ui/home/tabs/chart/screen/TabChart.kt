@@ -19,8 +19,6 @@ fun ChartTab(homeViewModel: HomeViewModel) {
     val categorias = homeViewModel.categorias.value
     val transacoes = homeViewModel.transacoes.value
 
-    val totalGeral = transacoes.filter { it.tipo == "despesa" && it.valor > 0 }.sumOf { it.valor }
-
     val transacoesPorCategoria = categorias.map { categoria ->
         val transacoesDaCategoria = transacoes.filter {
             it.categoriaId == categoria.id && it.tipo == "despesa" && it.valor > 0

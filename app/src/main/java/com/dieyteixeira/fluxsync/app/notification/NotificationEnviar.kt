@@ -61,7 +61,7 @@ fun scheduleDailyNotifications(
 
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val times = listOf(
-        Pair(9, 0),   // Notificação às 09:00
+        Pair(10, 0),   // Notificação às 10:00
         Pair(18, 0)  // Notificação às 18:00
     )
 

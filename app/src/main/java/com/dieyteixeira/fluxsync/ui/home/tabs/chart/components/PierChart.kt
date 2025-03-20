@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -139,6 +140,7 @@ fun PieChart(
             }
             Text(
                 text = "%\nGASTOS POR\nCATEGORIA",
+                style = MaterialTheme.typography.bodyLarge,
                 color = ColorFontesLight,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center
@@ -220,14 +222,14 @@ fun DetailsPieChartItem(
                 Text(
                     modifier = Modifier.padding(start = 15.dp),
                     text = data.first,
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.titleSmall,
                     fontSize = 18.sp,
                     color = ColorFontesDark
                 )
                 Text(
                     modifier = Modifier.padding(start = 15.dp),
                     text = "%.2f%%".format(percentual),
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.titleSmall,
                     fontSize = 18.sp,
                     color = ColorFontesDark
                 )

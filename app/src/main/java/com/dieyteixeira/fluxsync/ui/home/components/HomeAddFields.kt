@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,9 +76,9 @@ fun HomeAddFieldsText(
         ) {
             Text(
                 text = text,
+                style = MaterialTheme.typography.titleMedium,
                 fontSize = 18.sp,
-                color = ColorFontesDark,
-                fontWeight = FontWeight.Bold
+                color = ColorFontesDark
             )
             Spacer(modifier = Modifier.width(10.dp))
             TextField(
@@ -90,11 +91,12 @@ fun HomeAddFieldsText(
                 placeholder = {
                     Text(
                         text = placeholder,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontSize = 18.sp,
                         color = ColorFontesLight
                     )
                 },
-                textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = ColorFontesDark, fontSize = 18.sp),
                 singleLine = singleLine,
                 keyboardOptions = KeyboardOptions.Default,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -143,9 +145,9 @@ fun HomeAddFieldsTextLeanding(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Row(
             modifier = Modifier
@@ -178,6 +180,7 @@ fun HomeAddFieldsTextLeanding(
                 placeholder = {
                     Text(
                         text = placeholder,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontSize = 18.sp,
                         color = ColorFontesLight
                     )
@@ -190,7 +193,7 @@ fun HomeAddFieldsTextLeanding(
                             onClickKeyboard()
                         }
                     },
-                textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = ColorFontesDark, fontSize = 18.sp),
                 singleLine = singleLine,
                 keyboardOptions = KeyboardOptions.Default,
                 keyboardActions = KeyboardActions(
@@ -240,9 +243,9 @@ fun HomeAddFieldsTextLongLeanding(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Row(
             modifier = Modifier
@@ -277,6 +280,7 @@ fun HomeAddFieldsTextLongLeanding(
                 placeholder = {
                     Text(
                         text = placeholder,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontSize = 18.sp,
                         color = ColorFontesLight
                     )
@@ -296,7 +300,7 @@ fun HomeAddFieldsTextLongLeanding(
                             onClickKeyboard()
                         }
                     },
-                textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = ColorFontesDark, fontSize = 18.sp),
                 singleLine = singleLine,
                 keyboardOptions = KeyboardOptions.Default,
                 keyboardActions = KeyboardActions(
@@ -343,9 +347,9 @@ fun HomeAddFieldsTextImage(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Row(
             modifier = Modifier
@@ -374,6 +378,7 @@ fun HomeAddFieldsTextImage(
                 onValueChange = onValueChange,
                 placeholder = { Text(
                     text = placeholder,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontSize = 18.sp,
                     color = ColorFontesLight
                 ) },
@@ -385,7 +390,7 @@ fun HomeAddFieldsTextImage(
                             onClickKeyboard()
                         }
                     },
-                textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = ColorFontesDark, fontSize = 18.sp),
                 singleLine = false,
                 keyboardOptions = KeyboardOptions.Default,
                 keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
@@ -424,9 +429,9 @@ fun HomeAddFieldsTextIcon(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Spacer(modifier = Modifier.height(12.dp))
         Row(
@@ -459,6 +464,7 @@ fun HomeAddFieldsTextIcon(
             Spacer(modifier = Modifier.width(15.dp))
             Text(
                 text = textValue,
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 18.sp,
                 color = ColorFontesDark
             )
@@ -490,9 +496,9 @@ fun HomeAddFieldsInsert(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Spacer(modifier = Modifier.height(12.dp))
         Row(
@@ -521,6 +527,7 @@ fun HomeAddFieldsInsert(
             Spacer(modifier = Modifier.width(14.dp))
             Text(
                 text = textValue,
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 18.sp,
                 color = ColorFontesDark
             )
@@ -528,6 +535,7 @@ fun HomeAddFieldsInsert(
                 Spacer(modifier = Modifier.width(15.dp))
                 Text(
                     text = "(${formatarValor(textSaldo)})",
+                    style = MaterialTheme.typography.bodyLarge,
                     fontSize = 16.sp,
                     fontStyle = FontStyle.Italic,
                     color = if (textSaldo > 0) ColorPositive else ColorNegative
@@ -570,9 +578,9 @@ fun HomeAddFieldsTextButtons(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Spacer(modifier = Modifier.height(12.dp))
         Row(
@@ -647,6 +655,7 @@ fun ButtonsIncDec(
         ) {
             Text(
                 text = "$value",
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 18.sp,
                 color = ColorFontesDark,
                 modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 0.dp)

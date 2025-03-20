@@ -20,8 +20,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,12 +42,14 @@ import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.app.theme.LightColor4
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
+import java.util.Calendar
 
 @Composable
 fun HomeTopBar(
     homeViewModel: HomeViewModel
 ) {
 
+    val fontSize by homeViewModel.adjustedFontSize.collectAsState()
     val interactionSource = remember { MutableInteractionSource() }
     var rotationAngle by remember { mutableStateOf(0f) }
 
@@ -53,6 +57,15 @@ fun HomeTopBar(
         targetValue = rotationAngle,
         animationSpec = tween(durationMillis = 1000, easing = LinearEasing)
     )
+
+    fun saudacao(): String {
+        val hora = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        return when {
+            hora in 5..11 -> "Bom dia,"
+            hora in 12..17 -> "Boa tarde,"
+            else -> "Boa noite,"
+        }
+    }
 
     Row(
         modifier = Modifier
@@ -95,15 +108,15 @@ fun HomeTopBar(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = "Boa tarde,",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
+                text = saudacao(),
+                style = MaterialTheme.typography.titleSmall,
+                fontSize = (16 + fontSize).sp,
                 color = Color.White
             )
             Text(
                 text = "Diey Teixeira",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = (20 + fontSize).sp,
                 color = Color.White
             )
         }

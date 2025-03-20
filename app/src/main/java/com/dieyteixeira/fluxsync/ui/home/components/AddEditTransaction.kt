@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -54,6 +55,7 @@ import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.components.DatePickerCustom
 import com.dieyteixeira.fluxsync.app.components.formatCurrencyInput
 import com.dieyteixeira.fluxsync.app.components.removeLastDigit
+import com.dieyteixeira.fluxsync.app.components.textEditTransactionSalvar
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
@@ -71,7 +73,6 @@ import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.Transaction
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLeanding
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLongLeanding
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.formatarValorEdit
-import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.textSalvar
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import java.time.LocalDate
@@ -188,9 +189,9 @@ fun AddTransactionForm(
                         ) {
                             Text(
                                 text = "Receita",
+                                style = MaterialTheme.typography.titleMedium,
                                 fontSize = 16.sp,
                                 color = Color.White,
-                                fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = 5.dp)
                             )
                         }
@@ -208,9 +209,9 @@ fun AddTransactionForm(
                         ) {
                             Text(
                                 text = "Despesa",
+                                style = MaterialTheme.typography.titleMedium,
                                 fontSize = 16.sp,
                                 color = Color.White,
-                                fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = 5.dp)
                             )
                         }
@@ -330,9 +331,9 @@ fun AddTransactionForm(
                             ) {
                                 Text(
                                     text = "Parcelas",
+                                    style = MaterialTheme.typography.titleMedium,
                                     fontSize = 18.sp,
-                                    color = ColorFontesDark,
-                                    fontWeight = FontWeight.Bold
+                                    color = ColorFontesDark
                                 )
                                 ButtonsIncDec(
                                     value = valueParcelas,
@@ -415,9 +416,9 @@ fun AddTransactionForm(
                     ) {
                         Text(
                             text = "Selecione uma Conta",
+                            style = MaterialTheme.typography.titleMedium,
                             fontSize = 20.sp,
-                            color = LightColor3,
-                            fontWeight = FontWeight.Bold
+                            color = LightColor3
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         LazyColumn(
@@ -450,9 +451,9 @@ fun AddTransactionForm(
                     ) {
                         Text(
                             text = "Selecione uma Categoria",
+                            style = MaterialTheme.typography.titleMedium,
                             fontSize = 20.sp,
-                            color = LightColor3,
-                            fontWeight = FontWeight.Bold
+                            color = LightColor3
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         LazyColumn(
@@ -609,9 +610,9 @@ fun EditTransactionForm(
                 ) {
                     Text(
                         text = "Editar " + if (transacaoTipo == "despesa") "Despesa" else "Receita",
+                        style = MaterialTheme.typography.titleMedium,
                         fontSize = 20.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
+                        color = Color.White
                     )
                 }
                 LazyColumn(
@@ -748,9 +749,9 @@ fun EditTransactionForm(
                     ) {
                         Text(
                             text = "Selecione uma Conta",
+                            style = MaterialTheme.typography.titleMedium,
                             fontSize = 20.sp,
-                            color = LightColor3,
-                            fontWeight = FontWeight.Bold
+                            color = LightColor3
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         LazyColumn(
@@ -781,11 +782,11 @@ fun EditTransactionForm(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        androidx.compose.material3.Text(
+                        Text(
                             text = "Selecione uma Categoria",
+                            style = MaterialTheme.typography.titleMedium,
                             fontSize = 20.sp,
-                            color = LightColor3,
-                            fontWeight = FontWeight.Bold
+                            color = LightColor3
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         LazyColumn(
@@ -829,7 +830,7 @@ fun EditTransactionForm(
 
             if (salvarAjustes) {
                 ConfirmDialog(
-                    text = textSalvar,
+                    text = textEditTransactionSalvar,
                     onClickClose = {
                         alterarTodas = false
                         homeViewModel.editarTransacao(

@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -88,8 +89,8 @@ fun SignUpScreen(
         ) {
             Text(
                 text = "Cadastro de usuário",
+                style = MaterialTheme.typography.titleMedium,
                 color = Color.Gray,
-                fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
             OutlinedTextField(
@@ -105,11 +106,10 @@ fun SignUpScreen(
                 placeholder = {
                     Text(
                         text = "Email",
+                        style = MaterialTheme.typography.bodyLarge,
                         color = Color.Gray,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            lineHeight = 60.sp
-                        )
+                        fontSize = 16.sp,
+                        lineHeight = 60.sp
                     )
                 },
                 leadingIcon = {
@@ -121,7 +121,7 @@ fun SignUpScreen(
                 },
                 shape = RoundedCornerShape(30),
                 singleLine = true,
-                textStyle = TextStyle(
+                textStyle = MaterialTheme.typography.bodyLarge.copy(
                     color = Color.Black,
                     fontSize = 16.sp,
                     lineHeight = 60.sp
@@ -148,11 +148,10 @@ fun SignUpScreen(
                 placeholder = {
                     Text(
                         text = "Senha",
+                        style = MaterialTheme.typography.bodyLarge,
                         color = Color.Gray,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            lineHeight = 60.sp
-                        )
+                        fontSize = 16.sp,
+                        lineHeight = 60.sp
                     )
                 },
                 leadingIcon = {
@@ -175,7 +174,7 @@ fun SignUpScreen(
                 },
                 shape = RoundedCornerShape(30),
                 singleLine = true,
-                textStyle = TextStyle(
+                textStyle = MaterialTheme.typography.bodyLarge.copy(
                     color = Color.Black,
                     fontSize = 16.sp,
                     lineHeight = 60.sp
@@ -204,11 +203,10 @@ fun SignUpScreen(
                 placeholder = {
                     Text(
                         text = "Senha",
+                        style = MaterialTheme.typography.bodyLarge,
                         color = Color.Gray,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            lineHeight = 60.sp
-                        )
+                        fontSize = 16.sp,
+                        lineHeight = 60.sp
                     )
                 },
                 leadingIcon = {
@@ -231,7 +229,7 @@ fun SignUpScreen(
                 },
                 shape = RoundedCornerShape(30),
                 singleLine = true,
-                textStyle = TextStyle(
+                textStyle = MaterialTheme.typography.bodyLarge.copy(
                     color = Color.Black,
                     fontSize = 16.sp,
                     lineHeight = 60.sp
@@ -322,8 +320,8 @@ fun SignUpScreen(
             ) {
                 Text(
                     text = "Cadastrar",
+                    style = MaterialTheme.typography.titleMedium,
                     color = Color.White,
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
@@ -343,8 +341,8 @@ fun SignUpScreen(
             ) {
                 Text(
                     text = "Login",
+                    style = MaterialTheme.typography.titleMedium,
                     color = LightColor1,
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }

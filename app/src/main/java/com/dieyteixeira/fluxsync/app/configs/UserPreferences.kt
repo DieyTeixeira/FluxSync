@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences.Companion.CARDS_ORDER_KEY
@@ -18,6 +19,7 @@ class UserPreferences(private val context: Context) {
     companion object {
         private val CARDS_ORDER_KEY = stringPreferencesKey("cards_order")
         private val ENABLED_CARDS_KEY = stringPreferencesKey("enabled_cards")
+        private val FONT_SIZE_KEY = intPreferencesKey("font_size")
     }
 
     // Recuperar preferências do usuário
@@ -47,6 +49,18 @@ class UserPreferences(private val context: Context) {
     suspend fun clearUserPreferences() {
         context.dataStore.edit { preferences ->
             preferences.clear()
+        }
+    }
+
+    val fontSizeOption: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[FONT_SIZE_KEY] ?: 0  // Se não houver valor salvo, usa 0 (Pequena)
+        }
+
+    // Salvar o tamanho da fonte selecionado
+    suspend fun saveFontSizeOption(option: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[FONT_SIZE_KEY] = option
         }
     }
 }

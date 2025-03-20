@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -49,6 +50,26 @@ class HomeViewModel(
     val message: StateFlow<String?> = _message.asStateFlow()
     private val _tipoMessage = MutableStateFlow<String?>(null)
     val tipoMessage: StateFlow<String?> = _tipoMessage.asStateFlow()
+
+    private val _sliderPosition = MutableStateFlow(0f)
+    val sliderPosition: StateFlow<Float> = _sliderPosition.asStateFlow()
+
+    private val _adjustedFontSize = MutableStateFlow(0)
+    val adjustedFontSize: StateFlow<Int> = _adjustedFontSize.asStateFlow()
+
+    fun setSliderPosition(position: Float) {
+        _sliderPosition.value = position
+        _adjustedFontSize.value = when (position.toInt()) {
+            0 -> 0  // Pequena
+            1 -> 1
+            2 -> 2
+            3 -> 3
+            4 -> 4
+            5 -> 5
+            6 -> 6
+            else -> 7 // Grande
+        }
+    }
 
     init {
         getAtualizar()

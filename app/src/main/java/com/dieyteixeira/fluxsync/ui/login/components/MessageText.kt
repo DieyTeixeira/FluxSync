@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -103,7 +104,7 @@ fun MensagemError(
             Text(
                 text = errorMessageAjust,
                 color = Color.White,
-                style = TextStyle.Default.copy(
+                style = MaterialTheme.typography.bodyLarge.copy(
                     fontSize = 18.sp,
                     fontStyle = FontStyle.Italic
                 ),
@@ -166,7 +167,7 @@ fun MensagemSuccess(
             Text(
                 text = "Login bem-sucedido!",
                 color = Color.White,
-                style = TextStyle.Default.copy(
+                style = MaterialTheme.typography.bodyLarge.copy(
                     fontSize = 18.sp,
                     fontStyle = FontStyle.Italic
                 ),
@@ -191,6 +192,7 @@ fun ErrorBoxSignIn(messageError: String, offsetY: Dp) {
     ) {
         Text(
             text = messageError,
+            style = MaterialTheme.typography.bodyLarge,
             color = ColorError,
             modifier = Modifier.align(Alignment.Center)
         )

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +37,7 @@ import com.dieyteixeira.fluxsync.app.components.CustomFieldIconEdit
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboardEdit
 import com.dieyteixeira.fluxsync.app.components.formatCurrencyInput
 import com.dieyteixeira.fluxsync.app.components.removeLastDigit
+import com.dieyteixeira.fluxsync.app.components.textEditTransactionSalvar
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
@@ -130,9 +132,9 @@ fun TransactionEditDialog(
             ) {
                 Text(
                     text = "Editar Transação",
+                    style = MaterialTheme.typography.titleMedium,
                     fontSize = 20.sp,
                     color = LightColor3,
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.clickable(
                         indication = null,
                         interactionSource = interactionSource
@@ -265,9 +267,9 @@ fun TransactionEditDialog(
             ) {
                 Text(
                     text = "Selecione uma Conta",
+                    style = MaterialTheme.typography.titleMedium,
                     fontSize = 20.sp,
-                    color = LightColor3,
-                    fontWeight = FontWeight.Bold
+                    color = LightColor3
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 LazyColumn(
@@ -301,9 +303,9 @@ fun TransactionEditDialog(
             ) {
                 Text(
                     text = "Selecione uma Categoria",
+                    style = MaterialTheme.typography.titleMedium,
                     fontSize = 20.sp,
-                    color = LightColor3,
-                    fontWeight = FontWeight.Bold
+                    color = LightColor3
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 LazyColumn(
@@ -327,7 +329,7 @@ fun TransactionEditDialog(
 
     if (salvarAjustes) {
         ConfirmDialog(
-            text = textSalvar,
+            text = textEditTransactionSalvar,
             onClickClose = {
                 alterarTodas = false
                 homeViewModel.editarTransacao(transacao.copy(

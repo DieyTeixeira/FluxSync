@@ -15,6 +15,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +47,7 @@ fun TextInputIcon(
         placeholder = {
             Text(
                 text = placeholder,
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 18.sp,
                 color = ColorFontesLight
             )
@@ -65,7 +67,10 @@ fun TextInputIcon(
                     onClickKeyboard()
                 }
             },
-        textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+        textStyle = MaterialTheme.typography.bodyLarge.copy(
+            color = ColorFontesDark,
+            fontSize = 18.sp
+        ),
         singleLine = false,
         keyboardOptions = KeyboardOptions.Default,
         keyboardActions = KeyboardActions(
@@ -97,7 +102,7 @@ fun TextInput(
         value = textValue,
         onValueChange = onValueChange,
         singleLine = true,
-        textStyle = TextStyle(
+        textStyle = MaterialTheme.typography.bodyLarge.copy(
             color = ColorFontesDark,
             fontSize = 18.sp
         ),
@@ -121,6 +126,7 @@ fun TextInput(
                 if (textValue.isEmpty()) {
                     Text(
                         text = placeholder,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontSize = 18.sp,
                         color = ColorFontesLight
                     )

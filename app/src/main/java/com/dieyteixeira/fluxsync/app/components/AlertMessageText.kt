@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.theme.ColorError
 import com.dieyteixeira.fluxsync.app.theme.ColorSuccess
+import com.dieyteixeira.fluxsync.app.theme.DarkColorError
 import com.dieyteixeira.fluxsync.app.theme.DarkColorSuccess
 import kotlinx.coroutines.delay
 
@@ -72,15 +74,8 @@ fun AlertFirebaseMensagem(
                     width = 2.dp,
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            ColorSuccess,
-                            DarkColorSuccess
-//                            if (tipo == "success") {
-//                                ColorSuccess
-//                                DarkColorSuccess
-//                            } else {
-//                                ColorError
-//                                DarkColorError
-//                            }
+                            if (tipo == "success") { ColorSuccess } else { ColorError },
+                            if (tipo == "success") { DarkColorSuccess } else { DarkColorError }
                         )
                     ),
                     shape = RoundedCornerShape(15.dp)
@@ -97,7 +92,7 @@ fun AlertFirebaseMensagem(
             Text(
                 text = message,
                 color = Color.White,
-                style = TextStyle.Default.copy(
+                style = MaterialTheme.typography.bodyLarge.copy(
                     fontSize = 18.sp,
                     fontStyle = FontStyle.Italic
                 ),

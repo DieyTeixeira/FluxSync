@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalIcon
+import com.dieyteixeira.fluxsync.app.components.textTransactionExcluir
+import com.dieyteixeira.fluxsync.app.components.textTransactionSituacao
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
@@ -37,9 +40,7 @@ import com.dieyteixeira.fluxsync.app.theme.ColorGrayLight
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.ui.home.components.AlertDialog
 import com.dieyteixeira.fluxsync.ui.home.components.ConfirmDialog
-import com.dieyteixeira.fluxsync.ui.home.components.InfoDialog
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 
@@ -88,35 +89,37 @@ fun TransactionItem(
             ) {
                 Text(
                     text = transacao.descricao,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium
+                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 18.sp
                 )
                 if (transacao.lancamento == "Parcelado") {
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = transacao.parcelas,
+                        style = MaterialTheme.typography.titleSmall,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
                         color = ColorFontesLight
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = conta.descricao,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontSize = 16.sp,
                     color = ColorFontesLight
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = transacao.situacao,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontSize = 16.sp,
                     color = ColorFontesLight
                 )
             }
             Text(
                 text = formatarValor(transacao.valor),
+                style = MaterialTheme.typography.titleMedium,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
                 color = if (transacao.tipo == "receita") ColorPositive else ColorNegative
             )
         }
@@ -176,7 +179,7 @@ fun TransactionItem(
 
     if (excluirDialog) {
         ConfirmDialog(
-            text = textExcluir,
+            text = textTransactionExcluir,
             onClickClose = { excluirDialog = false },
             onClickYes = {
                 homeViewModel.excluirTransacao(transacao.grupoId)
@@ -187,7 +190,7 @@ fun TransactionItem(
 
     if (situacaoDialog) {
         ConfirmDialog(
-            text = textSituacao,
+            text = textTransactionSituacao,
             onClickClose = { situacaoDialog = false },
             onClickYes = {
                 homeViewModel.editarSituacao(

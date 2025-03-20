@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -88,9 +89,9 @@ fun SelectAnoDialog(
         ) {
             Text(
                 text = "Selecionar Ano",
+                style = MaterialTheme.typography.titleMedium,
                 fontSize = 20.sp,
-                color = LightColor3,
-                fontWeight = FontWeight.Bold
+                color = LightColor3
             )
             Spacer(modifier = Modifier.height(20.dp))
             Box(
@@ -124,7 +125,7 @@ fun SelectAnoDialog(
                         }
                         Text(
                             text = ano.toString(),
-                            style = TextStyle(
+                            style = MaterialTheme.typography.bodyLarge.copy(
                                 fontSize = if (ano == anoCentral) 30.sp else 20.sp,
                                 fontWeight = if (ano == anoCentral) FontWeight.Bold else FontWeight.Normal,
                                 color = if (ano == anoCentral) Color.White else Color.Gray

@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -71,9 +72,9 @@ fun TransactionAddFieldsInsert(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Spacer(modifier = Modifier.height(12.dp))
         Row(
@@ -102,6 +103,7 @@ fun TransactionAddFieldsInsert(
             Spacer(modifier = Modifier.width(14.dp))
             Text(
                 text = textValue,
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 18.sp,
                 color = ColorFontesDark
             )
@@ -109,6 +111,7 @@ fun TransactionAddFieldsInsert(
                 Spacer(modifier = Modifier.width(15.dp))
                 Text(
                     text = "(${formatarValor(textSaldo)})",
+                    style = MaterialTheme.typography.bodyLarge,
                     fontSize = 16.sp,
                     fontStyle = FontStyle.Italic,
                     color = if (textSaldo > 0) ColorPositive else ColorNegative
@@ -145,9 +148,9 @@ fun TransactionAddFieldsTextLeanding(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Row(
             modifier = Modifier
@@ -180,6 +183,7 @@ fun TransactionAddFieldsTextLeanding(
                 placeholder = {
                     Text(
                         text = placeholder,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontSize = 18.sp,
                         color = ColorFontesLight
                     )
@@ -192,7 +196,7 @@ fun TransactionAddFieldsTextLeanding(
                             onClickKeyboard()
                         }
                     },
-                textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = ColorFontesDark, fontSize = 18.sp),
                 singleLine = singleLine,
                 keyboardOptions = KeyboardOptions.Default,
                 keyboardActions = KeyboardActions(
@@ -241,9 +245,9 @@ fun TransactionAddFieldsValueLeanding(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Row(
             modifier = Modifier
@@ -272,6 +276,7 @@ fun TransactionAddFieldsValueLeanding(
             ) {
                 Text(
                     text = "R$",
+                    style = MaterialTheme.typography.bodyLarge,
                     fontSize = 18.sp,
                     color = ColorFontesDark
                 )
@@ -285,6 +290,7 @@ fun TransactionAddFieldsValueLeanding(
                     placeholder = {
                         Text(
                             text = placeholder,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontSize = 18.sp,
                             color = ColorFontesLight
                         )
@@ -297,7 +303,7 @@ fun TransactionAddFieldsValueLeanding(
                                 onClickKeyboard()
                             }
                         },
-                    textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = ColorFontesDark, fontSize = 18.sp),
                     singleLine = singleLine,
                     keyboardOptions = keyboardOptions,
                     keyboardActions = KeyboardActions(
@@ -348,9 +354,9 @@ fun TransactionAddFieldsTextLongLeanding(
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            color = ColorFontesDark
         )
         Row(
             modifier = Modifier
@@ -385,6 +391,7 @@ fun TransactionAddFieldsTextLongLeanding(
                 placeholder = {
                     Text(
                         text = placeholder,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontSize = 18.sp,
                         color = ColorFontesLight
                     )
@@ -404,7 +411,7 @@ fun TransactionAddFieldsTextLongLeanding(
                             onClickKeyboard()
                         }
                     },
-                textStyle = TextStyle(color = ColorFontesDark, fontSize = 18.sp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = ColorFontesDark, fontSize = 18.sp),
                 singleLine = singleLine,
                 keyboardOptions = KeyboardOptions.Default,
                 keyboardActions = KeyboardActions(

@@ -28,6 +28,7 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -131,9 +132,9 @@ fun AddCategoriaForm(
                 ) {
                     Text(
                         text = "Adicionar Categoria",
+                        style = MaterialTheme.typography.titleMedium,
                         fontSize = 20.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
+                        color = Color.White
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
@@ -374,9 +375,9 @@ fun EditCategoriaForm(
                 ) {
                     Text(
                         text = "Editar Categoria",
+                        style = MaterialTheme.typography.titleMedium,
                         fontSize = 20.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
+                        color = Color.White
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))

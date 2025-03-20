@@ -21,6 +21,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -76,9 +77,9 @@ fun HomeCardAjusts(
             ) {
                 Text(
                     text = "Ajustes",
+                    style = MaterialTheme.typography.titleMedium,
                     color = ColorFontesDark,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(0.dp, 3.dp)
                 )
             }
@@ -130,9 +131,9 @@ fun AjusteItem(
         ) {
             Text(
                 text = itemText.text,
+                style = MaterialTheme.typography.bodyLarge,
                 color = LightColor3,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+                fontSize = 18.sp
             )
         }
         Row(

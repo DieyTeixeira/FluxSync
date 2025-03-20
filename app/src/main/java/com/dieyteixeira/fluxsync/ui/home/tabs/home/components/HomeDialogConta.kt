@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -78,9 +79,9 @@ fun ContasDialog(
         ) {
             Text(
                 text = "Contas",
+                style = MaterialTheme.typography.titleMedium,
                 fontSize = 20.sp,
-                color = LightColor3,
-                fontWeight = FontWeight.Bold
+                color = LightColor3
             )
             Spacer(modifier = Modifier.height(20.dp))
             ButtonPersonalMaxWidth(
@@ -187,20 +188,20 @@ fun ContasList(
             ) {
                 Text(
                     text = contas.descricao,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium
+                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 18.sp
                 )
                 Row {
                     Text(
                         text = "Saldo:  ",
+                        style = MaterialTheme.typography.titleSmall,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
                         color = ColorFontesLight
                     )
                     Text(
                         text = formatarValor(contas.saldo),
+                        style = MaterialTheme.typography.titleSmall,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
                         color = if (contas.saldo > 0) ColorPositive else ColorNegative
                     )
                 }

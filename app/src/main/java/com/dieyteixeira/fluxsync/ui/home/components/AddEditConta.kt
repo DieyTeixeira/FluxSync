@@ -29,6 +29,7 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -144,9 +145,9 @@ fun AddContaForm(
                 ) {
                     Text(
                         text = "Adicionar Conta",
+                        style = MaterialTheme.typography.titleMedium,
                         fontSize = 20.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
+                        color = Color.White
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
@@ -299,6 +300,7 @@ fun AddContaForm(
                                     Spacer(modifier = Modifier.width(10.dp))
                                     Text(
                                         text = listBancos[index].name,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         fontSize = 18.sp,
                                         color = ColorFontesDark
                                     )
@@ -480,9 +482,9 @@ fun EditContaForm(
                 ) {
                     Text(
                         text = "Editar Conta",
+                        style = MaterialTheme.typography.titleMedium,
                         fontSize = 20.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
+                        color = Color.White
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
@@ -635,6 +637,7 @@ fun EditContaForm(
                                     Spacer(modifier = Modifier.width(10.dp))
                                     Text(
                                         text = listBancos[index].name,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         fontSize = 18.sp,
                                         color = ColorFontesDark
                                     )

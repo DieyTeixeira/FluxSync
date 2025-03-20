@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,13 +38,14 @@ fun ConfirmDialog(
         ) {
             Text(
                 text = "Confirmar ação",
+                style = MaterialTheme.typography.titleMedium,
                 fontSize = 20.sp,
-                color = LightColor3,
-                fontWeight = FontWeight.Bold
+                color = LightColor3
             )
             Spacer(modifier = Modifier.height(25.dp))
             Text(
                 text = text,
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 color = ColorFontesLight
@@ -92,13 +94,14 @@ fun AlertDialog(
         ) {
             Text(
                 text = "Atenção!!",
+                style = MaterialTheme.typography.titleMedium,
                 fontSize = 20.sp,
-                color = LightColor3,
-                fontWeight = FontWeight.Bold
+                color = LightColor3
             )
             Spacer(modifier = Modifier.height(25.dp))
             Text(
                 text = text,
+                style = MaterialTheme.typography.bodyLarge,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center,
                 color = ColorFontesLight,

@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.ui.login.screen
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -48,6 +49,7 @@ import com.dieyteixeira.fluxsync.ui.login.components.CircleLoading
 import com.dieyteixeira.fluxsync.ui.login.components.MensagemError
 import com.dieyteixeira.fluxsync.ui.login.components.MensagemSuccess
 
+@SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel,

@@ -21,6 +21,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.material.icons.filled.ExpandCircleDown
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -76,13 +77,13 @@ fun CustomField(
         Text(
             text = "R$ ",
             fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium,
             color = Color.White
         )
         Text(
             text = value.ifEmpty { "0,00" },
             fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium,
             color = Color.White
         )
     }
@@ -122,8 +123,8 @@ fun CustomFieldIconEdit(
         Text(
             text = text,
             fontSize = 18.sp,
-            color = ColorFontesDark,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleMedium,
+            color = ColorFontesDark
         )
         Row(
             modifier = Modifier
@@ -164,11 +165,13 @@ fun CustomFieldIconEdit(
                 Text(
                     text = "R$  ",
                     fontSize = 18.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = ColorFontesDark
                 )
                 Text(
                     text = value.ifEmpty { "0,00" },
                     fontSize = 18.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = ColorFontesDark
                 )
             }
@@ -209,11 +212,13 @@ fun CustomFieldEdit(
         Text(
             text = "R$  ",
             fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = ColorFontesDark
         )
         Text(
             text = value.ifEmpty { "0,00" },
             fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = ColorFontesDark
         )
     }
@@ -320,7 +325,7 @@ private fun NumberButton(
         Text(
             text = number.toString(),
             fontSize = if (pressKey) 35.sp else 30.sp,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium,
             color = if (pressKey) Color.White else LightColor3
         )
     }

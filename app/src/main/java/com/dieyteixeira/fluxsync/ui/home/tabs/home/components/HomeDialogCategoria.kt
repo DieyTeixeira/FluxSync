@@ -24,6 +24,7 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -91,9 +92,9 @@ fun CategoriasDialog(
         ) {
             Text(
                 text = "Categorias",
+                style = MaterialTheme.typography.titleMedium,
                 fontSize = 20.sp,
-                color = LightColor3,
-                fontWeight = FontWeight.Bold
+                color = LightColor3
             )
             Spacer(modifier = Modifier.height(20.dp))
             ButtonPersonalMaxWidth(
@@ -193,8 +194,8 @@ fun CategoriasList(
             Spacer(modifier = Modifier.width(15.dp))
             Text(
                 text = categorias.descricao,
+                style = MaterialTheme.typography.titleSmall,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
                 modifier = Modifier.weight(1f)
             )
         }
