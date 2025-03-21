@@ -43,9 +43,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
@@ -59,6 +57,7 @@ import com.dieyteixeira.fluxsync.app.components.textEditTransactionSalvar
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
+import com.dieyteixeira.fluxsync.app.di.replace.formatarValorEdit
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
@@ -72,7 +71,6 @@ import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasList
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsInsert
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLeanding
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLongLeanding
-import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.formatarValorEdit
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import java.time.LocalDate
@@ -189,8 +187,7 @@ fun AddTransactionForm(
                         ) {
                             Text(
                                 text = "Receita",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.headlineSmall,
                                 color = Color.White,
                                 modifier = Modifier.padding(bottom = 5.dp)
                             )
@@ -209,8 +206,7 @@ fun AddTransactionForm(
                         ) {
                             Text(
                                 text = "Despesa",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.headlineSmall,
                                 color = Color.White,
                                 modifier = Modifier.padding(bottom = 5.dp)
                             )
@@ -331,8 +327,7 @@ fun AddTransactionForm(
                             ) {
                                 Text(
                                     text = "Parcelas",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontSize = 18.sp,
+                                    style = MaterialTheme.typography.titleSmall,
                                     color = ColorFontesDark
                                 )
                                 ButtonsIncDec(
@@ -416,8 +411,7 @@ fun AddTransactionForm(
                     ) {
                         Text(
                             text = "Selecione uma Conta",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.headlineMedium,
                             color = LightColor3
                         )
                         Spacer(modifier = Modifier.height(20.dp))
@@ -451,8 +445,7 @@ fun AddTransactionForm(
                     ) {
                         Text(
                             text = "Selecione uma Categoria",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.headlineMedium,
                             color = LightColor3
                         )
                         Spacer(modifier = Modifier.height(20.dp))
@@ -610,8 +603,7 @@ fun EditTransactionForm(
                 ) {
                     Text(
                         text = "Editar " + if (transacaoTipo == "despesa") "Despesa" else "Receita",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = Color.White
                     )
                 }
@@ -749,8 +741,7 @@ fun EditTransactionForm(
                     ) {
                         Text(
                             text = "Selecione uma Conta",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.headlineMedium,
                             color = LightColor3
                         )
                         Spacer(modifier = Modifier.height(20.dp))
@@ -784,8 +775,7 @@ fun EditTransactionForm(
                     ) {
                         Text(
                             text = "Selecione uma Categoria",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.headlineMedium,
                             color = LightColor3
                         )
                         Spacer(modifier = Modifier.height(20.dp))

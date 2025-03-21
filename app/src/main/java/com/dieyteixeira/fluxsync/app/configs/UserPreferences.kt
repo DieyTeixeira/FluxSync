@@ -2,6 +2,7 @@ package com.dieyteixeira.fluxsync.app.configs
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -52,15 +53,15 @@ class UserPreferences(private val context: Context) {
         }
     }
 
-    val fontSizeOption: Flow<Int> = context.dataStore.data
-        .map { preferences ->
-            preferences[FONT_SIZE_KEY] ?: 0  // Se não houver valor salvo, usa 0 (Pequena)
-        }
-
-    // Salvar o tamanho da fonte selecionado
-    suspend fun saveFontSizeOption(option: Int) {
+    suspend fun saveFontSize(size: Int) {
         context.dataStore.edit { preferences ->
-            preferences[FONT_SIZE_KEY] = option
+            preferences[FONT_SIZE_KEY] = size
+        }
+    }
+
+    fun getFontSize(): Flow<Int> {
+        return context.dataStore.data.map { preferences ->
+            preferences[FONT_SIZE_KEY] ?: 0
         }
     }
 }

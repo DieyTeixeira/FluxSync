@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.app.di.koin
 
+import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.di.repository.AuthRepository
 import com.dieyteixeira.fluxsync.app.di.repository.FirestoreRepository
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
@@ -12,7 +13,8 @@ val appModule = module {
 
     single { AuthRepository(FirebaseAuth.getInstance()) }
     single { FirestoreRepository() }
+    single { UserPreferences(get()) }
 
     viewModel { LoginViewModel(get()) } // firebase auth
-    viewModel { HomeViewModel(get()) } // firebase firestore
+    viewModel { HomeViewModel(get(), get()) } // firebase firestore
 }

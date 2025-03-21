@@ -59,7 +59,12 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            FluxSyncTheme {
+
+            val loginViewModel: LoginViewModel by viewModel()
+            val homeViewModel: HomeViewModel by viewModel()
+            val fontSize by homeViewModel.adjustedFontSize.collectAsState()
+
+            FluxSyncTheme(fontSize = fontSize) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1002)
@@ -72,8 +77,6 @@ class MainActivity : ComponentActivity() {
                 }
 
                 val navController = rememberNavController()
-                val loginViewModel: LoginViewModel by viewModel()
-                val homeViewModel: HomeViewModel by viewModel()
                 val transacoes = homeViewModel.transacoes.value
 
                 disableBatteryOptimizations(this)

@@ -89,8 +89,7 @@ fun SelectAnoDialog(
         ) {
             Text(
                 text = "Selecionar Ano",
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 20.sp,
+                style = MaterialTheme.typography.headlineMedium,
                 color = LightColor3
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -125,11 +124,17 @@ fun SelectAnoDialog(
                         }
                         Text(
                             text = ano.toString(),
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontSize = if (ano == anoCentral) 30.sp else 20.sp,
-                                fontWeight = if (ano == anoCentral) FontWeight.Bold else FontWeight.Normal,
-                                color = if (ano == anoCentral) Color.White else Color.Gray
-                            ),
+                            style = if (ano == anoCentral) {
+                                MaterialTheme.typography.headlineMedium.copy(
+                                    fontSize = 30.sp,
+                                    color = Color.White
+                                )
+                            } else {
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = 20.sp,
+                                    color = Color.Gray
+                                )
+                            },
                             modifier = Modifier
                                 .height(50.dp)
                                 .width(150.dp)

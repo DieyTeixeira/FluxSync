@@ -8,6 +8,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.Canvas
@@ -66,6 +67,10 @@ fun SettingsTab(
     val sliderPosition by homeViewModel.sliderPosition.collectAsState()
     val adjustedFontSize by homeViewModel.adjustedFontSize.collectAsState()
 
+    val tamanhofont = 14 + adjustedFontSize
+
+    Log.d("SettingsTab", "tamanho da fonte: $tamanhofont")
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -109,14 +114,14 @@ fun SettingsTab(
                     text = "Aa",
                     style = MaterialTheme.typography.titleSmall,
                     color = ColorFontesDark,
-                    fontSize = 22.sp
+                    fontSize = 19.sp
                 )
             }
             Slider(
                 value = sliderPosition,
                 onValueChange = { homeViewModel.setSliderPosition(it) },
-                valueRange = 0f..7f,
-                steps = 6,
+                valueRange = 0f..3f,
+                steps = 2,
                 modifier = Modifier
                     .semantics { contentDescription = "Controle de tamanho da fonte" },
                 colors = SliderDefaults.colors(

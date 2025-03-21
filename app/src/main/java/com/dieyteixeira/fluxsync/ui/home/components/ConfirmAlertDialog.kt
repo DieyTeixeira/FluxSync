@@ -38,15 +38,13 @@ fun ConfirmDialog(
         ) {
             Text(
                 text = "Confirmar ação",
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 20.sp,
+                style = MaterialTheme.typography.headlineMedium,
                 color = LightColor3
             )
             Spacer(modifier = Modifier.height(25.dp))
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge,
-                fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 color = ColorFontesLight
             )
@@ -94,7 +92,7 @@ fun AlertDialog(
         ) {
             Text(
                 text = "Atenção!!",
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineMedium,
                 fontSize = 20.sp,
                 color = LightColor3
             )
@@ -102,7 +100,6 @@ fun AlertDialog(
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge,
-                fontSize = 18.sp,
                 textAlign = TextAlign.Center,
                 color = ColorFontesLight,
                 modifier = Modifier.fillMaxWidth(0.8f)

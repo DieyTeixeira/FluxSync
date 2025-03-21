@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.home.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,6 +36,7 @@ import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.dicasFinanceiras
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
+import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GreenCont
@@ -52,7 +54,6 @@ fun HomeCardNotifications(
     transacoes: List<Transacoes>,
     onClick: () -> Unit
 ) {
-    val fontSize by homeViewModel.adjustedFontSize.collectAsState()
 
     val transacoesNotificadas = transacoes
         .filter { it.situacao == "pendente" && it.tipo == "despesa" }
@@ -102,8 +103,7 @@ fun HomeCardNotifications(
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = "Atenção!",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontSize = (20 + fontSize).sp,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = ColorNegative
                     )
                 }
@@ -111,11 +111,12 @@ fun HomeCardNotifications(
                 transacoesNotificadas.forEach { (descricao, status) ->
                     Text(
                         text = "Conta \"$descricao\" $status.",
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.displaySmall,
                         textAlign = TextAlign.Center,
-                        fontSize = (16 + fontSize).sp,
-                        color = LightColor4,
-                        modifier = Modifier.padding(bottom = 5.dp)
+                        color = ColorFontesDark,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 5.dp)
                     )
                 }
             }
@@ -138,19 +139,19 @@ fun HomeCardNotifications(
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = "Dica financeira",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontSize = (18 + fontSize).sp,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = ColorPositive
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = dicaAleatoria,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.displaySmall,
                     textAlign = TextAlign.Center,
-                    fontSize = (16 + fontSize).sp,
-                    color = LightColor4,
-                    modifier = Modifier.padding(5.dp)
+                    color = ColorFontesDark,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)
                 )
             }
         }

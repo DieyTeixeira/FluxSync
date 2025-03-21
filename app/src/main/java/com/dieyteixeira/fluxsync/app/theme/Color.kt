@@ -45,11 +45,15 @@ val ColorCards = Color(0xFFFDFDFD)
 
 // cores de fonte
 val ColorFontesLight = Color(0xFF999A95)
+val ColorFontesMedium = Color(0xFF666666)
 val ColorFontesDark = Color(0xFF2D2E29)
 
 // cores negativo e positivo
 val ColorPositive = Color(0xFF1B9C54)
 val ColorNegative = Color(0xFFBE0B19)
+val ColorAviso = Color(0xFFFFD700)
+val ColorCardAviso = Color(0xFFFFFDE2)
+val ColorCardAviso2 = Color(0xFFFFFEF0) // Quase branco, com um leve toque amarelad
 
 // cores de tratamento de erros
 val ColorError = Color(0xFFFF1E00)

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dieyteixeira.fluxsync.R
+import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Grafico
@@ -27,9 +28,11 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import kotlin.math.roundToInt
 
 class HomeViewModel(
-    private val firestoreRepository: FirestoreRepository
+    private val firestoreRepository: FirestoreRepository,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
 
     private val _contas = mutableStateOf<List<Conta>>(emptyList())
@@ -59,20 +62,21 @@ class HomeViewModel(
 
     fun setSliderPosition(position: Float) {
         _sliderPosition.value = position
-        _adjustedFontSize.value = when (position.toInt()) {
-            0 -> 0  // Pequena
-            1 -> 1
-            2 -> 2
-            3 -> 3
-            4 -> 4
-            5 -> 5
-            6 -> 6
-            else -> 7 // Grande
+        val fontSize = position.roundToInt()
+        _adjustedFontSize.value = fontSize
+        viewModelScope.launch {
+            userPreferences.saveFontSize(fontSize)
         }
     }
 
     init {
         getAtualizar()
+        viewModelScope.launch {
+            userPreferences.getFontSize().collect { savedSize ->
+                _adjustedFontSize.value = savedSize
+                _sliderPosition.value = savedSize.toFloat()
+            }
+        }
     }
 
     fun getAtualizar() {

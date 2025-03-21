@@ -77,9 +77,8 @@ fun HomeCardAjusts(
             ) {
                 Text(
                     text = "Ajustes",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.headlineMedium,
                     color = ColorFontesDark,
-                    fontSize = 20.sp,
                     modifier = Modifier.padding(0.dp, 3.dp)
                 )
             }
@@ -131,9 +130,8 @@ fun AjusteItem(
         ) {
             Text(
                 text = itemText.text,
-                style = MaterialTheme.typography.bodyLarge,
-                color = LightColor3,
-                fontSize = 18.sp
+                style = MaterialTheme.typography.displayMedium,
+                color = LightColor3
             )
         }
         Row(

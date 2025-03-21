@@ -140,9 +140,8 @@ fun PieChart(
             }
             Text(
                 text = "%\nGASTOS POR\nCATEGORIA",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.displayMedium,
                 color = ColorFontesLight,
-                fontSize = 20.sp,
                 textAlign = TextAlign.Center
             )
         }
@@ -222,15 +221,13 @@ fun DetailsPieChartItem(
                 Text(
                     modifier = Modifier.padding(start = 15.dp),
                     text = data.first,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.displayMedium,
                     color = ColorFontesDark
                 )
                 Text(
                     modifier = Modifier.padding(start = 15.dp),
                     text = "%.2f%%".format(percentual),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.displayMedium,
                     color = ColorFontesDark
                 )
             }

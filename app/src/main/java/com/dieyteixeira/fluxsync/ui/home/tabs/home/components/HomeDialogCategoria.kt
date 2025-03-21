@@ -92,8 +92,7 @@ fun CategoriasDialog(
         ) {
             Text(
                 text = "Categorias",
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 20.sp,
+                style = MaterialTheme.typography.headlineMedium,
                 color = LightColor3
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -194,8 +193,7 @@ fun CategoriasList(
             Spacer(modifier = Modifier.width(15.dp))
             Text(
                 text = categorias.descricao,
-                style = MaterialTheme.typography.titleSmall,
-                fontSize = 18.sp,
+                style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.weight(1f)
             )
         }

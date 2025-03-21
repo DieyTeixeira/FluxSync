@@ -72,8 +72,7 @@ fun InfoDialog(
         ) {
             Text(
                 text = "Detalhes da Transação",
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 20.sp,
+                style = MaterialTheme.typography.headlineSmall,
                 color = LightColor3
             )
             Spacer(modifier = Modifier.height(25.dp))
@@ -118,8 +117,7 @@ fun InfoDialog(
                 }
             } ?: Text(
                 text = "Transação não encontrada.",
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 18.sp,
+                style = MaterialTheme.typography.displayMedium,
                 textAlign = TextAlign.Center,
                 color = ColorFontesLight
             )
@@ -161,7 +159,6 @@ fun CardText(
             Text(
                 text = textItem,
                 style = MaterialTheme.typography.bodyLarge,
-                fontSize = 18.sp,
                 color = ColorFontesLight,
                 modifier = Modifier.padding(start = 15.dp)
             )
@@ -215,7 +212,6 @@ fun CardIconText(
                 Text(
                     text = descricao,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 18.sp,
                     color = ColorFontesLight,
                     modifier = Modifier.padding(start = 15.dp)
                 )
@@ -223,8 +219,7 @@ fun CardIconText(
                     Spacer(modifier = Modifier.width(15.dp))
                     Text(
                         text = "(${formatarValor(conta.saldo)})",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = if (conta.saldo > 0) ColorPositive else ColorNegative,
                     )
                 }

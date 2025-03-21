@@ -44,7 +44,6 @@ fun HomeCardHistorico(
     isSaldoVisivel: Boolean
 ) {
 
-    // Filtrando transações do mês atual
     val transacoesDoMesAtual = homeViewModel.transacoes.value.filter { transacao ->
         val dataTransacao = transacao.data
         dataTransacao.month == mesAtual()
@@ -80,9 +79,8 @@ fun HomeCardHistorico(
             ) {
                 Text(
                     text = "Histórico de " + nomeMesAtual(mesAtual()),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.headlineMedium,
                     color = ColorFontesDark,
-                    fontSize = 20.sp,
                     modifier = Modifier.padding(0.dp, 3.dp)
                 )
             }
@@ -126,23 +124,20 @@ fun HistoricoItem(
         ) {
             Text(
                 text = transacao.descricao,
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 18.sp
+                style = MaterialTheme.typography.displayMedium
             )
             Spacer(modifier = Modifier.width(10.dp))
             if (transacao.lancamento == "Parcelado") {
                 Text(
                     text = transacao.parcelas,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = ColorFontesLight
                 )
             }
         }
         Text(
             text = if (visibility) formatarValor(transacao.valor) else " R$ *****",
-            style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.headlineSmall,
             color = if (transacao.tipo == "receita") ColorPositive else ColorNegative
         )
     }

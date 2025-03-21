@@ -78,8 +78,7 @@ fun DatePickerCustom(
                         .fillMaxWidth()
                         .padding(16.dp),
                     text = "Selecione a data",
-                    fontSize = 20.sp,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.headlineLarge
                 )
                 Spacer(modifier = Modifier.height(5.dp))
 
@@ -149,19 +148,17 @@ private fun CalendarView(
             ) {
                 Text(
                     text = if (day < 10) "0$day" else "$day",
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.displayLarge,
                     fontSize = 45.sp,
                     color = Color.White
                 )
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = ".",
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 55.sp,
-                color = Color.Black,
-                modifier = Modifier
-                    .padding(bottom = 25.dp)
+                text = "•",
+                style = MaterialTheme.typography.displayLarge,
+                fontSize = 35.sp,
+                color = Color.Black
             )
             Spacer(modifier = Modifier.width(4.dp))
             Box(
@@ -176,19 +173,17 @@ private fun CalendarView(
             ) {
                 Text(
                     text = if (month < 10) "0$month" else "$month",
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.displayLarge,
                     fontSize = 45.sp,
                     color = Color.White
                 )
             }
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = ".",
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 55.sp,
-                color = Color.Black,
-                modifier = Modifier
-                    .padding(bottom = 25.dp)
+                text = "•",
+                style = MaterialTheme.typography.displayLarge,
+                fontSize = 35.sp,
+                color = Color.Black
             )
             Spacer(modifier = Modifier.width(4.dp))
             Box(
@@ -203,7 +198,7 @@ private fun CalendarView(
             ) {
                 Text(
                     text = "${year % 100}",
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.displayLarge,
                     fontSize = 45.sp,
                     color = Color.White
                 )
@@ -217,7 +212,7 @@ private fun CalendarView(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(5.dp)
+                    .padding(vertical = 5.dp)
             ) {
                 TextButton(
                     interactionSource = remember { MutableInteractionSource() },
@@ -229,19 +224,18 @@ private fun CalendarView(
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(LightColor3),
                         modifier = Modifier
-                            .size(22.dp)
+                            .size(20.dp)
                     )
                 }
 
                 Column(
                     modifier = Modifier
-                        .width(150.dp),
+                        .width(160.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = "${getMonthAbbreviation2(currentMonth.value.monthValue)} • ${currentMonth.value.year}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 20.sp
+                        style = MaterialTheme.typography.displayLarge
                     )
                 }
 
@@ -255,7 +249,7 @@ private fun CalendarView(
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(LightColor3),
                         modifier = Modifier
-                            .size(22.dp)
+                            .size(20.dp)
                     )
                 }
             }
@@ -339,8 +333,7 @@ private fun DateSelectionBox(
         Text(
             text = date.dayOfMonth.toString(),
             color = if (selected) Color.White else Color.Black,
-            style = if (selected) MaterialTheme.typography.titleMedium else MaterialTheme.typography.bodyLarge,
-            fontSize = if (selected) 20.sp else 16.sp
+            style = if (selected) MaterialTheme.typography.headlineLarge else MaterialTheme.typography.bodyLarge,
         )
     }
 }
@@ -370,8 +363,7 @@ private fun DayOfWeekHeader() {
             daysOfWeek.forEach { day ->
                 Text(
                     text = day,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 20.sp
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         }

@@ -43,6 +43,7 @@ import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
+import com.dieyteixeira.fluxsync.app.theme.ColorFontesMedium
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
@@ -98,15 +99,14 @@ fun HomeCardSaldo(
                 ) {
                     Text(
                         text = "Saldo",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = ColorFontesLight,
-                        fontSize = 16.sp
+                        style = MaterialTheme.typography.bodySmall,
+                        color = ColorFontesMedium
                     )
                     Text(
                         text = if (isSaldoVisivel) formatarValor(saldoTotal) else "R$ *****",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontSize = 25.sp,
                         color = ColorFontesDark,
-                        fontSize = 24.sp,
                         modifier = Modifier.padding(0.dp, 3.dp)
                     )
                 }
@@ -192,13 +192,11 @@ fun SaldoItem(
         ) {
             Text(
                 text = contas.descricao,
-                style = MaterialTheme.typography.titleSmall,
-                fontSize = 18.sp
+                style = MaterialTheme.typography.displayMedium
             )
             Text(
                 text = if (visibility) formatarValor(contas.saldo) else "R$ *****",
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 20.sp,
+                style = MaterialTheme.typography.headlineSmall,
                 color = if (contas.saldo > 0) ColorPositive else ColorNegative
             )
         }

@@ -58,7 +58,6 @@ import com.dieyteixeira.fluxsync.app.theme.LightColor1
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.components.InfoDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.SelectAnoDialog
-import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionEditDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionItem
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
@@ -135,8 +134,7 @@ fun TransactionTab(
             ) {
                 Text(
                     text = "Fluxo de caixa",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.headlineLarge,
                     color = Color.White
                 )
             }
@@ -181,11 +179,12 @@ fun TransactionTab(
                     if (mes == "") { Spacer(modifier = Modifier.width(35.dp)) }
                     Text(
                         text = mes,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontSize = if (mes == mesCentral) 20.sp else 14.sp,
-                            fontWeight = if (mes == mesCentral) FontWeight.Bold else FontWeight.Normal,
-                            color = Color.White
-                        ),
+                        style = if (mes == mesCentral) {
+                            MaterialTheme.typography.displayLarge
+                        } else {
+                            MaterialTheme.typography.labelLarge
+                        },
+                        color = Color.White,
                         modifier = Modifier
                             .height(30.dp)
                             .width(100.dp)
@@ -224,8 +223,7 @@ fun TransactionTab(
                     ) {
                         Text(
                             text = dataFormatada,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.displayMedium,
                             color = ColorFontesLight
                         )
                     }

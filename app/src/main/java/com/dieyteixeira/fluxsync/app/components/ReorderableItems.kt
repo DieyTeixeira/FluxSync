@@ -136,8 +136,7 @@ fun ReorderableItems(
                 )
                 Text(
                     text = item,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontSize = 18.sp
+                    style = MaterialTheme.typography.displayMedium
                 )
                 Checkbox(
                     checked = tempEnabled[item] == true,

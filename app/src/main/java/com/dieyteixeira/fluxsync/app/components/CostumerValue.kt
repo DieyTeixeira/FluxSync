@@ -77,13 +77,13 @@ fun CustomField(
         Text(
             text = "R$ ",
             fontSize = 40.sp,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.displayMedium,
             color = Color.White
         )
         Text(
             text = value.ifEmpty { "0,00" },
             fontSize = 40.sp,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.displayMedium,
             color = Color.White
         )
     }
@@ -122,8 +122,7 @@ fun CustomFieldIconEdit(
     ) {
         Text(
             text = text,
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.headlineSmall,
             color = ColorFontesDark
         )
         Row(
@@ -164,13 +163,11 @@ fun CustomFieldIconEdit(
             ) {
                 Text(
                     text = "R$  ",
-                    fontSize = 18.sp,
                     style = MaterialTheme.typography.bodyLarge,
                     color = ColorFontesDark
                 )
                 Text(
                     text = value.ifEmpty { "0,00" },
-                    fontSize = 18.sp,
                     style = MaterialTheme.typography.bodyLarge,
                     color = ColorFontesDark
                 )
@@ -211,14 +208,12 @@ fun CustomFieldEdit(
     ) {
         Text(
             text = "R$  ",
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.displayMedium,
             color = ColorFontesDark
         )
         Text(
             text = value.ifEmpty { "0,00" },
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.displayMedium,
             color = ColorFontesDark
         )
     }
@@ -324,8 +319,8 @@ private fun NumberButton(
     ) {
         Text(
             text = number.toString(),
-            fontSize = if (pressKey) 35.sp else 30.sp,
-            style = MaterialTheme.typography.titleMedium,
+            fontSize = if (pressKey) 40.sp else 35.sp,
+            style = MaterialTheme.typography.headlineMedium,
             color = if (pressKey) Color.White else LightColor3
         )
     }

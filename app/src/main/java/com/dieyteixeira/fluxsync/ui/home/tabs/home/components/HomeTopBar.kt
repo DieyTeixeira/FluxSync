@@ -109,14 +109,12 @@ fun HomeTopBar(
         ) {
             Text(
                 text = saudacao(),
-                style = MaterialTheme.typography.titleSmall,
-                fontSize = (16 + fontSize).sp,
+                style = MaterialTheme.typography.displayMedium,
                 color = Color.White
             )
             Text(
                 text = "Diey Teixeira",
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = (20 + fontSize).sp,
+                style = MaterialTheme.typography.headlineMedium,
                 color = Color.White
             )
         }

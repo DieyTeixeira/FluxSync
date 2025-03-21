@@ -32,6 +32,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,6 +62,7 @@ import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.listBancos
 import com.dieyteixeira.fluxsync.app.di.model.listColorsConta
 import com.dieyteixeira.fluxsync.app.di.replace.colorToStringConta
+import com.dieyteixeira.fluxsync.app.di.replace.formatarValorEdit
 import com.dieyteixeira.fluxsync.app.di.replace.iconToStringConta
 import com.dieyteixeira.fluxsync.app.theme.BlackCont
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
@@ -68,7 +70,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
 import com.dieyteixeira.fluxsync.app.theme.LightColor3
-import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.formatarValorEdit
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -145,8 +146,7 @@ fun AddContaForm(
                 ) {
                     Text(
                         text = "Adicionar Conta",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = Color.White
                     )
                 }
@@ -301,7 +301,6 @@ fun AddContaForm(
                                     Text(
                                         text = listBancos[index].name,
                                         style = MaterialTheme.typography.bodyLarge,
-                                        fontSize = 18.sp,
                                         color = ColorFontesDark
                                     )
                                 }
@@ -482,8 +481,7 @@ fun EditContaForm(
                 ) {
                     Text(
                         text = "Editar Conta",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = Color.White
                     )
                 }
@@ -638,7 +636,6 @@ fun EditContaForm(
                                     Text(
                                         text = listBancos[index].name,
                                         style = MaterialTheme.typography.bodyLarge,
-                                        fontSize = 18.sp,
                                         color = ColorFontesDark
                                     )
                                 }

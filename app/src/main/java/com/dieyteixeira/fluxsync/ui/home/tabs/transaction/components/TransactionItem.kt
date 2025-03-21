@@ -1,16 +1,21 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -22,17 +27,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalIcon
 import com.dieyteixeira.fluxsync.app.components.textTransactionExcluir
 import com.dieyteixeira.fluxsync.app.components.textTransactionSituacao
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
+import com.dieyteixeira.fluxsync.app.theme.ColorAviso
+import com.dieyteixeira.fluxsync.app.theme.ColorCardAviso2
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
@@ -44,6 +52,7 @@ import com.dieyteixeira.fluxsync.ui.home.components.ConfirmDialog
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TransactionItem(
     homeViewModel: HomeViewModel,
@@ -59,6 +68,22 @@ fun TransactionItem(
     var excluirDialog by remember { mutableStateOf(false) }
     var situacaoDialog by remember { mutableStateOf(false) }
 
+    val statusReceitaAtraso = if (transacao.situacao == "pendente" && transacao.tipo == "receita") {
+        homeViewModel.verificarVencimento(transacao.data)
+    } else {
+        null
+    }
+
+    val isReceitaAtrasada = statusReceitaAtraso != null
+
+    val statusDespesaAtraso = if (transacao.situacao == "pendente" && transacao.tipo == "despesa") {
+        homeViewModel.verificarVencimento(transacao.data)
+    } else {
+        null
+    }
+
+    val isDespesaAtrasada = statusDespesaAtraso != null
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,55 +98,96 @@ fun TransactionItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Row(
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    if (isMostrarButtons) ColorGrayLight else Color.Transparent,
-                    shape = RoundedCornerShape(15.dp)
-                )
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
         ) {
             Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp)
+                    .background(
+                        if (isDespesaAtrasada) {
+                            ColorCardAviso2
+                        } else if (isMostrarButtons) {
+                            ColorGrayLight
+                        } else {
+                            Color.Transparent
+                        },
+                        shape = RoundedCornerShape(15.dp)
+                    )
+                    .padding(10.dp, 10.dp, 10.dp, 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = transacao.descricao,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 18.sp
-                )
-                if (transacao.lancamento == "Parcelado") {
-                    Spacer(modifier = Modifier.width(10.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Image(
+                        painter = painterResource(id = if (transacao.tipo == "despesa") {
+                            R.drawable.icon_despesa } else { R.drawable.icon_receita }),
+                        contentDescription = "Transação",
+                        modifier = Modifier.size(20.dp),
+                        colorFilter = ColorFilter.tint(if (transacao.tipo == "despesa") ColorNegative else ColorPositive)
+                    )
+                    Spacer(modifier = Modifier.width(15.dp))
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = transacao.descricao,
+                                style = MaterialTheme.typography.headlineSmall
+                            )
+                            if (transacao.lancamento == "Parcelado") {
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(
+                                    text = transacao.parcelas,
+                                    style = MaterialTheme.typography.displaySmall,
+                                    color = ColorFontesLight
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = conta.descricao,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = ColorFontesLight
+                        )
+                    }
+                }
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.End
+                ) {
                     Text(
-                        text = transacao.parcelas,
-                        style = MaterialTheme.typography.titleSmall,
-                        fontSize = 16.sp,
+                        text = formatarValor(transacao.valor),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = if (transacao.tipo == "receita") ColorPositive else ColorNegative
+                    )
+                    Text(
+                        text = transacao.situacao,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = ColorFontesLight
                     )
                 }
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = conta.descricao,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 16.sp,
-                    color = ColorFontesLight
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = transacao.situacao,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 16.sp,
-                    color = ColorFontesLight
+            }
+            if (isDespesaAtrasada || isReceitaAtrasada) {
+                Image(
+                    painter = painterResource(id = R.drawable.icon_aviso),
+                    contentDescription = "Alerta",
+                    modifier = Modifier
+                        .size(18.dp)
+                        .rotate(20f)
+                        .align(Alignment.TopEnd),
+                    colorFilter = ColorFilter.tint(ColorAviso)
                 )
             }
-            Text(
-                text = formatarValor(transacao.valor),
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 18.sp,
-                color = if (transacao.tipo == "receita") ColorPositive else ColorNegative
-            )
         }
         if (isMostrarButtons) {
             Row(

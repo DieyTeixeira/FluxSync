@@ -92,10 +92,9 @@ fun AlertFirebaseMensagem(
             Text(
                 text = message,
                 color = Color.White,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontSize = 18.sp,
-                    fontStyle = FontStyle.Italic
-                ),
+                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 18.sp,
+                fontStyle = FontStyle.Italic,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .align(Alignment.Center)

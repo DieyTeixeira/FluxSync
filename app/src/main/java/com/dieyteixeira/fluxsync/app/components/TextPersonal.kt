@@ -32,64 +32,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 
 @Composable
-fun TextInputIcon(
-    textValue: String,
-    onValueChange: (String) -> Unit,
-    icon: ImageVector,
-    placeholder: String,
-    focusRequester: FocusRequester,
-    onClickKeyboard: () -> Unit,
-    keyboardController: SoftwareKeyboardController?
-) {
-    TextField(
-        value = textValue,
-        onValueChange = onValueChange,
-        placeholder = {
-            Text(
-                text = placeholder,
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 18.sp,
-                color = ColorFontesLight
-            )
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = ColorFontesDark
-            )
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .focusRequester(focusRequester)
-            .onFocusChanged { focusState ->
-                if (focusState.isFocused) {
-                    onClickKeyboard()
-                }
-            },
-        textStyle = MaterialTheme.typography.bodyLarge.copy(
-            color = ColorFontesDark,
-            fontSize = 18.sp
-        ),
-        singleLine = false,
-        keyboardOptions = KeyboardOptions.Default,
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide() // Fecha o teclado ao pressionar "Done"
-            }
-        ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = Color.Transparent,
-            focusedBorderColor = Color.Transparent,
-            unfocusedBorderColor = Color.Transparent,
-            disabledBorderColor = Color.Transparent,
-            textColor = ColorFontesDark,
-            cursorColor = ColorFontesDark
-        )
-    )
-}
-
-@Composable
 fun TextInput(
     textValue: String,
     onValueChange: (String) -> Unit,
@@ -102,9 +44,8 @@ fun TextInput(
         value = textValue,
         onValueChange = onValueChange,
         singleLine = true,
-        textStyle = MaterialTheme.typography.bodyLarge.copy(
-            color = ColorFontesDark,
-            fontSize = 18.sp
+        textStyle = MaterialTheme.typography.displayLarge.copy(
+            color = ColorFontesDark
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -126,8 +67,7 @@ fun TextInput(
                 if (textValue.isEmpty()) {
                     Text(
                         text = placeholder,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.displayLarge,
                         color = ColorFontesLight
                     )
                 }

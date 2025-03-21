@@ -99,8 +99,8 @@ fun ButtonPersonalFilled(
     ) {
         Text(
             text = text,
-            color = colorText,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.displayMedium,
+            color = colorText
         )
     }
 }
@@ -136,8 +136,8 @@ fun ButtonPersonalOutline(
     ) {
         Text(
             text = text,
-            color = colorText,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.displayMedium,
+            color = colorText
         )
     }
 }
@@ -166,8 +166,8 @@ fun ButtonPersonalText(
     ) {
         Text(
             text = text,
-            color = colorText,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.displayMedium,
+            color = colorText
         )
     }
 }
@@ -212,15 +212,15 @@ fun ButtonPersonalMaxWidth(
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "Ícone de adição",
-                tint = colorText
+                tint = colorText,
+                modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
         }
         Text(
             text = text,
-            color = colorText,
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.displayMedium,
+            color = colorText
         )
     }
 }

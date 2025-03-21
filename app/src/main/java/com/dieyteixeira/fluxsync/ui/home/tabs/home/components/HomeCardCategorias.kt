@@ -111,9 +111,8 @@ fun HomeCardCategorias(
             ) {
                 Text(
                     text = "Categorias",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.headlineMedium,
                     color = ColorFontesDark,
-                    fontSize = 20.sp,
                     modifier = Modifier.padding(0.dp, 3.dp)
                 )
                 Image(
@@ -202,8 +201,7 @@ fun CategoriasItem(
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = categoria.descricao,
-                style = MaterialTheme.typography.titleSmall,
-                fontSize = 18.sp
+                style = MaterialTheme.typography.displayMedium
             )
         }
 
@@ -212,14 +210,12 @@ fun CategoriasItem(
         ) {
             Text(
                 text = "%.2f".format(percentual),
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = ColorFontesLight
             )
             Text(
                 text = "%",
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.labelSmall,
                 color = ColorFontesLight
             )
             Spacer(modifier = Modifier.width(5.dp))

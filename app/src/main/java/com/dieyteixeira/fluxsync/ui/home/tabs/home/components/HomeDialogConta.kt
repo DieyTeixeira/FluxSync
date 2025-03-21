@@ -41,6 +41,7 @@ import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
+import com.dieyteixeira.fluxsync.app.theme.ColorFontesMedium
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
@@ -79,8 +80,7 @@ fun ContasDialog(
         ) {
             Text(
                 text = "Contas",
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 20.sp,
+                style = MaterialTheme.typography.headlineMedium,
                 color = LightColor3
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -188,20 +188,17 @@ fun ContasList(
             ) {
                 Text(
                     text = contas.descricao,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 18.sp
+                    style = MaterialTheme.typography.headlineSmall
                 )
                 Row {
                     Text(
                         text = "Saldo:  ",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontSize = 16.sp,
-                        color = ColorFontesLight
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = ColorFontesMedium
                     )
                     Text(
                         text = formatarValor(contas.saldo),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = if (contas.saldo > 0) ColorPositive else ColorNegative
                     )
                 }
