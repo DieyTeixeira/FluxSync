@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.dieyteixeira.fluxsync.app.components.AlertFirebaseMensagem
 import com.dieyteixeira.fluxsync.app.notification.disableBatteryOptimizations
 import com.dieyteixeira.fluxsync.app.notification.scheduleDailyNotifications
+import com.dieyteixeira.fluxsync.app.theme.ColorPalette
 import com.dieyteixeira.fluxsync.app.theme.FluxSyncTheme
 import com.dieyteixeira.fluxsync.ui.home.navigation.homeScreen
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
@@ -63,8 +64,10 @@ class MainActivity : ComponentActivity() {
             val loginViewModel: LoginViewModel by viewModel()
             val homeViewModel: HomeViewModel by viewModel()
             val fontSize by homeViewModel.adjustedFontSize.collectAsState()
+            val colorPalette by homeViewModel.selectedColor.collectAsState()
+            val selectedPalette = ColorPalette.fromString(colorPalette)
 
-            FluxSyncTheme(fontSize = fontSize) {
+            FluxSyncTheme(fontSize = fontSize, selectedPalette = selectedPalette) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1002)

@@ -1,8 +1,5 @@
 package com.dieyteixeira.fluxsync.ui.home.components
 
-import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,7 +29,6 @@ import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,13 +43,10 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.CustomFieldEdit
-import com.dieyteixeira.fluxsync.app.components.CustomFieldIconEdit
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.components.TextInput
 import com.dieyteixeira.fluxsync.app.components.formatCurrencyInput
@@ -69,7 +62,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -141,7 +133,7 @@ fun AddContaForm(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
-                        .background(LightColor3),
+                        .background(MaterialTheme.colorScheme.surfaceContainer),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -378,7 +370,7 @@ fun AddContaForm(
                         },
                         text = "Salvar",
                         colorText = Color.White,
-                        color = LightColor3,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         height = 40.dp,
                         width = 100.dp
                     )
@@ -476,7 +468,7 @@ fun EditContaForm(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
-                        .background(LightColor3),
+                        .background(MaterialTheme.colorScheme.surfaceContainer),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -717,7 +709,7 @@ fun EditContaForm(
                         },
                         text = "Alterar",
                         colorText = Color.White,
-                        color = LightColor3,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         height = 40.dp,
                         width = 100.dp
                     )

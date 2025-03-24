@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -48,12 +49,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
-import com.dieyteixeira.fluxsync.app.theme.LightBackground
-import com.dieyteixeira.fluxsync.app.theme.LightColor1
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
-import com.dieyteixeira.fluxsync.app.theme.LightColor4
-import com.dieyteixeira.fluxsync.app.theme.LightColor5
 import com.dieyteixeira.fluxsync.app.theme.ManageStatusBarIcons
 import com.dieyteixeira.fluxsync.ui.home.components.AddCategoriaForm
 import com.dieyteixeira.fluxsync.ui.home.components.AddContaForm
@@ -126,7 +121,10 @@ fun HomeScreen(
                 .height(30.dp)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(LightColor5, LightColor3, LightColor1)
+                        colors = listOf(
+                            MaterialTheme.colorScheme.surfaceContainerHighest,
+                            MaterialTheme.colorScheme.surfaceContainer,
+                            MaterialTheme.colorScheme.surfaceContainerLowest)
                     )
                 )
         )
@@ -144,7 +142,7 @@ fun HomeScreen(
                         ballAnimation = Straight(tween(300)),
                         indentAnimation = Height(tween(300)),
                         barColor = ColorCards,
-                        ballColor = LightColor4
+                        ballColor = MaterialTheme.colorScheme.surfaceContainerHigh
                     ) {
                         navigationBarItems.forEach { item ->
                             if (item.ordinal == 2) {
@@ -168,7 +166,7 @@ fun HomeScreen(
                                         modifier = Modifier
                                             .fillMaxSize(0.85f * pulseScale)
                                             .background(
-                                                color = LightColor3,
+                                                color = MaterialTheme.colorScheme.surfaceContainer,
                                                 shape = RoundedCornerShape(50)
                                             )
                                     )
@@ -177,7 +175,9 @@ fun HomeScreen(
                                             .fillMaxSize(0.85f * pulseScale)
                                             .border(
                                                 width = 5.dp,
-                                                brush = LightBackground,
+                                                brush = Brush.linearGradient(
+                                                    colors = listOf(MaterialTheme.colorScheme.surfaceContainerLow, MaterialTheme.colorScheme.surfaceContainerHigh)
+                                                ),
                                                 shape = RoundedCornerShape(50)
                                             )
                                     )
@@ -234,7 +234,7 @@ fun HomeScreen(
                                                 .rotate(45f)
                                                 .border(
                                                     width = 2.dp,
-                                                    color = LightColor2.copy(alpha = revealProgress),
+                                                    color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = revealProgress),
                                                     shape = RoundedCornerShape(
                                                         shapeForm, 100, 100, 100
                                                     )
@@ -244,7 +244,7 @@ fun HomeScreen(
                                             painter = painterResource(id = item.icon),
                                             contentDescription = "Bottom Bar Icon",
                                             modifier = Modifier.size(20.dp),
-                                            colorFilter = ColorFilter.tint(LightColor2.copy(alpha = revealProgress))
+                                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = revealProgress))
                                         )
                                     }
                                 }

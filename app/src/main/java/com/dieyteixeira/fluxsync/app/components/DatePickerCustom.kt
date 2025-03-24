@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,15 +33,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.dieyteixeira.fluxsync.R
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -99,7 +94,7 @@ fun DatePickerCustom(
                     ButtonPersonalText(
                         onClick = { onCancelClick() },
                         text = "Cancel",
-                        colorText = LightColor3,
+                        colorText = MaterialTheme.colorScheme.surfaceContainer,
                         height = 35.dp,
                         width = 80.dp
                     )
@@ -108,7 +103,7 @@ fun DatePickerCustom(
                         onClick = { onOKClick(selDate.value) },
                         text = "OK",
                         colorText = Color.White,
-                        color = LightColor3,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         height = 35.dp,
                         width = 80.dp
                     )
@@ -141,7 +136,7 @@ private fun CalendarView(
                     .height(70.dp)
                     .width(80.dp)
                     .background(
-                        color = LightColor3,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         shape = RoundedCornerShape(8.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -166,7 +161,7 @@ private fun CalendarView(
                     .height(70.dp)
                     .width(80.dp)
                     .background(
-                        color = LightColor3,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         shape = RoundedCornerShape(8.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -191,7 +186,7 @@ private fun CalendarView(
                     .height(70.dp)
                     .width(80.dp)
                     .background(
-                        color = LightColor3,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         shape = RoundedCornerShape(8.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -222,7 +217,7 @@ private fun CalendarView(
                     Image(
                         painter = painterResource(id = R.drawable.ic_double_arrow_left),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(LightColor3),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainer),
                         modifier = Modifier
                             .size(20.dp)
                     )
@@ -247,7 +242,7 @@ private fun CalendarView(
                     Image(
                         painter = painterResource(id = R.drawable.ic_double_arrow_right),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(LightColor3),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainer),
                         modifier = Modifier
                             .size(20.dp)
                     )
@@ -320,7 +315,7 @@ private fun DateSelectionBox(
         Modifier
             .size(40.dp)
             .background(
-                color = if (selected) LightColor2 else Color.Transparent,
+                color = if (selected) MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
                 shape = CircleShape
             )
             .clickable(

@@ -3,19 +3,40 @@ package com.dieyteixeira.fluxsync.app.theme
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-// cores padrão do app (light)
-val LightColor1 = Color(0xFF037063)
-val LightColor2 = Color(0xFF026054)
-val LightColor3 = Color(0xFF025045)
-val LightColor4 = Color(0xFF013F35)
-val LightColor5 = Color(0xFF002F26)
+// paleta padrão do app (verde)
+val GreenColor1 = Color(0xFF037063) // MaterialTheme.colorScheme.surfaceContainerLowest
+val GreenColor2 = Color(0xFF026054) // MaterialTheme.colorScheme.surfaceContainerLow
+val GreenColor3 = Color(0xFF025045) // MaterialTheme.colorScheme.surfaceContainer
+val GreenColor4 = Color(0xFF013F35) // MaterialTheme.colorScheme.surfaceContainerHigh
+val GreenColor5 = Color(0xFF002F26) // MaterialTheme.colorScheme.surfaceContainerHighest
 
-// cores padrão do app (dark)
-val DarkColor1 = Color(0xFFB17512)
-val DarkColor2 = Color(0xFF9E650E)
-val DarkColor3 = Color(0xFF8B5509)
-val DarkColor4 = Color(0xFF774505)
-val DarkColor5 = Color(0xFF643500)
+// paleta 2ª opção (azul)
+val BlueColor1 = Color(0xFF0a6aac)
+val BlueColor2 = Color(0xFF085b9a)
+val BlueColor3 = Color(0xFF054c89)
+val BlueColor4 = Color(0xFF033c77)
+val BlueColor5 = Color(0xFF002d65)
+
+// paleta 3ª opção (vermelho)
+val RedColor1 = Color(0xFFa74935)
+val RedColor2 = Color(0xFF943728)
+val RedColor3 = Color(0xFF81251b)
+val RedColor4 = Color(0xFF6d120d)
+val RedColor5 = Color(0xFF5a0000)
+
+// paleta 4ª opção (amarelo)
+val YellowColor1 = Color(0xFFc6994a)
+val YellowColor2 = Color(0xFFb38838)
+val YellowColor3 = Color(0xFFa07725)
+val YellowColor4 = Color(0xFF8c6613)
+val YellowColor5 = Color(0xFF795500)
+
+// paleta 5ª opção (cinza)
+val GrayColor1 = Color(0xFF848892)
+val GrayColor2 = Color(0xFF747881)
+val GrayColor3 = Color(0xFF636771)
+val GrayColor4 = Color(0xFF535760)
+val GrayColor5 = Color(0xFF42464f)
 
 // cores para contas
 val BlackCont = Color(0xFF2D2E29)
@@ -51,9 +72,8 @@ val ColorFontesDark = Color(0xFF2D2E29)
 // cores negativo e positivo
 val ColorPositive = Color(0xFF1B9C54)
 val ColorNegative = Color(0xFFBE0B19)
-val ColorAviso = Color(0xFFFFD700)
-val ColorCardAviso = Color(0xFFFFFDE2)
-val ColorCardAviso2 = Color(0xFFFFFEF0) // Quase branco, com um leve toque amarelad
+val ColorAviso = Color(0xFFFFC000)
+val ColorCardAviso2 = Color(0xFFFFFDBE)
 
 // cores de tratamento de erros
 val ColorError = Color(0xFFFF1E00)
@@ -61,10 +81,16 @@ val DarkColorError = Color(0xFFAA0000)
 val ColorSuccess = Color(0xFF27B238)
 val DarkColorSuccess = Color(0xFF006837)
 
-val LightBackground = Brush.linearGradient(
-    colors = listOf(LightColor2, LightColor4)
-)
+enum class ColorPalette(val colorName: String, val colors: List<Color>) {
+    GREEN("GREEN",listOf(GreenColor1, GreenColor2, GreenColor3, GreenColor4, GreenColor5)),
+    BLUE("BLUE", listOf(BlueColor1, BlueColor2, BlueColor3, BlueColor4, BlueColor5)),
+    RED("RED", listOf(RedColor1, RedColor2, RedColor3, RedColor4, RedColor5)),
+    YELLOW("YELLOW", listOf(YellowColor1, YellowColor2, YellowColor3, YellowColor4, YellowColor5)),
+    GRAY("GRAY", listOf(GrayColor1, GrayColor2, GrayColor3, GrayColor4, GrayColor5));
 
-val DarkBackground = Brush.linearGradient(
-    colors = listOf(DarkColor4, DarkColor5)
-)
+    companion object {
+        fun fromString(colorName: String): ColorPalette {
+            return entries.find { it.colorName.equals(colorName, ignoreCase = true) } ?: GREEN
+        }
+    }
+}

@@ -33,12 +33,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
@@ -49,7 +46,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 
 @Composable
@@ -164,7 +160,7 @@ fun HomeAddFieldsTextLeanding(
                     painter = painterResource(id = icon),
                     contentDescription = null,
                     modifier = Modifier.size(23.dp),
-                    colorFilter = ColorFilter.tint(LightColor2)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLow)
                 )
             }
             TextField(
@@ -261,7 +257,7 @@ fun HomeAddFieldsTextLongLeanding(
                     painter = painterResource(id = icon),
                     contentDescription = null,
                     modifier = Modifier.size(23.dp),
-                    colorFilter = ColorFilter.tint(LightColor2)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLow)
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))
@@ -449,7 +445,7 @@ fun HomeAddFieldsTextIcon(
                     painter = painterResource(id = icon),
                     contentDescription = null,
                     modifier = Modifier.size(23.dp),
-                    colorFilter = ColorFilter.tint(LightColor2)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLow)
                 )
             }
             Spacer(modifier = Modifier.width(15.dp))
@@ -621,7 +617,7 @@ fun ButtonsIncDec(
         Box(
             modifier = Modifier
                 .size(35.dp)
-                .background(color = LightColor2, shape = RoundedCornerShape(15.dp, 0.dp, 0.dp, 15.dp))
+                .background(color = MaterialTheme.colorScheme.surfaceContainerLow, shape = RoundedCornerShape(15.dp, 0.dp, 0.dp, 15.dp))
                 .clickable() { onClickMenos() },
             contentAlignment = Alignment.Center
         ) {
@@ -649,7 +645,7 @@ fun ButtonsIncDec(
         Box(
             modifier = Modifier
                 .size(35.dp)
-                .background(color = LightColor2, shape = RoundedCornerShape(0.dp, 15.dp, 15.dp, 0.dp))
+                .background(color = MaterialTheme.colorScheme.surfaceContainerLow, shape = RoundedCornerShape(0.dp, 15.dp, 15.dp, 0.dp))
                 .clickable() { onClickMais() },
             contentAlignment = Alignment.Center
         ) {

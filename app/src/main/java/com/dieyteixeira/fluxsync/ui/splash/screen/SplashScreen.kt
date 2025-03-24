@@ -19,9 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.dieyteixeira.fluxsync.app.theme.LightColor1
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.app.theme.ManageStatusBarIcons
 import com.dieyteixeira.fluxsync.ui.splash.components.ChasingTwoDots
 import kotlinx.coroutines.delay
@@ -40,14 +37,14 @@ fun SplashScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = LightColor3),
+            .background(color = MaterialTheme.colorScheme.surfaceContainer),
         contentAlignment = Alignment.Center
     ) {
         Column (
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            ChasingTwoDots(color = LightColor1)
+            ChasingTwoDots(color = MaterialTheme.colorScheme.surfaceContainerLowest)
             Spacer(modifier = Modifier.height(30.dp))
             Text(
                 text = loadingMessage,

@@ -34,13 +34,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import kotlinx.coroutines.delay
 
 @Composable
@@ -144,7 +141,7 @@ fun CustomFieldIconEdit(
                     painter = painterResource(id = icon),
                     contentDescription = null,
                     modifier = Modifier.size(23.dp),
-                    colorFilter = ColorFilter.tint(LightColor2)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLow)
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))
@@ -304,7 +301,7 @@ private fun NumberButton(
             .aspectRatio(1f)
             .padding(4.dp)
             .background(
-                color = if (pressKey) LightColor3 else Color.LightGray,
+                color = if (pressKey) MaterialTheme.colorScheme.surfaceContainer else Color.LightGray,
                 shape = RoundedCornerShape(100)
             )
             .clickable(
@@ -321,7 +318,7 @@ private fun NumberButton(
             text = number.toString(),
             fontSize = if (pressKey) 40.sp else 35.sp,
             style = MaterialTheme.typography.headlineMedium,
-            color = if (pressKey) Color.White else LightColor3
+            color = if (pressKey) Color.White else MaterialTheme.colorScheme.surfaceContainer
         )
     }
 }
@@ -361,7 +358,7 @@ private fun IconButton(
             modifier = Modifier.size(if (pressKey) (size+5).dp else size.dp),
             imageVector = icon,
             contentDescription = "Icon Action",
-            tint = if (pressKey) LightColor3 else Color.LightGray
+            tint = if (pressKey) MaterialTheme.colorScheme.surfaceContainer else Color.LightGray
         )
     }
 }

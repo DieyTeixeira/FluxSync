@@ -37,21 +37,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dieyteixeira.fluxsync.app.theme.ColorError
+import com.dieyteixeira.fluxsync.app.theme.ColorSuccess
 import com.dieyteixeira.fluxsync.ui.login.components.TextWithIcon
 import com.dieyteixeira.fluxsync.ui.login.components.containsDigit
 import com.dieyteixeira.fluxsync.ui.login.components.containsLowerCase
 import com.dieyteixeira.fluxsync.ui.login.components.containsSpecialCharacter
 import com.dieyteixeira.fluxsync.ui.login.components.containsUpperCase
-import com.dieyteixeira.fluxsync.app.theme.ColorError
-import com.dieyteixeira.fluxsync.app.theme.LightColor1
-import com.dieyteixeira.fluxsync.app.theme.ColorSuccess
 import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
 
 @Composable
@@ -307,7 +304,7 @@ fun SignUpScreen(
                     .fillMaxWidth()
                     .height(50.dp)
                     .background(
-                        LightColor1,
+                        MaterialTheme.colorScheme.surfaceContainerLowest,
                         RoundedCornerShape(30)
                     )
                     .clickable(
@@ -331,7 +328,7 @@ fun SignUpScreen(
                     .height(50.dp)
                     .border(
                         1.dp,
-                        LightColor1,
+                        MaterialTheme.colorScheme.surfaceContainerLowest,
                         RoundedCornerShape(30)
                     )
                     .clickable(
@@ -342,7 +339,7 @@ fun SignUpScreen(
                 Text(
                     text = "Login",
                     style = MaterialTheme.typography.titleMedium,
-                    color = LightColor1,
+                    color = MaterialTheme.colorScheme.surfaceContainerLowest,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }

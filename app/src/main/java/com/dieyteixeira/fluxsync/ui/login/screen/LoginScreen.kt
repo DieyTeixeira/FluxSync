@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,20 +35,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.R
-import com.dieyteixeira.fluxsync.ui.login.state.LoginState
-import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
-import androidx.compose.ui.platform.LocalConfiguration
-import com.dieyteixeira.fluxsync.app.theme.LightBackground
-import com.dieyteixeira.fluxsync.app.theme.LightColor1
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.app.theme.ManageStatusBarIcons
 import com.dieyteixeira.fluxsync.ui.login.components.CircleLoading
 import com.dieyteixeira.fluxsync.ui.login.components.MensagemError
 import com.dieyteixeira.fluxsync.ui.login.components.MensagemSuccess
+import com.dieyteixeira.fluxsync.ui.login.state.LoginState
+import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
 
 @SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
@@ -101,7 +98,7 @@ fun LoginScreen(
     Box (
         modifier = Modifier
             .fillMaxSize()
-            .background(LightColor2)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
     ) {
         Column(
             modifier = Modifier

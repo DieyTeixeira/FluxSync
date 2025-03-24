@@ -1,27 +1,17 @@
 package com.dieyteixeira.fluxsync.ui.home.viewmodel
 
-import androidx.compose.ui.graphics.Color
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
-import com.dieyteixeira.fluxsync.app.di.model.Grafico
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
-import com.dieyteixeira.fluxsync.app.di.replace.stringToColorCategoria
-import com.dieyteixeira.fluxsync.app.di.replace.stringToIconCategoria
 import com.dieyteixeira.fluxsync.app.di.repository.FirestoreRepository
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -60,6 +50,9 @@ class HomeViewModel(
     private val _adjustedFontSize = MutableStateFlow(0)
     val adjustedFontSize: StateFlow<Int> = _adjustedFontSize.asStateFlow()
 
+    private val _selectedColor = MutableStateFlow("GREEN") // Cor padrão
+    val selectedColor: StateFlow<String> = _selectedColor.asStateFlow()
+
     fun setSliderPosition(position: Float) {
         _sliderPosition.value = position
         val fontSize = position.roundToInt()
@@ -69,12 +62,24 @@ class HomeViewModel(
         }
     }
 
+    fun setSelectedColor(color: String) {
+        _selectedColor.value = color
+        viewModelScope.launch {
+            userPreferences.saveColorTheme(color)
+        }
+    }
+
     init {
         getAtualizar()
         viewModelScope.launch {
             userPreferences.getFontSize().collect { savedSize ->
                 _adjustedFontSize.value = savedSize
                 _sliderPosition.value = savedSize.toFloat()
+            }
+        }
+        viewModelScope.launch {
+            userPreferences.getColorTheme().collect { savedColor ->
+                _selectedColor.value = savedColor
             }
         }
     }

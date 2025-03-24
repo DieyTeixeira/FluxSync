@@ -33,9 +33,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
@@ -46,7 +44,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -166,8 +163,8 @@ fun HomeCardCategorias(
                 ButtonPersonalMaxWidth(
                     onClick = { onClickCategorias() },
                     text = "Gerenciar categorias",
-                    colorText = LightColor3,
-                    colorBorder = LightColor3,
+                    colorText = MaterialTheme.colorScheme.surfaceContainer,
+                    colorBorder = MaterialTheme.colorScheme.surfaceContainer,
                     height = 40.dp,
                     width = 0.6f,
                     icon = false
@@ -235,7 +232,7 @@ fun CategoriasItem(
                     modifier = Modifier
                         .height(15.dp)
                         .width((percentual / 100) * 80.dp)
-                        .background(LightColor3, RoundedCornerShape(3.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(3.dp))
                 )
             }
         }

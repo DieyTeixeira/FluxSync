@@ -25,11 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
@@ -40,8 +37,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import java.text.SimpleDateFormat
@@ -73,7 +68,7 @@ fun InfoDialog(
             Text(
                 text = "Detalhes da Transação",
                 style = MaterialTheme.typography.headlineSmall,
-                color = LightColor3
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
             Spacer(modifier = Modifier.height(25.dp))
 
@@ -153,7 +148,7 @@ fun CardText(
                     painter = painterResource(id = icon),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
-                    colorFilter = ColorFilter.tint(LightColor2)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLow)
                 )
             }
             Text(

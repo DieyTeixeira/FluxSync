@@ -1,55 +1,35 @@
 package com.dieyteixeira.fluxsync.app.theme
 
 import android.os.Build
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowInsetsControllerCompat
-import com.dieyteixeira.fluxsync.R
-import com.dieyteixeira.fluxsync.app.theme.typography
-
-private val DarkColorScheme = darkColorScheme(
-    primary = LightColor1,
-    secondary = LightColor2,
-    tertiary = LightColor3,
-    background = LightColor4
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = LightColor1,
-    secondary = LightColor2,
-    tertiary = LightColor3,
-    background = LightColor4
-)
 
 @Composable
 fun FluxSyncTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    selectedPalette: ColorPalette = ColorPalette.GREEN,
     fontSize: Int,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val colorScheme = lightColorScheme(
+        surfaceContainerLowest = selectedPalette.colors[0],
+        surfaceContainerLow = selectedPalette.colors[1],
+        surfaceContainer = selectedPalette.colors[2],
+        surfaceContainerHigh = selectedPalette.colors[3],
+        surfaceContainerHighest = selectedPalette.colors[4],
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+        primary = selectedPalette.colors[0],
+        secondary = selectedPalette.colors[0],
+        tertiary = selectedPalette.colors[0],
+        background = selectedPalette.colors[0],
+        surface = selectedPalette.colors[0],
+    )
 
     val dynamicTypography = typography.copy(
 

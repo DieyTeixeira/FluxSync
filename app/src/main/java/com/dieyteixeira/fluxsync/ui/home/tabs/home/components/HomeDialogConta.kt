@@ -29,9 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalIcon
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
@@ -40,15 +38,12 @@ import com.dieyteixeira.fluxsync.app.components.IconConta
 import com.dieyteixeira.fluxsync.app.di.model.Conta
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
-import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesMedium
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
-import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.components.AlertDialog
+import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 
 @SuppressLint("MutableCollectionMutableState", "StateFlowValueCalledInComposition")
@@ -81,7 +76,7 @@ fun ContasDialog(
             Text(
                 text = "Contas",
                 style = MaterialTheme.typography.headlineMedium,
-                color = LightColor3
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
             Spacer(modifier = Modifier.height(20.dp))
             ButtonPersonalMaxWidth(
@@ -90,8 +85,8 @@ fun ContasDialog(
                     onAddClick()
                 },
                 text = "Adicionar conta",
-                colorText = LightColor3,
-                colorBorder = LightColor3,
+                colorText = MaterialTheme.colorScheme.surfaceContainer,
+                colorBorder = MaterialTheme.colorScheme.surfaceContainer,
                 height = 40.dp
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -234,7 +229,7 @@ fun ContasList(
                         onClickEditar()
                     },
                     icon = R.drawable.icon_editar,
-                    color = LightColor2,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                     size = 35.dp,
                     sizeIcon = 18.dp
                 )
@@ -243,7 +238,7 @@ fun ContasList(
                         onClickDelete()
                     },
                     icon = R.drawable.icon_excluir,
-                    color = LightColor2,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                     size = 35.dp
                 )
             }

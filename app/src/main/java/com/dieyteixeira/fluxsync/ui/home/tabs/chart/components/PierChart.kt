@@ -46,8 +46,9 @@ import kotlin.math.sin
 @Composable
 fun PieChart(
     data: List<Grafico>,
-    radiusOuter: Dp = 140.dp,
-    chartBarWidth: Dp = 35.dp,
+    radiusOuter: Dp = 100.dp,
+    chartBarWidth: Dp = 40.dp,
+    iconSize: Dp = 20.dp,
     animDuration: Int = 1000,
 ) {
 
@@ -132,7 +133,7 @@ fun PieChart(
                         painter = painterResource(id = icon[index]),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(20.dp)
+                            .size(iconSize)
                             .offset(x = iconX.dp, y = iconY.dp)
                             .rotate(90f)
                     )

@@ -49,8 +49,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -100,7 +98,7 @@ fun AddCategoriaForm(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
-                        .background(LightColor3),
+                        .background(MaterialTheme.colorScheme.surfaceContainer),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -164,7 +162,7 @@ fun AddCategoriaForm(
                             onClick = { typeLancamento = "despesa" },
                             text = "Despesa",
                             colorText = if (typeLancamento == "despesa") Color.White else ColorFontesLight,
-                            color = if (typeLancamento == "despesa") LightColor2 else Color.Transparent,
+                            color = if (typeLancamento == "despesa") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
                             colorBorder = if (typeLancamento == "despesa") Color.Transparent else ColorFontesLight,
                             height = 35.dp,
                             width = 100.dp
@@ -173,7 +171,7 @@ fun AddCategoriaForm(
                             onClick = { typeLancamento = "receita" },
                             text = "Receita",
                             colorText = if (typeLancamento == "receita") Color.White else ColorFontesLight,
-                            color = if (typeLancamento == "receita") LightColor2 else Color.Transparent,
+                            color = if (typeLancamento == "receita") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
                             colorBorder = if (typeLancamento == "receita") Color.Transparent else ColorFontesLight,
                             height = 35.dp,
                             width = 100.dp
@@ -285,7 +283,7 @@ fun AddCategoriaForm(
                         },
                         text = "Salvar",
                         colorText = Color.White,
-                        color = LightColor3,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         height = 40.dp,
                         width = 100.dp
                     )
@@ -342,7 +340,7 @@ fun EditCategoriaForm(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
-                        .background(LightColor3),
+                        .background(MaterialTheme.colorScheme.surfaceContainer),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -406,7 +404,7 @@ fun EditCategoriaForm(
                             onClick = { typeLancamento = "Despesa" },
                             text = "Despesa",
                             colorText = if (typeLancamento == "Despesa") Color.White else ColorFontesLight,
-                            color = if (typeLancamento == "Despesa") LightColor2 else Color.Transparent,
+                            color = if (typeLancamento == "Despesa") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
                             colorBorder = if (typeLancamento == "Despesa") Color.Transparent else ColorFontesLight,
                             height = 35.dp,
                             width = 100.dp
@@ -415,7 +413,7 @@ fun EditCategoriaForm(
                             onClick = { typeLancamento = "Receita" },
                             text = "Receita",
                             colorText = if (typeLancamento == "Receita") Color.White else ColorFontesLight,
-                            color = if (typeLancamento == "Receita") LightColor2 else Color.Transparent,
+                            color = if (typeLancamento == "Receita") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
                             colorBorder = if (typeLancamento == "Receita") Color.Transparent else ColorFontesLight,
                             height = 35.dp,
                             width = 100.dp
@@ -531,7 +529,7 @@ fun EditCategoriaForm(
                         },
                         text = "Alterar",
                         colorText = Color.White,
-                        color = LightColor3,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         height = 40.dp,
                         width = 100.dp
                     )

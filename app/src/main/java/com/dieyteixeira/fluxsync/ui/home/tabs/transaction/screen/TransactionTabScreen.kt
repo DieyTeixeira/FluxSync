@@ -2,7 +2,6 @@ package com.dieyteixeira.fluxsync.ui.home.tabs.transaction.screen
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -33,34 +32,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalOutline
 import com.dieyteixeira.fluxsync.app.components.listarMeses
 import com.dieyteixeira.fluxsync.app.components.nomeMesAtual
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
-import com.dieyteixeira.fluxsync.app.theme.LightColor1
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.components.InfoDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.SelectAnoDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionItem
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
-import kotlinx.coroutines.delay
 import java.util.Calendar
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -124,7 +112,7 @@ fun TransactionTab(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp)
-                .background(LightColor1),
+                .background(MaterialTheme.colorScheme.surfaceContainerLowest),
             contentAlignment = Alignment.Center
         ) {
             Box(
@@ -159,7 +147,7 @@ fun TransactionTab(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
-                .background(LightColor3)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
         ) {
             LazyRow(
                 state = lazyListStateMes,

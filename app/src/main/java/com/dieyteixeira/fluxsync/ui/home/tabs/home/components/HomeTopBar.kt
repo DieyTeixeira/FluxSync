@@ -16,10 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,13 +30,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
-import com.dieyteixeira.fluxsync.app.theme.LightColor4
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import java.util.Calendar
 
@@ -79,7 +70,7 @@ fun HomeTopBar(
                 .size(60.dp)
                 .border(
                     width = 2.dp,
-                    color = LightColor3,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = RoundedCornerShape(100)
                 ),
             contentAlignment = Alignment.Center
@@ -97,7 +88,7 @@ fun HomeTopBar(
                     painter = painterResource(id = R.drawable.icon_usuario),
                     contentDescription = "Bottom Bar Icon",
                     modifier = Modifier.size(28.dp),
-                    colorFilter = ColorFilter.tint(LightColor3)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainer)
                 )
             }
         }
@@ -122,7 +113,7 @@ fun HomeTopBar(
             modifier = Modifier
                 .size(40.dp)
                 .background(
-                    color = LightColor4.copy(alpha = 0.4f),
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.4f),
                     shape = RoundedCornerShape(16.dp)
                 )
                 .clickable(

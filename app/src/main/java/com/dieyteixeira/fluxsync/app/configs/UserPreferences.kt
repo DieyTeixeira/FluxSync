@@ -21,6 +21,7 @@ class UserPreferences(private val context: Context) {
         private val CARDS_ORDER_KEY = stringPreferencesKey("cards_order")
         private val ENABLED_CARDS_KEY = stringPreferencesKey("enabled_cards")
         private val FONT_SIZE_KEY = intPreferencesKey("font_size")
+        private val COLOR_THEME_KEY = stringPreferencesKey("color_theme")
     }
 
     // Recuperar preferências do usuário
@@ -62,6 +63,18 @@ class UserPreferences(private val context: Context) {
     fun getFontSize(): Flow<Int> {
         return context.dataStore.data.map { preferences ->
             preferences[FONT_SIZE_KEY] ?: 0
+        }
+    }
+
+    suspend fun saveColorTheme(color: String) {
+        context.dataStore.edit { preferences ->
+            preferences[COLOR_THEME_KEY] = color
+        }
+    }
+
+    fun getColorTheme(): Flow<String> {
+        return context.dataStore.data.map { preferences ->
+            preferences[COLOR_THEME_KEY] ?: "GREEN"
         }
     }
 }

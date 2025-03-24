@@ -10,15 +10,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,8 +27,6 @@ import androidx.compose.ui.window.Dialog
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ColorError
-import com.dieyteixeira.fluxsync.app.theme.DarkColorError
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 
 @Composable
 fun CustomDialogButton(
@@ -212,7 +209,7 @@ fun CustomDialogButtonEdit(
                     onClick = onClickButton,
                     text = textButton,
                     colorText = Color.White,
-                    color = LightColor3,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     height = 40.dp,
                     width = 150.dp
                 )

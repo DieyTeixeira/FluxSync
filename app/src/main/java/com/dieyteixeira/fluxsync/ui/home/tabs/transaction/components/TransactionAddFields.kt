@@ -32,12 +32,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.components.IconConta
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
@@ -45,7 +42,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 
 @Composable
@@ -166,7 +162,7 @@ fun TransactionAddFieldsTextLeanding(
                     painter = painterResource(id = icon),
                     contentDescription = null,
                     modifier = Modifier.size(23.dp),
-                    colorFilter = ColorFilter.tint(LightColor2)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLow)
                 )
             }
             TextField(
@@ -261,7 +257,7 @@ fun TransactionAddFieldsValueLeanding(
                     painter = painterResource(id = icon),
                     contentDescription = null,
                     modifier = Modifier.size(23.dp),
-                    colorFilter = ColorFilter.tint(LightColor2)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLow)
                 )
             }
             Spacer(modifier = Modifier.width(12.dp))
@@ -368,7 +364,7 @@ fun TransactionAddFieldsTextLongLeanding(
                     painter = painterResource(id = icon),
                     contentDescription = null,
                     modifier = Modifier.size(23.dp),
-                    colorFilter = ColorFilter.tint(LightColor2)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceContainerLow)
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))

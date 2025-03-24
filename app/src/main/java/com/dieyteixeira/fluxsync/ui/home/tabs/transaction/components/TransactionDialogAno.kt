@@ -1,6 +1,5 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -31,16 +30,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.anoAtual
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
-import java.util.Calendar
 
 @Composable
 fun SelectAnoDialog(
@@ -90,7 +84,7 @@ fun SelectAnoDialog(
             Text(
                 text = "Selecionar Ano",
                 style = MaterialTheme.typography.headlineMedium,
-                color = LightColor3
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
             Spacer(modifier = Modifier.height(20.dp))
             Box(
@@ -103,7 +97,7 @@ fun SelectAnoDialog(
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .height(50.dp)
-                        .background(LightColor2, RoundedCornerShape(12.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainerLow, RoundedCornerShape(12.dp))
                 )
                 LazyColumn(
                     state = lazyListStateAno,

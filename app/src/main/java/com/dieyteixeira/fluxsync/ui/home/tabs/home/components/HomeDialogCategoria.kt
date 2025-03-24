@@ -1,28 +1,19 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.home.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -31,38 +22,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.dieyteixeira.fluxsync.R
-import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalIcon
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
-import com.dieyteixeira.fluxsync.app.components.TextInput
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
-import com.dieyteixeira.fluxsync.app.di.model.listColorsCategoria
-import com.dieyteixeira.fluxsync.app.di.model.listIconsCategorias
-import com.dieyteixeira.fluxsync.app.di.replace.colorToStringCategoria
-import com.dieyteixeira.fluxsync.app.di.replace.iconToStringCategoria
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
-import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.components.AlertDialog
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun CategoriasDialog(
@@ -93,7 +69,7 @@ fun CategoriasDialog(
             Text(
                 text = "Categorias",
                 style = MaterialTheme.typography.headlineMedium,
-                color = LightColor3
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
             Spacer(modifier = Modifier.height(20.dp))
             ButtonPersonalMaxWidth(
@@ -102,8 +78,8 @@ fun CategoriasDialog(
                     onAddClick()
                 },
                 text = "Adicionar categoria",
-                colorText = LightColor3,
-                colorBorder = LightColor3,
+                colorText = MaterialTheme.colorScheme.surfaceContainer,
+                colorBorder = MaterialTheme.colorScheme.surfaceContainer,
                 height = 40.dp
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -227,7 +203,7 @@ fun CategoriasList(
                         onClickEditar()
                     },
                     icon = R.drawable.icon_editar,
-                    color = LightColor2,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                     size = 35.dp,
                     sizeIcon = 18.dp
                 )
@@ -236,7 +212,7 @@ fun CategoriasList(
                         onClickDelete()
                     },
                     icon = R.drawable.icon_excluir,
-                    color = LightColor2,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                     size = 35.dp
                 )
             }

@@ -1,9 +1,5 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.home.screen
 
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,10 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,19 +24,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalOutline
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
-import com.dieyteixeira.fluxsync.app.di.model.Transacoes
-import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
-import com.dieyteixeira.fluxsync.app.theme.LightColor1
-import com.dieyteixeira.fluxsync.app.theme.LightColor4
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.CategoriasDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasDialog
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.EditCardsDialog
@@ -122,7 +109,7 @@ fun HomeTabScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 160.dp)
-                        .background(LightColor1)
+                        .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                 )
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -183,8 +170,8 @@ fun HomeTabScreen(
             ButtonPersonalOutline(
                 onClick = { showEditDialog = true },
                 text = "Editar Cards",
-                colorText = LightColor4,
-                color = LightColor4,
+                colorText = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
                 height = 35.dp,
                 width = 120.dp
             )
@@ -197,7 +184,7 @@ fun HomeTabScreen(
                 },
                 text = "Sair",
                 colorText = Color.White,
-                color = LightColor4,
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
                 height = 35.dp,
                 width = 120.dp
             )

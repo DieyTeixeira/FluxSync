@@ -64,8 +64,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
-import com.dieyteixeira.fluxsync.app.theme.LightColor3
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.CategoriasList
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasList
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsInsert
@@ -303,17 +301,17 @@ fun AddTransactionForm(
                             text = "Tipo de lançamento",
                             textValue1 = "Único",
                             colorText1 = if (typeLancamento.value == "Único") Color.White else ColorFontesLight,
-                            color1 = if (typeLancamento.value == "Único") LightColor2 else Color.Transparent,
+                            color1 = if (typeLancamento.value == "Único") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
                             colorBorder1 = if (typeLancamento.value == "Único") Color.Transparent else ColorFontesLight,
                             onClick1 = { typeLancamento.value = "Único" },
                             textValue2 = "Fixo",
                             colorText2 = if (typeLancamento.value == "Fixo") Color.White else ColorFontesLight,
-                            color2 = if (typeLancamento.value == "Fixo") LightColor2 else Color.Transparent,
+                            color2 = if (typeLancamento.value == "Fixo") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
                             colorBorder2 = if (typeLancamento.value == "Fixo") Color.Transparent else ColorFontesLight,
                             onClick2 = { typeLancamento.value = "Fixo" },
                             textValue3 = "Parcelado",
                             colorText3 = if (typeLancamento.value == "Parcelado") Color.White else ColorFontesLight,
-                            color3 = if (typeLancamento.value == "Parcelado") LightColor2 else Color.Transparent,
+                            color3 = if (typeLancamento.value == "Parcelado") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
                             colorBorder3 = if (typeLancamento.value == "Parcelado") Color.Transparent else ColorFontesLight,
                             onClick3 = { typeLancamento.value = "Parcelado" }
                         )
@@ -393,7 +391,7 @@ fun AddTransactionForm(
                         },
                         text = "Salvar",
                         colorText = Color.White,
-                        color = LightColor2,
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
                         height = 40.dp,
                         width = 100.dp
                     )
@@ -412,7 +410,7 @@ fun AddTransactionForm(
                         Text(
                             text = "Selecione uma Conta",
                             style = MaterialTheme.typography.headlineMedium,
-                            color = LightColor3
+                            color = MaterialTheme.colorScheme.surfaceContainer
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         LazyColumn(
@@ -446,7 +444,7 @@ fun AddTransactionForm(
                         Text(
                             text = "Selecione uma Categoria",
                             style = MaterialTheme.typography.headlineMedium,
-                            color = LightColor3
+                            color = MaterialTheme.colorScheme.surfaceContainer
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         LazyColumn(
@@ -723,7 +721,7 @@ fun EditTransactionForm(
                         },
                         text = "Alterar",
                         colorText = Color.White,
-                        color = LightColor2,
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
                         height = 40.dp,
                         width = 100.dp
                     )
@@ -742,7 +740,7 @@ fun EditTransactionForm(
                         Text(
                             text = "Selecione uma Conta",
                             style = MaterialTheme.typography.headlineMedium,
-                            color = LightColor3
+                            color = MaterialTheme.colorScheme.surfaceContainer
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         LazyColumn(
@@ -776,7 +774,7 @@ fun EditTransactionForm(
                         Text(
                             text = "Selecione uma Categoria",
                             style = MaterialTheme.typography.headlineMedium,
-                            color = LightColor3
+                            color = MaterialTheme.colorScheme.surfaceContainer
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                         LazyColumn(

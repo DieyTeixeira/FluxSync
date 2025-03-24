@@ -47,7 +47,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayLight
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
-import com.dieyteixeira.fluxsync.app.theme.LightColor2
 import com.dieyteixeira.fluxsync.ui.home.components.ConfirmDialog
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
@@ -217,19 +216,19 @@ fun TransactionItem(
                 ButtonPersonalIcon( // info
                     onClick = { onClickInfo() },
                     icon = R.drawable.icon_info,
-                    color = LightColor2,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                     size = 35.dp
                 )
                 ButtonPersonalIcon( // excluir
                     onClick = { if (transacao.situacao == "pendente") { excluirDialog = true } },
                     icon = R.drawable.icon_excluir,
-                    color = if (transacao.situacao == "pendente") LightColor2 else ColorGrayDark,
+                    color = if (transacao.situacao == "pendente") MaterialTheme.colorScheme.surfaceContainerLow else ColorGrayDark,
                     size = 35.dp
                 )
                 ButtonPersonalIcon( // editar
                     onClick = { if (transacao.situacao == "pendente") { onClickEditar() } },
                     icon = R.drawable.icon_editar,
-                    color = if (transacao.situacao == "pendente") LightColor2 else ColorGrayDark,
+                    color = if (transacao.situacao == "pendente") MaterialTheme.colorScheme.surfaceContainerLow else ColorGrayDark,
                     size = 35.dp,
                     sizeIcon = 18.dp
                 )
