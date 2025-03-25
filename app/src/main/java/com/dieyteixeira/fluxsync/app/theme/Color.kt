@@ -71,7 +71,9 @@ val ColorFontesDark = Color(0xFF2D2E29)
 
 // cores negativo e positivo
 val ColorPositive = Color(0xFF1B9C54)
+val ColorPositiveLight = Color(0xFF71C58A)
 val ColorNegative = Color(0xFFBE0B19)
+val ColorNegativeLight = Color(0xFFF08A90)
 val ColorAviso = Color(0xFFFFC000)
 val ColorCardAviso2 = Color(0xFFFFFDBE)
 

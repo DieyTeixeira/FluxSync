@@ -4,13 +4,10 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +19,7 @@ import androidx.compose.ui.Modifier
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
-import com.dieyteixeira.fluxsync.ui.home.tabs.chart.screen.ChartTab
+import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.screen.GraphicTabScreen
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.screen.HomeTabScreen
 import com.dieyteixeira.fluxsync.ui.home.tabs.settings.SettingsTab
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.screen.TransactionTab
@@ -99,7 +96,7 @@ enum class NavigationBarItems(
     Chart(
         icon = R.drawable.icon_estatisticas,
         screen = { _, homeViewModel, _, _, _, _, _ ->
-            ChartTab(
+            GraphicTabScreen(
                 homeViewModel
             )
         }

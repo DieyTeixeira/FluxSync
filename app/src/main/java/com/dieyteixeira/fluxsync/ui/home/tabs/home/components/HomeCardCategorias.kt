@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -116,14 +117,15 @@ fun HomeCardCategorias(
                     painter = painterResource(id = R.drawable.icon_classification),
                     contentDescription = if (isOrdenacaoCrescente) "Ordenar: Maior → Menor" else "Ordenar: Menor → Maior",
                     modifier = Modifier
-                        .size(25.dp)
-                        .padding(end = 5.dp)
+                        .size(22.dp)
+                        .padding(end = 2.dp)
                         .clickable(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() },
                         ) {
                             isOrdenacaoCrescente = !isOrdenacaoCrescente
-                        }
+                        },
+                    colorFilter = ColorFilter.tint(ColorFontesLight)
                 )
             }
         }

@@ -1,10 +1,11 @@
-package com.dieyteixeira.fluxsync.ui.home.tabs.chart.screen
+package com.dieyteixeira.fluxsync.ui.home.tabs.graphic.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,14 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,11 +30,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalOutline
@@ -40,16 +44,19 @@ import com.dieyteixeira.fluxsync.app.components.listarMeses
 import com.dieyteixeira.fluxsync.app.components.nomeMesAtual
 import com.dieyteixeira.fluxsync.app.di.model.Grafico
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
+import com.dieyteixeira.fluxsync.app.theme.ColorCards
+import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicCardColumns
+import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicCardFilters
+import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicCardSpiral
+import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicDetailsSpiral
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
-import com.dieyteixeira.fluxsync.ui.home.tabs.chart.components.PieChart
+import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicSpiral
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.SelectAnoDialog
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import kotlin.collections.plus
 
 @Composable
-fun ChartTab(homeViewModel: HomeViewModel) {
+fun GraphicTabScreen(homeViewModel: HomeViewModel) {
 
     var showDialogAno by remember { mutableStateOf(false) }
 
@@ -77,43 +84,13 @@ fun ChartTab(homeViewModel: HomeViewModel) {
         }
     }
 
-    val categorias = homeViewModel.categorias.value
-    val transacoes = homeViewModel.transacoes.value
-
-    var transacoesFiltradas by remember { mutableStateOf(emptyList<Transacoes>()) }
-
-    LaunchedEffect(homeViewModel.transacoes.value, mesCentral, anoSelecionado) {
-        transacoesFiltradas = homeViewModel.transacoes.value.filter { transacao ->
-            val dataTransacao = transacao.data
-            val anoCorreto = dataTransacao.year + 1900
-            nomeMesAtual(dataTransacao.month) == mesCentral &&
-                    anoCorreto == anoSelecionado
-        }.toList()
-    }
-
-    val transacoesPorCategoria = categorias.map { categoria ->
-        val transacoesDaCategoria = transacoesFiltradas.filter {
-            it.categoriaId == categoria.id && it.tipo == "despesa" && it.valor > 0
-        }
-        val totalCategoria = transacoesDaCategoria.sumOf { it.valor }
-
-        categoria to totalCategoria
-    }.filter { it.second > 0 }
-
-    val graficoData = transacoesPorCategoria.map { (categoria, total) ->
-        Grafico(
-            id = categoria.id,
-            nome = categoria.descricao,
-            valor = total,
-            color = categoria.color,
-            icon = categoria.icon
-        )
-    }
-
     LaunchedEffect(Unit) {
         val mesAtualIndex = Calendar.getInstance().get(Calendar.MONTH)
         lazyListStateMes.scrollToItem(mesAtualIndex, -100)
     }
+
+    val contasDisponiveis = listOf("Todas") + homeViewModel.contas.value.map { it.descricao }
+    var contasSelecionadas by remember { mutableStateOf(listOf("Todas")) }
 
     Column(
         modifier = Modifier
@@ -133,7 +110,7 @@ fun ChartTab(homeViewModel: HomeViewModel) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Fluxo de caixa",
+                    text = "Relatórios",
                     style = MaterialTheme.typography.headlineLarge,
                     color = Color.White
                 )
@@ -195,15 +172,43 @@ fun ChartTab(homeViewModel: HomeViewModel) {
                 }
             }
         }
-        Box(
+        LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            contentAlignment = Alignment.Center
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            PieChart(
-                data = graficoData
-            )
+            item {
+                Spacer(modifier = Modifier.height(1.dp))
+            }
+            item {
+                GraphicCardFilters(
+                    contasDisponiveis = contasDisponiveis,
+                    contasSelecionadas = contasSelecionadas,
+                    onSelecionarContas = { selecionadas ->
+                        contasSelecionadas = selecionadas
+                    }
+                )
+            }
+            item {
+                GraphicCardColumns(
+                    homeViewModel = homeViewModel,
+                    mesSelecionado = mesCentral,
+                    anoSelecionado = anoSelecionado,
+                    contasSelecionadas = contasSelecionadas
+                )
+            }
+            item {
+                GraphicCardSpiral(
+                    homeViewModel = homeViewModel,
+                    mesSelecionado = mesCentral,
+                    anoSelecionado = anoSelecionado,
+                    contasSelecionadas = contasSelecionadas
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(64.dp))
+            }
         }
 
         if (showDialogAno) {
