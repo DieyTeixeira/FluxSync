@@ -5,7 +5,6 @@ import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,27 +28,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalOutline
 import com.dieyteixeira.fluxsync.app.components.listarMeses
 import com.dieyteixeira.fluxsync.app.components.nomeMesAtual
-import com.dieyteixeira.fluxsync.app.di.model.Grafico
-import com.dieyteixeira.fluxsync.app.di.model.Transacoes
-import com.dieyteixeira.fluxsync.app.theme.ColorCards
-import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicCardColumns
+import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicCardDespesas
+import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicCardFluxo
 import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicCardFilters
-import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicCardSpiral
-import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicDetailsSpiral
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
-import com.dieyteixeira.fluxsync.ui.home.tabs.graphic.components.GraphicSpiral
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.SelectAnoDialog
 import java.util.Calendar
 import kotlin.collections.plus
@@ -191,7 +182,7 @@ fun GraphicTabScreen(homeViewModel: HomeViewModel) {
                 )
             }
             item {
-                GraphicCardColumns(
+                GraphicCardFluxo(
                     homeViewModel = homeViewModel,
                     mesSelecionado = mesCentral,
                     anoSelecionado = anoSelecionado,
@@ -199,7 +190,7 @@ fun GraphicTabScreen(homeViewModel: HomeViewModel) {
                 )
             }
             item {
-                GraphicCardSpiral(
+                GraphicCardDespesas(
                     homeViewModel = homeViewModel,
                     mesSelecionado = mesCentral,
                     anoSelecionado = anoSelecionado,

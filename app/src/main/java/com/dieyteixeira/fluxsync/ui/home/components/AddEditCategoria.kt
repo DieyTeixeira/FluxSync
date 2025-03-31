@@ -178,11 +178,11 @@ fun AddCategoriaForm(
                         )
                     }
                     Spacer(modifier = Modifier.height(20.dp))
-                    LazyRow(
-                        modifier = Modifier
-                            .fillMaxWidth(0.9f),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(8), // Define 8 colunas
+                        modifier = Modifier.fillMaxWidth(0.9f),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(listColorsCategoria.size) { index ->
                             val selectedColor = listColorsCategoria[index] == color
@@ -234,7 +234,7 @@ fun AddCategoriaForm(
                                     painter = painterResource(id = listIconsCategorias[index]),
                                     contentDescription = null,
                                     modifier = Modifier.size(18.dp),
-                                    colorFilter = ColorFilter.tint(if (selectedIcon) ColorFontesDark else ColorGrayDark)
+                                    colorFilter = ColorFilter.tint(if (selectedIcon) ColorFontesDark else ColorFontesLight)
                                 )
                             }
                         }
@@ -420,11 +420,11 @@ fun EditCategoriaForm(
                         )
                     }
                     Spacer(modifier = Modifier.height(20.dp))
-                    LazyRow(
-                        modifier = Modifier
-                            .fillMaxWidth(0.9f),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(8), // Define 8 colunas
+                        modifier = Modifier.fillMaxWidth(0.9f),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(listColorsCategoria.size) { index ->
                             val selectedColor = listColorsCategoria[index] == colorEditada
@@ -476,7 +476,7 @@ fun EditCategoriaForm(
                                     painter = painterResource(id = listIconsCategorias[index]),
                                     contentDescription = null,
                                     modifier = Modifier.size(18.dp),
-                                    colorFilter = ColorFilter.tint(if (selectedIcon) ColorFontesDark else ColorGrayDark)
+                                    colorFilter = ColorFilter.tint(if (selectedIcon) ColorFontesDark else ColorFontesLight)
                                 )
                             }
                         }

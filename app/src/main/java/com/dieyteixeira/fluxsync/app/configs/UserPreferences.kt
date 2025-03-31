@@ -27,7 +27,7 @@ class UserPreferences(private val context: Context) {
     // Recuperar preferências do usuário
     val userPreferences: Flow<Pair<List<String>, Map<String, Boolean>>> = context.dataStore.data
         .map { preferences ->
-            val cardsOrder = preferences[CARDS_ORDER_KEY]?.split(",") ?: listOf("Saldo", "Categorias", "Histórico", "Ajustes")
+            val cardsOrder = preferences[CARDS_ORDER_KEY]?.split(",") ?: listOf("Saldo", "Previsão", "Categorias", "Histórico", "Ajustes")
             val enabledCards = preferences[ENABLED_CARDS_KEY]?.split(";")?.mapNotNull {
                 val parts = it.split(":")
                 if (parts.size == 2) parts[0] to parts[1].toBoolean() else null

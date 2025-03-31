@@ -54,7 +54,7 @@ import com.dieyteixeira.fluxsync.app.theme.ColorPositiveLight
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 
 @Composable
-fun GraphicCardColumns(
+fun GraphicCardFluxo(
     homeViewModel: HomeViewModel,
     mesSelecionado: String,
     anoSelecionado: Int,

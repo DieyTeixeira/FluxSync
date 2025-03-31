@@ -1,5 +1,6 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.home.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dieyteixeira.fluxsync.app.components.anoAtual
 import com.dieyteixeira.fluxsync.app.components.mesAtual
 import com.dieyteixeira.fluxsync.app.components.nomeMesAtual
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
@@ -46,7 +48,8 @@ fun HomeCardHistorico(
 
     val transacoesDoMesAtual = homeViewModel.transacoes.value.filter { transacao ->
         val dataTransacao = transacao.data
-        dataTransacao.month == mesAtual()
+        val anoCorrigido = dataTransacao.year + 1900
+        dataTransacao.month == mesAtual() && anoCorrigido == anoAtual()
     }
 
     Column(

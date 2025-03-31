@@ -36,6 +36,7 @@ import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeCardAjusts
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeCardCategorias
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeCardHistorico
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeCardNotifications
+import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeCardPrevisao
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeCardSaldo
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeTopBar
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
@@ -59,12 +60,14 @@ fun HomeTabScreen(
         initial = Pair(
             listOf(
                 "Saldo",
+                "Previsão",
                 "Categorias",
                 "Histórico",
                 "Ajustes"
             ),
             mapOf(
                 "Saldo" to true,
+                "Previsão" to true,
                 "Categorias" to true,
                 "Histórico" to true,
                 "Ajustes" to true
@@ -141,6 +144,9 @@ fun HomeTabScreen(
                     onClickExibirConta = { mostrarContas = true },
                     onClickOcultarConta = { mostrarContas = false },
                     onClickContas = { showContas = true }
+                )
+                "Previsão" -> HomeCardPrevisao(
+                    homeViewModel = homeViewModel
                 )
                 "Categorias" -> HomeCardCategorias(
                     homeViewModel = homeViewModel,

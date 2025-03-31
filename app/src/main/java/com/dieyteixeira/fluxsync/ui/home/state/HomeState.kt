@@ -1,22 +1,5 @@
 package com.dieyteixeira.fluxsync.ui.home.state
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.AutoStories
-import androidx.compose.material.icons.filled.DirectionsCar
-import androidx.compose.material.icons.filled.Fastfood
-import androidx.compose.material.icons.filled.Handshake
-import androidx.compose.material.icons.filled.Kayaking
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import com.dieyteixeira.fluxsync.R
-import com.dieyteixeira.fluxsync.app.di.model.Categoria
-import com.dieyteixeira.fluxsync.app.theme.BlueCategory
-import com.dieyteixeira.fluxsync.app.theme.BrownCategory
-import com.dieyteixeira.fluxsync.app.theme.GreenCategory
-import com.dieyteixeira.fluxsync.app.theme.OrangeCategory
-import com.dieyteixeira.fluxsync.app.theme.RedCategory
-import com.dieyteixeira.fluxsync.app.theme.YellowCategory
 import java.text.NumberFormat
 import java.util.Locale
 

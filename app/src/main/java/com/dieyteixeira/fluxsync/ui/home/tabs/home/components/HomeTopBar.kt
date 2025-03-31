@@ -40,7 +40,6 @@ fun HomeTopBar(
     homeViewModel: HomeViewModel
 ) {
 
-    val fontSize by homeViewModel.adjustedFontSize.collectAsState()
     val interactionSource = remember { MutableInteractionSource() }
     var rotationAngle by remember { mutableStateOf(0f) }
 

@@ -352,10 +352,7 @@ fun AddTransactionForm(
                             colorBorder = Color.LightGray,
                             maxLength = 150,
                             focusRequester = focusRequester,
-                            onClickKeyboard = {
-                                isKeyboardVisible = false
-                                focusManager.clearFocus()
-                            },
+                            onClickKeyboard = { isKeyboardVisible = false },
                             keyboardController = keyboardController
                         )
                     }
