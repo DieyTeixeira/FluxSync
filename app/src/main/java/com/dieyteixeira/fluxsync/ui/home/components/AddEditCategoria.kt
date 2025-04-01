@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
 import com.dieyteixeira.fluxsync.app.components.ButtonSinal
+import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.components.TextInput
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
@@ -65,6 +66,8 @@ fun AddCategoriaForm(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+
+    var showDialogPicker by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -208,6 +211,13 @@ fun AddCategoriaForm(
                         }
                     }
                     Spacer(modifier = Modifier.height(20.dp))
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(ColorGrayDark)
+                            .clickable { showDialogPicker = true }
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
                     LazyVerticalGrid(
                         modifier = Modifier
                             .fillMaxWidth(0.91f),
@@ -287,6 +297,25 @@ fun AddCategoriaForm(
                         height = 40.dp,
                         width = 100.dp
                     )
+                }
+            }
+        }
+
+        if (showDialogPicker) {
+            CustomDialog(
+                onClickClose = { showDialogPicker = false }
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Selecione uma Categoria",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.surfaceContainer
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    ColorPicker()
                 }
             }
         }
