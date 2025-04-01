@@ -2,8 +2,8 @@ package com.dieyteixeira.fluxsync.app.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -18,29 +18,26 @@ import androidx.compose.ui.unit.dp
 fun IconCategoria(
     color: Color,
     icon: Int,
-    sizeBoxExt: Int = 35,
-    sizeBoxInt: Int = 28,
-    sizeIcon: Int = 23
+    sizeBox: Int = 35,
+    sizeIcon: Int = 18,
+    rounded: Int = 14,
+    border: Double = 4.0
 ) {
+
     Box(
         modifier = Modifier
-            .size(sizeBoxExt.dp),
+            .size(sizeBox.dp)
+            .border(
+                width = border.dp,
+                color = color,
+                shape = RoundedCornerShape(rounded.dp)
+            ),
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .offset(y = -2.dp)
-                .size(sizeBoxInt.dp)
-                .background(
-                    color = color,
-                    shape = RoundedCornerShape(100)
-                )
-        )
         Image(
             painter = painterResource(id = icon),
             contentDescription = null,
             modifier = Modifier
-                .offset(y = 3.dp)
                 .size(sizeIcon.dp),
             colorFilter = ColorFilter.tint(Color.Black)
         )

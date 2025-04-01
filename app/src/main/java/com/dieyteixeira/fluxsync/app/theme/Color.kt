@@ -54,15 +54,14 @@ val ColorCategory4 = Color(0xFFEFAE54)  // Laranja Dourado
 val ColorCategory5 = Color(0xFFFCC380)  // Laranja Pastel
 val ColorCategory6 = Color(0xFFF7DB15)  // Amarelo
 val ColorCategory7 = Color(0xFFFCE78C)  // Amarelo Claro
-val ColorCategory8 = Color(0xFF84ABAA)  // Verde Acinzentado
-val ColorCategory9 = Color(0xFFA2CAA5)  // Verde Menta
-val ColorCategory10 = Color(0xFF94E0B0) // Verde Suave
-val ColorCategory11 = Color(0xFFC0DE7E) // Verde Claro
-val ColorCategory12 = Color(0xFF84E0EF) // Azul Suave
-val ColorCategory13 = Color(0xFF9DD3DF) // Azul Pastel
-val ColorCategory14 = Color(0xFF57C5C7) // Azul Água
-val ColorCategory15 = Color(0xFFE084DC) // Rosa Neon
-val ColorCategory16 = Color(0xFFD6B4E8) // Roxo Lavanda
+val ColorCategory8 = Color(0xFFA2CAA5)  // Verde Menta
+val ColorCategory9 = Color(0xFF94E0B0)  // Verde Suave
+val ColorCategory10 = Color(0xFFC0DE7E) // Verde Claro
+val ColorCategory11 = Color(0xFF84E0EF) // Azul Suave
+val ColorCategory12 = Color(0xFF9DD3DF) // Azul Pastel
+val ColorCategory13 = Color(0xFF57C5C7) // Azul Água
+val ColorCategory14 = Color(0xFFE084DC) // Rosa Neon
+val ColorCategory15 = Color(0xFFD6B4E8) // Roxo Lavanda
 
 // cores auxiliares
 val ColorGrayDark = Color(0xFFCACBC6)

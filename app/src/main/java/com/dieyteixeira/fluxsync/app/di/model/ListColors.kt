@@ -9,7 +9,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorCategory12
 import com.dieyteixeira.fluxsync.app.theme.ColorCategory13
 import com.dieyteixeira.fluxsync.app.theme.ColorCategory14
 import com.dieyteixeira.fluxsync.app.theme.ColorCategory15
-import com.dieyteixeira.fluxsync.app.theme.ColorCategory16
 import com.dieyteixeira.fluxsync.app.theme.ColorCategory2
 import com.dieyteixeira.fluxsync.app.theme.ColorCategory3
 import com.dieyteixeira.fluxsync.app.theme.ColorCategory4
@@ -39,8 +38,7 @@ val listColorsCategoria = listOf(
     ColorCategory12,
     ColorCategory13,
     ColorCategory14,
-    ColorCategory15,
-    ColorCategory16
+    ColorCategory15
 )
 
 val listColorsConta = listOf(

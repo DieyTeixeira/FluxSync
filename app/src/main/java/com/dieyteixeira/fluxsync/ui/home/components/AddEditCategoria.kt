@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,6 +30,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -49,7 +49,6 @@ import com.dieyteixeira.fluxsync.app.di.replace.iconToStringCategoria
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
-import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -68,6 +67,7 @@ fun AddCategoriaForm(
     val coroutineScope = rememberCoroutineScope()
 
     var showDialogPicker by remember { mutableStateOf(false) }
+    var colorPickerSelected by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -198,6 +198,7 @@ fun AddCategoriaForm(
                                     )
                                     .clickable {
                                         color = listColorsCategoria[index]
+                                        colorPickerSelected = false
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
@@ -209,14 +210,30 @@ fun AddCategoriaForm(
                                 )
                             }
                         }
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clip(shape = RoundedCornerShape(100))
+                                    .clickable {
+                                        showDialogPicker = true
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.image_picker),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                                Image(
+                                    painter = painterResource(id = R.drawable.icon_verificar),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp),
+                                    colorFilter = ColorFilter.tint(if (colorPickerSelected) Color.White else Color.Transparent)
+                                )
+                            }
+                        }
                     }
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Box(
-                        modifier = Modifier
-                            .size(32.dp)
-                            .background(ColorGrayDark)
-                            .clickable { showDialogPicker = true }
-                    )
                     Spacer(modifier = Modifier.height(20.dp))
                     LazyVerticalGrid(
                         modifier = Modifier
@@ -315,7 +332,13 @@ fun AddCategoriaForm(
                         color = MaterialTheme.colorScheme.surfaceContainer
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    ColorPicker()
+                    ColorPicker(
+                        onSelectedColor = {
+                            color = it
+                            showDialogPicker = false
+                            colorPickerSelected = true
+                        }
+                    )
                 }
             }
         }
@@ -336,6 +359,9 @@ fun EditCategoriaForm(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+
+    var showDialogPicker by remember { mutableStateOf(false) }
+    var colorPickerSelected by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -430,20 +456,20 @@ fun EditCategoriaForm(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         ButtonPersonalFilled(
-                            onClick = { typeLancamento = "Despesa" },
+                            onClick = { typeLancamento = "despesa" },
                             text = "Despesa",
-                            colorText = if (typeLancamento == "Despesa") Color.White else ColorFontesLight,
-                            color = if (typeLancamento == "Despesa") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
-                            colorBorder = if (typeLancamento == "Despesa") Color.Transparent else ColorFontesLight,
+                            colorText = if (typeLancamento == "despesa") Color.White else ColorFontesLight,
+                            color = if (typeLancamento == "despesa") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
+                            colorBorder = if (typeLancamento == "despesa") Color.Transparent else ColorFontesLight,
                             height = 35.dp,
                             width = 100.dp
                         )
                         ButtonPersonalFilled(
-                            onClick = { typeLancamento = "Receita" },
+                            onClick = { typeLancamento = "receita" },
                             text = "Receita",
-                            colorText = if (typeLancamento == "Receita") Color.White else ColorFontesLight,
-                            color = if (typeLancamento == "Receita") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
-                            colorBorder = if (typeLancamento == "Receita") Color.Transparent else ColorFontesLight,
+                            colorText = if (typeLancamento == "receita") Color.White else ColorFontesLight,
+                            color = if (typeLancamento == "receita") MaterialTheme.colorScheme.surfaceContainerLow else Color.Transparent,
+                            colorBorder = if (typeLancamento == "receita") Color.Transparent else ColorFontesLight,
                             height = 35.dp,
                             width = 100.dp
                         )
@@ -474,6 +500,29 @@ fun EditCategoriaForm(
                                     contentDescription = null,
                                     modifier = Modifier.size(20.dp),
                                     colorFilter = ColorFilter.tint(if (selectedColor) Color.Black else Color.Transparent)
+                                )
+                            }
+                        }
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clip(shape = RoundedCornerShape(100))
+                                    .clickable {
+                                        showDialogPicker = true
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.image_picker),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                                Image(
+                                    painter = painterResource(id = R.drawable.icon_verificar),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp),
+                                    colorFilter = ColorFilter.tint(if (colorPickerSelected) Color.White else Color.Transparent)
                                 )
                             }
                         }
@@ -561,6 +610,31 @@ fun EditCategoriaForm(
                         color = MaterialTheme.colorScheme.surfaceContainer,
                         height = 40.dp,
                         width = 100.dp
+                    )
+                }
+            }
+        }
+
+        if (showDialogPicker) {
+            CustomDialog(
+                onClickClose = { showDialogPicker = false }
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Selecione uma Categoria",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.surfaceContainer
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    ColorPicker(
+                        onSelectedColor = {
+                            colorEditada = it
+                            showDialogPicker = false
+                            colorPickerSelected = true
+                        }
                     )
                 }
             }

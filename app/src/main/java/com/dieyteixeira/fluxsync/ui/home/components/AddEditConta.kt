@@ -37,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -46,6 +47,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
+import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.CustomFieldEdit
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.components.TextInput
@@ -88,6 +90,9 @@ fun AddContaForm(
     val focusManager = LocalFocusManager.current
     var isKeyboardVisible by remember { mutableStateOf(false) }
     var isClickClose by remember { mutableStateOf(false) }
+
+    var showDialogPicker by remember { mutableStateOf(false) }
+    var colorPickerSelected by remember { mutableStateOf(false) }
 
     LaunchedEffect(isClickClose) {
         if (isClickClose) {
@@ -234,6 +239,29 @@ fun AddContaForm(
                                         else if (selectedColor) Color.Black
                                         else Color.Transparent
                                     )
+                                )
+                            }
+                        }
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clip(shape = RoundedCornerShape(100))
+                                    .clickable {
+                                        showDialogPicker = true
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.image_picker),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                                Image(
+                                    painter = painterResource(id = R.drawable.icon_verificar),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp),
+                                    colorFilter = ColorFilter.tint(if (colorPickerSelected) Color.White else Color.Transparent)
                                 )
                             }
                         }
@@ -397,6 +425,31 @@ fun AddContaForm(
                 }
             }
         }
+
+        if (showDialogPicker) {
+            CustomDialog(
+                onClickClose = { showDialogPicker = false }
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Selecione uma Categoria",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.surfaceContainer
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    ColorPicker(
+                        onSelectedColor = {
+                            color = it
+                            showDialogPicker = false
+                            colorPickerSelected = true
+                        }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -423,6 +476,9 @@ fun EditContaForm(
     val focusManager = LocalFocusManager.current
     var isKeyboardVisible by remember { mutableStateOf(false) }
     var isClickClose by remember { mutableStateOf(false) }
+
+    var showDialogPicker by remember { mutableStateOf(false) }
+    var colorPickerSelected by remember { mutableStateOf(false) }
 
     LaunchedEffect(isClickClose) {
         if (isClickClose) {
@@ -569,6 +625,29 @@ fun EditContaForm(
                                         else if (selectedColor) Color.Black
                                         else Color.Transparent
                                     )
+                                )
+                            }
+                        }
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clip(shape = RoundedCornerShape(100))
+                                    .clickable {
+                                        showDialogPicker = true
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.image_picker),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                                Image(
+                                    painter = painterResource(id = R.drawable.icon_verificar),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp),
+                                    colorFilter = ColorFilter.tint(if (colorPickerSelected) Color.White else Color.Transparent)
                                 )
                             }
                         }
@@ -732,6 +811,31 @@ fun EditContaForm(
                         onClick = { digit -> saldoEditada = formatCurrencyInput(saldoEditada, digit) },
                         onClickClose = { isClickClose = true },
                         onClickBackspace = { saldoEditada = removeLastDigit(saldoEditada) }
+                    )
+                }
+            }
+        }
+
+        if (showDialogPicker) {
+            CustomDialog(
+                onClickClose = { showDialogPicker = false }
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Selecione uma Categoria",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.surfaceContainer
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    ColorPicker(
+                        onSelectedColor = {
+                            colorEditada = it
+                            showDialogPicker = false
+                            colorPickerSelected = true
+                        }
                     )
                 }
             }
