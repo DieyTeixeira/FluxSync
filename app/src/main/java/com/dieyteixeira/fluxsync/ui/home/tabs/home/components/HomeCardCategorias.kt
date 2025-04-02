@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +40,9 @@ import androidx.compose.ui.unit.times
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
+import com.dieyteixeira.fluxsync.app.components.anoAtual
+import com.dieyteixeira.fluxsync.app.components.mesAtual
+import com.dieyteixeira.fluxsync.app.components.nomeMesAtual
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
@@ -46,6 +50,8 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -62,10 +68,17 @@ fun HomeCardCategorias(
 
     var isOrdenacaoCrescente by remember { mutableStateOf(true) }
 
-    val totalGeral = transacoes.filter { it.tipo == "despesa" && it.valor > 0 }.sumOf { it.valor }
+    val transacoesFiltradas = transacoes.filter { transacao ->
+        val dataTransacao = transacao.data
+        val anoCorreto = dataTransacao.year + 1900
+        dataTransacao.month == mesAtual() &&
+                anoCorreto == anoAtual()
+    }.toList()
+
+    val totalGeral = transacoesFiltradas.filter { it.tipo == "despesa" && it.valor > 0 }.sumOf { it.valor }
 
     val transacoesPorCategoria = categorias.map { categoria ->
-        val transacoesDaCategoria = transacoes.filter {
+        val transacoesDaCategoria = transacoesFiltradas.filter {
             it.categoriaId == categoria.id && it.tipo == "despesa" && it.valor > 0
         }
         val totalCategoria = transacoesDaCategoria.sumOf { it.valor }

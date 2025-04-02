@@ -146,7 +146,8 @@ fun HomeTabScreen(
                     onClickContas = { showContas = true }
                 )
                 "Previsão" -> HomeCardPrevisao(
-                    homeViewModel = homeViewModel
+                    homeViewModel = homeViewModel,
+                    isSaldoVisivel = isSaldoVisivel
                 )
                 "Categorias" -> HomeCardCategorias(
                     homeViewModel = homeViewModel,

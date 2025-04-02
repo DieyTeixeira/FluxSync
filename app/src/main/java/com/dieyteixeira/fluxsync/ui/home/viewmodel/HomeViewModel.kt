@@ -357,7 +357,7 @@ class HomeViewModel(
         }
     }
 
-    fun getGastosPorDia(): List<Pair<Int, Double>> {
+    fun getValoresPorDia(): List<Pair<Int, Double>> {
         val calendar = Calendar.getInstance()
         val anoAtual = calendar.get(Calendar.YEAR)
         val mesAtual = calendar.get(Calendar.MONTH) // Janeiro = 0, Fevereiro = 1...
@@ -366,7 +366,7 @@ class HomeViewModel(
         val diasNoMes = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
 
         // Cria um mapa inicial com todos os dias do mês e valor 0.0
-        val gastosPorDia = mutableMapOf<Int, Double>().apply {
+        val saldoPorDia = mutableMapOf<Int, Double>().apply {
             for (dia in 1..diasNoMes) {
                 this[dia] = 0.0
             }
@@ -379,13 +379,14 @@ class HomeViewModel(
                     dataTransacao.get(Calendar.MONTH) == mesAtual
         }
 
-        // Soma os gastos por dia
+        // Soma receitas e despesas por dia
         transacoesFiltradas.forEach { transacao ->
             val diaTransacao = Calendar.getInstance().apply { time = transacao.data }.get(Calendar.DAY_OF_MONTH)
-            gastosPorDia[diaTransacao] = (gastosPorDia[diaTransacao] ?: 0.0) + transacao.valor
+            val valorAjustado = if (transacao.tipo == "despesa") -transacao.valor else transacao.valor
+            saldoPorDia[diaTransacao] = (saldoPorDia[diaTransacao] ?: 0.0) + valorAjustado
         }
 
         // Retorna a lista ordenada (dia, gasto)
-        return gastosPorDia.toList().sortedBy { it.first }
+        return saldoPorDia.toList().sortedBy { it.first }
     }
 }
