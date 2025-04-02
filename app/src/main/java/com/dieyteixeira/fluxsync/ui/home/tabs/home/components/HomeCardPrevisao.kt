@@ -140,7 +140,7 @@ fun LinearChart(
         if (dataValue.isEmpty()) return@Canvas
 
         val minValue = dataValue.minOrNull() ?: 0
-        val maxValue = dataValue.maxOrNull() ?: 1 // Evita divisão por zero
+        val maxValue = dataValue.maxOrNull() ?: 1
         val range = maxValue - minValue
 
         val distance = size.width / (dataValue.size + 1)
@@ -151,7 +151,7 @@ fun LinearChart(
             if (dataValue.size >= index + 2) {
                 val normalizedY =
                     if (range == 0) 0.5f else (currentData - minValue) / range.toFloat()
-                val y0 = size.height * (1 - normalizedY) // Inverte para manter origem no topo
+                val y0 = size.height * (1 - normalizedY)
                 val x0 = currentX + distance
                 points.add(PointF(x0, y0))
                 currentX += distance

@@ -18,7 +18,7 @@ val listIconsCategorias = listOf(
     R.drawable.icon_computador,
     R.drawable.icon_editar,
     R.drawable.icon_ciclismo,
-    R.drawable.icon_envelope,
+    R.drawable.icon_combustivel,
     R.drawable.icon_academia,
     R.drawable.icon_casa,
     R.drawable.icon_compras,

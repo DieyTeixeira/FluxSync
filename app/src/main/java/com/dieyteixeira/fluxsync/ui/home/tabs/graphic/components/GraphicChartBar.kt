@@ -43,10 +43,13 @@ import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayMedium
+import kotlinx.coroutines.delay
 
 @Composable
 fun GraphicBar(
-    data: List<Grafico>
+    data: List<Grafico>,
+    mes: String,
+    ano: Int
 ) {
     if (data.isEmpty()) {
         Box(
@@ -71,7 +74,9 @@ fun GraphicBar(
 
     var animationPlayed by remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(mes, ano) {
+        animationPlayed = false
+        delay(100)
         animationPlayed = true
     }
 
@@ -86,7 +91,7 @@ fun GraphicBar(
         displayData.forEach { category ->
             val animatedProgress by animateFloatAsState(
                 targetValue = if (animationPlayed) (category.valor / maxAmount).toFloat() else 0f,
-                animationSpec = tween(800, easing = LinearOutSlowInEasing)
+                animationSpec = tween(if (animationPlayed) 800 else 0, easing = LinearOutSlowInEasing)
             )
 
             Row(
@@ -103,12 +108,6 @@ fun GraphicBar(
                         .clip(RoundedCornerShape(5.dp)),
                     contentAlignment = Alignment.CenterStart
                 ) {
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(5.dp)
-//                            .background(ColorBackground, RoundedCornerShape(100))
-//                    )
                     Canvas(modifier = Modifier.matchParentSize()) {
                         val lineSpacing = 5.dp.toPx()
                         val lineColor = Color.Gray.copy(alpha = 0.2f)
@@ -134,6 +133,8 @@ fun GraphicBar(
     }
 
     GraphicDetails(
-        data = displayData
+        data = displayData,
+        mes = mes,
+        ano = ano
     )
 }

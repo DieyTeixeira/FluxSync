@@ -199,9 +199,8 @@ fun CardIconText(
                     color = color,
                     icon = icon,
                     sizeBox = 30,
-                    sizeIcon = 18,
-                    rounded = 12,
-                    border = 3.5
+                    sizeIcon = 17,
+                    rounded = 12
                 )
             }
             Row {

@@ -159,7 +159,7 @@ fun GraphicCardFluxo(
                 meses.forEachIndexed { index, (mes, ano) ->
                     if (isVisible || index == 1) {
                         val (receitas, despesas) = valoresPorMes[index]
-                        GraphicColumnSec(
+                        GraphicChartColumn(
                             receitas = receitas,
                             despesas = despesas,
                             maxValor = maxValor,
@@ -203,7 +203,7 @@ fun GraphicCardFluxo(
 }
 
 @Composable
-fun GraphicColumnSec(
+fun GraphicChartColumn(
     receitas: Float,
     despesas: Float,
     maxValor: Float,

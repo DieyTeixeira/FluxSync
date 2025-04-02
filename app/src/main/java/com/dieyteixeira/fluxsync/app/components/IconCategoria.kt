@@ -12,23 +12,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.dieyteixeira.fluxsync.app.theme.ColorCategory10
 
 @Composable
 fun IconCategoria(
     color: Color,
     icon: Int,
     sizeBox: Int = 35,
-    sizeIcon: Int = 18,
-    rounded: Int = 14,
-    border: Double = 4.0
+    sizeIcon: Int = 20,
+    rounded: Int = 14
 ) {
 
     Box(
         modifier = Modifier
             .size(sizeBox.dp)
-            .border(
-                width = border.dp,
+            .background(
                 color = color,
                 shape = RoundedCornerShape(rounded.dp)
             ),
@@ -39,9 +39,18 @@ fun IconCategoria(
             contentDescription = null,
             modifier = Modifier
                 .size(sizeIcon.dp),
-            colorFilter = ColorFilter.tint(Color.Black)
+            colorFilter = ColorFilter.tint(Color.White)
         )
     }
+}
+
+@Preview
+@Composable
+private fun IconCategoriaPreview() {
+    IconCategoria(
+        color = ColorCategory10,
+        icon = com.dieyteixeira.fluxsync.R.drawable.icon_combustivel
+    )
 }
 
 @Composable

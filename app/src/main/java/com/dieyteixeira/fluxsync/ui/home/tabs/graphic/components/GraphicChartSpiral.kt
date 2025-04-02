@@ -40,10 +40,13 @@ import com.dieyteixeira.fluxsync.app.di.model.Grafico
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayMedium
+import kotlinx.coroutines.delay
 
 @Composable
 fun GraphicSpiral(
-    data: List<Grafico>
+    data: List<Grafico>,
+    mes: String,
+    ano: Int
 ) {
 
     if (data.isEmpty()) {
@@ -78,10 +81,12 @@ fun GraphicSpiral(
 
     val animatedProgress by animateFloatAsState(
         targetValue = if (animationPlayed) 1f else 0f,
-        animationSpec = tween(800, easing = LinearOutSlowInEasing) // Ajuste o tempo da animação aqui
+        animationSpec = tween(if (animationPlayed) 800 else 0, easing = LinearOutSlowInEasing)
     )
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(mes, ano) {
+        animationPlayed = false
+        delay(100)
         animationPlayed = true
     }
 
@@ -109,7 +114,7 @@ fun GraphicSpiral(
 
                 floatValue.forEachIndexed { index, value ->
                     val spacing = 1f
-                    val sweepAngle = animatedProgress * value
+                    val sweepAngle = if (animationPlayed) animatedProgress * value else 0f
 
                     drawArc(
                         color = colors.getOrElse(index) { Color.Gray },
@@ -125,6 +130,8 @@ fun GraphicSpiral(
     }
 
     GraphicDetails(
-        data = displayData
+        data = displayData,
+        mes = mes,
+        ano = ano
     )
 }

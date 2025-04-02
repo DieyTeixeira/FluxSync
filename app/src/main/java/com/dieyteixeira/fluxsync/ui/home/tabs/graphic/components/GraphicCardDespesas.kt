@@ -193,8 +193,18 @@ fun GraphicCardDespesas(
             }
             Spacer(modifier = Modifier.height(15.dp))
             when (selectedChartType) {
-                TypeGraphic.PIE -> GraphicSpiral(data = graficoData)
-                TypeGraphic.BAR -> GraphicBar(data = graficoData)
+                TypeGraphic.PIE ->
+                    GraphicSpiral(
+                        data = graficoData,
+                        mes = mesSelecionado,
+                        ano = anoSelecionado
+                    )
+                TypeGraphic.BAR ->
+                    GraphicBar(
+                        data = graficoData,
+                        mes = mesSelecionado,
+                        ano = anoSelecionado
+                    )
             }
         }
     }
