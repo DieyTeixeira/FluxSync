@@ -342,17 +342,30 @@ class HomeViewModel(
     }
 
     fun verificarVencimento(dataTransacao: Date): String? {
-        val hoje = Calendar.getInstance()
-        val dataTransacaoCal = Calendar.getInstance().apply { time = dataTransacao }
+
+        val hoje = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        val dataTransacaoCal = Calendar.getInstance().apply {
+            time = dataTransacao
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
 
         // Calcular a diferença em milissegundos e converter para dias
         val diferencaEmMillis = dataTransacaoCal.timeInMillis - hoje.timeInMillis
-        val diferencaEmDias = TimeUnit.MILLISECONDS.toDays(diferencaEmMillis)
+        val diferencaEmDias = TimeUnit.MILLISECONDS.toDays(diferencaEmMillis).toInt()
 
         return when {
             diferencaEmDias < 0 -> "Atrasada há ${-diferencaEmDias} dias" // Caso esteja vencida
-            diferencaEmDias in 1..2 -> "Vence em $diferencaEmDias dias" // Se vencer hoje ou nos próximos 2 dias
-            diferencaEmDias == 0L -> "Vence hoje" // Caso venha hoje
+            diferencaEmDias in 1..2 -> if (diferencaEmDias == 1) "Vence amanhã" else "Vence em $diferencaEmDias dias" // Se vencer hoje ou nos próximos 2 dias
+            diferencaEmDias == 0 -> "Vence hoje" // Caso venha hoje
             else -> null // Caso não se encaixe nesses critérios
         }
     }

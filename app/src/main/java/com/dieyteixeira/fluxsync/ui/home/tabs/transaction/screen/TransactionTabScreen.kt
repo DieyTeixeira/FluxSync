@@ -99,7 +99,7 @@ fun TransactionTab(
             val anoCorreto = dataTransacao.year + 1900
             nomeMesAtual(dataTransacao.month) == mesCentral &&
                     anoCorreto == anoSelecionado
-        }.toList()
+        }.sortedBy { it.data }.toList()
     }
 
     Column(
@@ -196,10 +196,12 @@ fun TransactionTab(
                 val mes = nomeMesAtual(data.month)
                 "$dia de $mes"
             }
+
             var isGrayBackground = false
             transacoesAgrupadas.forEach { (dataFormatada, transacoes) ->
                 isGrayBackground = !isGrayBackground
-                val backgroundColor = if (isGrayBackground) ColorCards else ColorCards.copy(alpha = 0.6f)
+                val backgroundColor =
+                    if (isGrayBackground) ColorCards else ColorCards.copy(alpha = 0.6f)
 
                 item {
                     Row(
@@ -225,14 +227,15 @@ fun TransactionTab(
                         backgroundColor = backgroundColor,
                         isMostrarButtons = isMostrarButtons,
                         onClickTransaction = {
-                            mostrarTransacoesMap.value = mostrarTransacoesMap.value.toMutableMap().apply {
-                                if (this[transacao.id] == true) {
-                                    remove(transacao.id)
-                                } else {
-                                    clear()
-                                    put(transacao.id, true)
+                            mostrarTransacoesMap.value =
+                                mostrarTransacoesMap.value.toMutableMap().apply {
+                                    if (this[transacao.id] == true) {
+                                        remove(transacao.id)
+                                    } else {
+                                        clear()
+                                        put(transacao.id, true)
+                                    }
                                 }
-                            }
                         },
                         onClickEditar = {
                             onEditClick("transacao")
@@ -244,6 +247,9 @@ fun TransactionTab(
                         }
                     )
                 }
+            }
+            item {
+                Spacer(modifier = Modifier.height(64.dp))
             }
         }
 

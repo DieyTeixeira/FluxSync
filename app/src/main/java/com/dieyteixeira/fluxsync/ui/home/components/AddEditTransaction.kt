@@ -374,7 +374,10 @@ fun AddTransactionForm(
                             focusManager.clearFocus()
                             homeViewModel.salvarTransacao(
                                 descricao = descriptionText,
-                                valor = value.replace(",", ".").toDoubleOrNull() ?: 0.0,
+                                valor = value
+                                    .replace(".", "")
+                                    .replace(",", ".")
+                                    .toDoubleOrNull() ?: 0.0,
                                 tipo = typeTransaction.value,
                                 situacao = "pendente",
                                 categoriaId = selectedCategory?.id ?: "",
@@ -705,7 +708,9 @@ fun EditTransactionForm(
                                 homeViewModel.editarTransacao(
                                     transacao.copy(
                                         descricao = descricaoEditada,
-                                        valor = valorEditado.replace(",", ".")
+                                        valor = valorEditado
+                                            .replace(".", "")
+                                            .replace(",", ".")
                                             .toDoubleOrNull() ?: 0.0,
                                         categoriaId = selectedCategory?.id ?: categoriaAtual.id,
                                         contaId = selectedAccount?.id ?: contaAtual.id,
@@ -821,7 +826,9 @@ fun EditTransactionForm(
                         homeViewModel.editarTransacao(
                             transacao!!.copy(
                                 descricao = descricaoEditada,
-                                valor = valorEditado.replace(",", ".")
+                                valor = valorEditado
+                                    .replace(".", "")
+                                    .replace(",", ".")
                                     .toDoubleOrNull() ?: 0.0,
                                 categoriaId = selectedCategory?.id ?: categoriaAtual.id,
                                 contaId = selectedAccount?.id ?: contaAtual.id,
