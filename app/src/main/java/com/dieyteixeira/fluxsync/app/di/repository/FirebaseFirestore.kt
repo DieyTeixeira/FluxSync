@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
+import com.dieyteixeira.fluxsync.app.di.model.Subcategoria
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.di.replace.colorToStringCategoria
 import com.dieyteixeira.fluxsync.app.di.replace.colorToStringConta
@@ -194,6 +195,95 @@ class FirestoreRepository {
         db.collection(userEmail).document("Categoria").collection("Categorias").document(categoriaId).delete()
     }
 
+    suspend fun getSubcategorias(): List<Subcategoria> {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return emptyList()
+
+        return try {
+            val querySnapshot: QuerySnapshot = db.collection(userEmail)
+                .document("Subcategoria")
+                .collection("Subcategorias")
+                .get()
+                .await()
+
+            querySnapshot.documents.mapNotNull { document ->
+                val id = document.id
+                val iconString = document.getString("icon") ?: return@mapNotNull null
+                val colorString = document.getString("color") ?: return@mapNotNull null
+                val descricao = document.getString("descricao") ?: return@mapNotNull null
+                val tipo = document.getString("tipo") ?: return@mapNotNull null
+
+                val icon = stringToIconCategoria(iconString)
+                val color = stringToColorCategoria(colorString)
+
+                Subcategoria(id = id, icon = icon, color = color, descricao = descricao, tipo = tipo)
+            }
+        } catch (e: Exception) {
+            Log.e("FirestoreRepository", "Erro ao recuperar categorias", e)
+            emptyList()
+        }
+    }
+
+    suspend fun salvarSubcategoria(
+        icon: String,
+        color: String,
+        descricao: String,
+        tipo: String
+    ) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+        val novoId = db.collection("Subcategorias").document().id
+
+        val subcategoriaMap = hashMapOf(
+            "id" to novoId,
+            "icon" to icon,
+            "color" to color,
+            "descricao" to descricao,
+            "tipo" to tipo
+        )
+
+        try {
+            db.collection(userEmail)
+                .document("Subcategoria")
+                .collection("Subcategorias")
+                .document(novoId)
+                .set(subcategoriaMap)
+                .await()
+            Log.d("FirestoreRepository", "Subcategoria salva com ID: $novoId")
+        } catch (e: Exception) {
+            Log.e("FirestoreRepository", "Erro ao salvar subcategoria", e)
+        }
+    }
+
+    fun editarSubcategoria(subcategoria: Subcategoria) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        val transacaoRef = db.collection(userEmail)
+            .document("Subcategoria")
+            .collection("Subcategorias")
+            .document(subcategoria.id)
+
+        transacaoRef.update(
+            mapOf(
+                "icon" to iconToStringCategoria(subcategoria.icon),
+                "color" to colorToStringCategoria(subcategoria.color),
+                "descricao" to subcategoria.descricao,
+                "tipo" to subcategoria.tipo
+            )
+        )
+    }
+
+    fun excluirSubcategoria(subcategoriaId: String) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        db.collection(userEmail)
+            .document("Subcategoria")
+            .collection("Subcategorias")
+            .document(subcategoriaId).delete()
+    }
+
     suspend fun getTransacoes(): List<Transacoes> {
         val user = auth.currentUser
         val userEmail = user?.email ?: return emptyList()
@@ -213,6 +303,7 @@ class FirestoreRepository {
                 val tipo = document.getString("tipo") ?: return@mapNotNull null
                 val situacao = document.getString("situacao") ?: return@mapNotNull null
                 val categoriaId = document.getString("categoriaId") ?: return@mapNotNull null
+                val subcategoriaId = document.getString("subcategoriaId") ?: return@mapNotNull null
                 val contaId = document.getString("contaId") ?: return@mapNotNull null
                 val data = document.getTimestamp("data")?.toDate() ?: return@mapNotNull null
                 val lancamento = document.getString("lancamento") ?: return@mapNotNull null
@@ -227,6 +318,7 @@ class FirestoreRepository {
                     tipo = tipo,
                     situacao = situacao,
                     categoriaId = categoriaId,
+                    subcategoriaId = subcategoriaId,
                     contaId = contaId,
                     data = data,
                     lancamento = lancamento,
@@ -246,6 +338,7 @@ class FirestoreRepository {
         tipo: String,
         situacao: String,
         categoriaId: String,
+        subcategoriaId: String,
         contaId: String,
         data: Timestamp,
         lancamento: String,
@@ -256,15 +349,18 @@ class FirestoreRepository {
         val userEmail = user?.email ?: return
 
         try {
-            val transacoesRef = db.collection(userEmail).document("Lancamento").collection("Lancamentos") // Correção do caminho da coleção
+            val transacoesRef = db.collection(userEmail)
+                .document("Lancamento")
+                .collection("Lancamentos") // Correção do caminho da coleção
+
             val grupoId = transacoesRef.document().id
 
             when (lancamento) {
                 "Único" -> {
                     val novoId = transacoesRef.document().id
                     val transacaoMap = criarTransacaoMap(
-                        novoId, grupoId, descricao, valor, tipo, situacao, categoriaId, contaId,
-                        data, lancamento, parcelas, observacao
+                        novoId, grupoId, descricao, valor, tipo, situacao, categoriaId,
+                        subcategoriaId, contaId, data, lancamento, parcelas, observacao
                     )
                     transacoesRef.document(novoId).set(transacaoMap).await()
                 }
@@ -276,8 +372,9 @@ class FirestoreRepository {
                     for (i in 0..11) {
                         val novoId = transacoesRef.document().id
                         val transacaoMap = criarTransacaoMap(
-                            novoId, grupoId, descricao, valor, tipo, situacao, categoriaId, contaId,
-                            Timestamp(calendar.time), lancamento, i.toString(), observacao
+                            novoId, grupoId, descricao, valor, tipo, situacao, categoriaId,
+                            subcategoriaId, contaId, Timestamp(calendar.time),
+                            lancamento, i.toString(), observacao
                         )
                         transacoesRef.document(novoId).set(transacaoMap).await()
                         calendar.add(Calendar.MONTH, 1)
@@ -294,8 +391,9 @@ class FirestoreRepository {
                         val novoId = transacoesRef.document().id
                         val numParcelas = i.toString() + "/" + parcelas
                         val transacaoMap = criarTransacaoMap(
-                            novoId, grupoId, descricao, valorParcela, tipo, situacao, categoriaId, contaId,
-                            Timestamp(calendar.time), lancamento, numParcelas, observacao
+                            novoId, grupoId, descricao, valorParcela, tipo, situacao,
+                            categoriaId, subcategoriaId, contaId, Timestamp(calendar.time),
+                            lancamento, numParcelas, observacao
                         )
                         transacoesRef.document(novoId).set(transacaoMap).await()
                         calendar.add(Calendar.MONTH, 1)
@@ -317,6 +415,7 @@ class FirestoreRepository {
         tipo: String,
         situacao: String,
         categoriaId: String,
+        subcategoriaId: String,
         contaId: String,
         data: Timestamp,
         lancamento: String,
@@ -332,6 +431,7 @@ class FirestoreRepository {
             "tipo" to tipo,
             "situacao" to situacao,
             "categoriaId" to categoriaId,
+            "subcategoriaId" to subcategoriaId,
             "contaId" to contaId,
             "data" to data,
             "lancamento" to lancamento,
@@ -351,6 +451,7 @@ class FirestoreRepository {
                 "descricao" to transacao.descricao,
                 "valor" to transacao.valor,
                 "categoriaId" to transacao.categoriaId,
+                "subcategoriaId" to transacao.subcategoriaId,
                 "contaId" to transacao.contaId,
                 "observacao" to transacao.observacao
             )
@@ -361,7 +462,9 @@ class FirestoreRepository {
         val user = auth.currentUser
         val userEmail = user?.email ?: return
 
-        val transacoes = db.collection(userEmail).document("Lancamento").collection("Lancamentos")
+        val transacoes = db.collection(userEmail)
+            .document("Lancamento")
+            .collection("Lancamentos")
             .whereEqualTo("grupoId", grupoId)
             .get()
             .await()
@@ -372,6 +475,7 @@ class FirestoreRepository {
                     "descricao" to transacao.descricao,
                     "valor" to transacao.valor,
                     "categoriaId" to transacao.categoriaId,
+                    "subcategoriaId" to transacao.subcategoriaId,
                     "contaId" to transacao.contaId,
                     "observacao" to transacao.observacao
                 )

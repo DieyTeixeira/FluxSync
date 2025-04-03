@@ -33,10 +33,12 @@ import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.components.IconConta
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
+import com.dieyteixeira.fluxsync.app.di.model.Subcategoria
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
+import com.dieyteixeira.fluxsync.app.theme.GrayCont
 import com.dieyteixeira.fluxsync.ui.home.state.formatarValor
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import java.text.SimpleDateFormat
@@ -76,6 +78,20 @@ fun InfoDialog(
                 val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val formattedDate = formatter.format(transaction.data)
 
+                val conta = homeViewModel.contas.value.firstOrNull { it.id == transaction.contaId }
+                val categoria = homeViewModel.categorias.value.firstOrNull { it.id == transaction.categoriaId }
+                val subcategoria = homeViewModel.subcategorias.value.firstOrNull { it.id == transaction.subcategoriaId }
+
+                if (conta == null || categoria == null || subcategoria == null) {
+                    Text(
+                        text = "Erro ao carregar os detalhes da transação.",
+                        style = MaterialTheme.typography.displayMedium,
+                        textAlign = TextAlign.Center,
+                        color = ColorFontesLight
+                    )
+                    return@CustomDialog
+                }
+
                 CardText(
                     icon = R.drawable.icon_texto,
                     textItem = transaction.descricao
@@ -90,16 +106,11 @@ fun InfoDialog(
                         textItem = transaction.parcelas + " parcelas"
                     )
                 }
-                CardIconText(
-                    conta = homeViewModel.contas.value.first { it.id == transaction.contaId },
-                    categoria = homeViewModel.categorias.value.first { it.id == transaction.categoriaId },
-                    textTitulo = "Conta"
-                )
-                CardIconText(
-                    conta = homeViewModel.contas.value.first { it.id == transaction.contaId },
-                    categoria = homeViewModel.categorias.value.first { it.id == transaction.categoriaId },
-                    textTitulo = "Categoria"
-                )
+
+                CardIconText(conta, categoria, subcategoria, "Conta")
+                CardIconText(conta, categoria, subcategoria, "Categoria")
+                CardIconText(conta, categoria, subcategoria, "Subcategoria")
+
                 CardText(
                     icon = R.drawable.icon_calendario,
                     textItem = formattedDate
@@ -171,12 +182,27 @@ fun CardText(
 fun CardIconText(
     conta: Conta,
     categoria: Categoria,
+    subcategoria: Subcategoria?,
     textTitulo: String,
 ) {
 
-    val descricao = if (textTitulo == "Conta") { conta.descricao } else { categoria.descricao }
-    val icon = if (textTitulo == "Conta") { conta.icon } else { categoria.icon }
-    val color = if (textTitulo == "Conta") { conta.color } else { categoria.color }
+    val (descricao, icon, color) = when (textTitulo) {
+        "Conta" -> Triple(
+            conta.descricao,
+            conta.icon,
+            conta.color
+        )
+        "Categoria" -> Triple(
+            categoria.descricao,
+            categoria.icon,
+            categoria.color
+        )
+        else -> Triple(
+            subcategoria?.descricao ?: "Sem Subcategoria",
+            subcategoria?.icon ?: R.drawable.icon_cubo,
+            subcategoria?.color ?: GrayCont
+        )
+    }
 
     Column(
         modifier = Modifier

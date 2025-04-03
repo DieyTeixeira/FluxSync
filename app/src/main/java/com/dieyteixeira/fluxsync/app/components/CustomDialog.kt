@@ -116,7 +116,7 @@ fun CustomDialog(
             ) {
                 Box(
                     modifier = Modifier
-                        .heightIn(min = 150.dp, max = 600.dp)
+                        .heightIn(min = 150.dp, max = 550.dp)
                         .padding(15.dp)
                 ) {
                     content()

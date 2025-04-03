@@ -498,16 +498,25 @@ fun HomeAddFieldsInsert(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width(4.dp))
-            if (text == "Categoria") {
-                IconCategoria(
-                    icon = icon,
-                    color = color
-                )
-            } else {
-                IconConta(
-                    icon = icon,
-                    color = color
-                )
+            when (text) {
+                "Categoria" -> {
+                    IconCategoria(
+                        icon = icon,
+                        color = color
+                    )
+                }
+                "Subcategoria" -> {
+                    IconCategoria(
+                        icon = icon,
+                        color = color
+                    )
+                }
+                else -> {
+                    IconConta(
+                        icon = icon,
+                        color = color
+                    )
+                }
             }
             Spacer(modifier = Modifier.width(14.dp))
             Text(
@@ -515,7 +524,7 @@ fun HomeAddFieldsInsert(
                 style = MaterialTheme.typography.bodyLarge,
                 color = ColorFontesDark
             )
-            if (text != "Categoria" && textValue != "Selecionar Conta") {
+            if (text != "Categoria" && textValue != "Selecionar Conta" && text != "Subcategoria") {
                 Spacer(modifier = Modifier.width(15.dp))
                 Text(
                     text = "(${formatarValor(textSaldo)})",

@@ -54,6 +54,24 @@ fun HomeCardNotifications(
             status?.let { statusText -> transacao.descricao to statusText }
         }
 
+    val vencendoHoje = transacoesNotificadas.any { it.second == "vence hoje" }
+    val vencendoEmDias = transacoesNotificadas.any { it.second.startsWith("vence em") }
+    val atrasadas = transacoesNotificadas.any { it.second.startsWith("atrasada há") }
+
+    val mensagem = when {
+        atrasadas && (vencendoHoje || vencendoEmDias) ->
+            "Existem contas vencidas e outras próximas do vencimento."
+        vencendoHoje && vencendoEmDias ->
+            "Existem contas vencendo hoje e outras próximas do vencimento."
+        vencendoHoje ->
+            "Existem contas vencendo hoje."
+        vencendoEmDias ->
+            "Existem contas próximas do vencimento."
+        atrasadas ->
+            "Existem contas vencidas."
+        else -> null
+    }
+
     val dicaAleatoria = dicasFinanceiras[Random.nextInt(dicasFinanceiras.size)]
 
     Box(
@@ -100,9 +118,10 @@ fun HomeCardNotifications(
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                transacoesNotificadas.forEach { (descricao, status) ->
+
+                mensagem?.let {
                     Text(
-                        text = "Conta \"$descricao\" $status.",
+                        text = it,
                         style = MaterialTheme.typography.displaySmall,
                         textAlign = TextAlign.Center,
                         color = ColorFontesDark,

@@ -71,6 +71,7 @@ enum class NavigationBarItems(
     val screen: @Composable (
         (LoginViewModel, HomeViewModel, UserPreferences, (String) -> Unit, (String) -> Unit, () -> Unit, () -> Unit) -> Unit),
 ) {
+    @RequiresApi(Build.VERSION_CODES.O)
     Home(
         icon = R.drawable.icon_casa,
         screen = { loginViewModel, homeViewModel, userPreferences, onAddClick, onEditClick, onSignOutClick, onClick ->

@@ -56,6 +56,7 @@ import com.dieyteixeira.fluxsync.app.components.removeLastDigit
 import com.dieyteixeira.fluxsync.app.components.textEditTransactionSalvar
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
+import com.dieyteixeira.fluxsync.app.di.model.Subcategoria
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.di.replace.formatarValorEdit
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
@@ -66,6 +67,7 @@ import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.CategoriasList
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasList
+import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.SubcategoriasList
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsInsert
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLeanding
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLongLeanding
@@ -73,7 +75,7 @@ import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 
-@SuppressLint("DefaultLocale", "UseOfNonLambdaOffsetOverload")
+@SuppressLint("DefaultLocale", "UseOfNonLambdaOffsetOverload", "MemberExtensionConflict")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddTransactionForm(
@@ -114,9 +116,11 @@ fun AddTransactionForm(
     var valueParcelas by remember { mutableStateOf(1) }
 
     var showCategoryDialog by remember { mutableStateOf(false) }
+    var showSubcategoryDialog by remember { mutableStateOf(false) }
     var showAccountDialog by remember { mutableStateOf(false) }
 
     var selectedCategory by remember { mutableStateOf<Categoria?>(null) }
+    var selectedSubcategory by remember { mutableStateOf<Subcategoria?>(null) }
     var selectedAccount by remember { mutableStateOf<Conta?>(null) }
 
     LaunchedEffect(isClickClose) {
@@ -282,6 +286,20 @@ fun AddTransactionForm(
                             }
                         )
                     }
+                    item { // CATEGORIA
+                        HomeAddFieldsInsert(
+                            interactionSource = interactionSource,
+                            divider = true,
+                            text = "Subcategoria",
+                            textValue = selectedSubcategory?.descricao ?: "Selecionar Subcategoria",
+                            color = selectedSubcategory?.color ?: GrayCont,
+                            icon = selectedSubcategory?.icon ?: R.drawable.icon_cubo,
+                            onClick = {
+                                showSubcategoryDialog = true
+                                focusManager.clearFocus()
+                            }
+                        )
+                    }
                     item { // DATA
                         HomeAddFieldsTextIcon(
                             interactionSource = interactionSource,
@@ -381,6 +399,7 @@ fun AddTransactionForm(
                                 tipo = typeTransaction.value,
                                 situacao = "pendente",
                                 categoriaId = selectedCategory?.id ?: "",
+                                subcategoriaId = selectedSubcategory?.id ?: "",
                                 contaId = selectedAccount?.id ?: "",
                                 data = dateSelected.toString(),
                                 lancamento = typeLancamento.value,
@@ -466,6 +485,40 @@ fun AddTransactionForm(
                 }
             }
 
+            // Diálogo para seleção de categoria
+            if (showSubcategoryDialog) {
+                CustomDialog(
+                    onClickClose = { showSubcategoryDialog = false }
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Selecione uma Categoria",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.surfaceContainer
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(homeViewModel.subcategorias.value.size) { index ->
+                                SubcategoriasList(
+                                    subcategorias = homeViewModel.subcategorias.value[index],
+                                    onClickSubcategoria = {
+                                        showSubcategoryDialog = false
+                                        selectedSubcategory = it
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
             if (isKeyboardVisible) {
                 Column(
                     modifier = Modifier
@@ -508,6 +561,7 @@ fun EditTransactionForm(
     transacao: Transacoes?,
     contas: List<Conta>,
     categorias: List<Categoria>,
+    subcategorias: List<Subcategoria>,
     onClose: () -> Unit
 ) {
 
@@ -531,10 +585,17 @@ fun EditTransactionForm(
         mutableStateOf(
             categorias.firstOrNull { it.id == transacao!!.categoriaId } ?: categorias.first())
     }
+    val subcategoriaAtual by remember {
+        mutableStateOf(
+            subcategorias.firstOrNull { it.id == transacao?.subcategoriaId } ?: subcategorias.firstOrNull()
+        )
+    }
 
     var showCategoryDialog by remember { mutableStateOf(false) }
+    var showSubcategoryDialog by remember { mutableStateOf(false) }
     var showAccountDialog by remember { mutableStateOf(false) }
     var selectedCategory by remember { mutableStateOf<Categoria?>(null) }
+    var selectedSubcategory by remember { mutableStateOf<Subcategoria?>(null) }
     var selectedAccount by remember { mutableStateOf<Conta?>(null) }
 
     var salvarAjustes by remember { mutableStateOf(false) }
@@ -670,6 +731,21 @@ fun EditTransactionForm(
                             }
                         )
                     }
+                    item { // SUBCATEGORIA
+                        TransactionAddFieldsInsert(
+                            interactionSource = interactionSource,
+                            divider = true,
+                            text = "Subcategoria",
+                            textValue = selectedSubcategory?.descricao ?: subcategoriaAtual?.descricao ?: "Selecionar Subcategoria",
+                            color = selectedSubcategory?.color ?: subcategoriaAtual?.color ?: GrayCont,
+                            icon = selectedSubcategory?.icon ?: subcategoriaAtual?.icon ?: R.drawable.icon_cubo,
+                            onClick = {
+                                focusManager.clearFocus()
+                                isKeyboardVisible = false
+                                showSubcategoryDialog = true
+                            }
+                        )
+                    }
                     item {
                         TransactionAddFieldsTextLongLeanding(
                             divider = true,
@@ -713,6 +789,7 @@ fun EditTransactionForm(
                                             .replace(",", ".")
                                             .toDoubleOrNull() ?: 0.0,
                                         categoriaId = selectedCategory?.id ?: categoriaAtual.id,
+                                        subcategoriaId = selectedSubcategory?.id ?: subcategoriaAtual?.id ?: "",
                                         contaId = selectedAccount?.id ?: contaAtual.id,
                                         observacao = observacaoEditada
                                     ), alterarTodas
@@ -798,6 +875,40 @@ fun EditTransactionForm(
                 }
             }
 
+            // Diálogo para seleção de categoria
+            if (showSubcategoryDialog) {
+                CustomDialog(
+                    onClickClose = { showSubcategoryDialog = false }
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Selecione uma Subcategoria",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.surfaceContainer
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(homeViewModel.subcategorias.value.size) { index ->
+                                SubcategoriasList(
+                                    subcategorias = homeViewModel.subcategorias.value[index],
+                                    onClickSubcategoria = {
+                                        showSubcategoryDialog = false
+                                        selectedSubcategory = it
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
             if (isKeyboardVisible) {
                 Column(
                     modifier = Modifier
@@ -831,6 +942,7 @@ fun EditTransactionForm(
                                     .replace(",", ".")
                                     .toDoubleOrNull() ?: 0.0,
                                 categoriaId = selectedCategory?.id ?: categoriaAtual.id,
+                                subcategoriaId = selectedSubcategory?.id ?: subcategoriaAtual?.id ?: "",
                                 contaId = selectedAccount?.id ?: contaAtual.id,
                                 observacao = observacaoEditada
                             ), alterarTodas
@@ -844,9 +956,12 @@ fun EditTransactionForm(
                         homeViewModel.editarTransacao(
                             transacao!!.copy(
                                 descricao = descricaoEditada,
-                                valor = valorEditado.replace(",", ".")
+                                valor = valorEditado
+                                    .replace(".", "")
+                                    .replace(",", ".")
                                     .toDoubleOrNull() ?: 0.0,
                                 categoriaId = selectedCategory?.id ?: categoriaAtual.id,
+                                subcategoriaId = selectedSubcategory?.id ?: subcategoriaAtual?.id ?: "",
                                 contaId = selectedAccount?.id ?: contaAtual.id,
                                 observacao = observacaoEditada
                             ), alterarTodas

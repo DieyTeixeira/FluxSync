@@ -43,7 +43,7 @@ fun ButtonSinal(
             .size(17.dp)
             .border(
                 width = 1.5.dp,
-                color = if (typeLancamento == "Despesa") ColorNegative else ColorPositive,
+                color = if (typeLancamento == "despesa") ColorNegative else ColorPositive,
                 shape = RoundedCornerShape(100)
             ),
         contentAlignment = Alignment.Center
@@ -52,7 +52,7 @@ fun ButtonSinal(
             modifier = Modifier
                 .size(9.dp)
                 .background(
-                    color = if (typeLancamento == "Despesa") ColorNegative else ColorPositive,
+                    color = if (typeLancamento == "despesa") ColorNegative else ColorPositive,
                     shape = RoundedCornerShape(100)
                 )
         )

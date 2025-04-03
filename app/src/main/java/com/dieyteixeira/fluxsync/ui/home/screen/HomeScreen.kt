@@ -52,9 +52,11 @@ import com.dieyteixeira.fluxsync.app.theme.ColorCards
 import com.dieyteixeira.fluxsync.app.theme.ManageStatusBarIcons
 import com.dieyteixeira.fluxsync.ui.home.components.AddCategoriaForm
 import com.dieyteixeira.fluxsync.ui.home.components.AddContaForm
+import com.dieyteixeira.fluxsync.ui.home.components.AddSubcategoriaForm
 import com.dieyteixeira.fluxsync.ui.home.components.AddTransactionForm
 import com.dieyteixeira.fluxsync.ui.home.components.EditCategoriaForm
 import com.dieyteixeira.fluxsync.ui.home.components.EditContaForm
+import com.dieyteixeira.fluxsync.ui.home.components.EditSubcategoriaForm
 import com.dieyteixeira.fluxsync.ui.home.components.EditTransactionForm
 import com.dieyteixeira.fluxsync.ui.home.components.HomePrincipalScreen
 import com.dieyteixeira.fluxsync.ui.home.components.NavigationBarItems
@@ -91,15 +93,18 @@ fun HomeScreen(
     var showAddTransaction by remember { mutableStateOf(false) }
     var showAddConta by remember { mutableStateOf(false) }
     var showAddCategoria by remember { mutableStateOf(false) }
+    var showAddSubcategoria by remember { mutableStateOf(false) }
 
     var showEditTransaction by remember { mutableStateOf(false) }
     var showEditConta by remember { mutableStateOf(false) }
     var showEditCategoria by remember { mutableStateOf(false) }
+    var showEditSubcategoria by remember { mutableStateOf(false) }
 
     val showForm by derivedStateOf {
         showAddTransaction || showEditTransaction ||
                 showAddConta || showEditConta ||
-                showAddCategoria || showEditCategoria
+                showAddCategoria || showEditCategoria ||
+                showAddSubcategoria || showEditSubcategoria
     }
 
     val scaleAnim by animateFloatAsState(targetValue = if (showForm) 0.95f else 1.0f)
@@ -276,6 +281,7 @@ fun HomeScreen(
                                         "transacao" -> showAddTransaction = true
                                         "conta" -> showAddConta = true
                                         "categoria" -> showAddCategoria = true
+                                        "subcategoria" -> showAddSubcategoria = true
                                     }
                                 },
                                 onEditClick = { edit ->
@@ -283,6 +289,7 @@ fun HomeScreen(
                                         "transacao" -> showEditTransaction = true
                                         "conta" -> showEditConta = true
                                         "categoria" -> showEditCategoria = true
+                                        "subcategoria" -> showEditSubcategoria = true
                                     }
                                 },
                                 onSignOutClick = onSignOutClick,
@@ -328,6 +335,7 @@ fun HomeScreen(
                                 transacao = homeViewModel.selectedTransaction.value,
                                 contas = homeViewModel.contas.value,
                                 categorias = homeViewModel.categorias.value,
+                                subcategorias = homeViewModel.subcategorias.value,
                                 onClose = { showEditTransaction = false }
                             )
                         }
@@ -359,6 +367,21 @@ fun HomeScreen(
                                 homeViewModel = homeViewModel,
                                 categoria = homeViewModel.selectedCategoria.value,
                                 onClose = { showEditCategoria = false }
+                            )
+                        }
+
+                        if (showAddSubcategoria) {
+                            AddSubcategoriaForm(
+                                homeViewModel = homeViewModel,
+                                onClose = { showAddSubcategoria = false }
+                            )
+                        }
+
+                        if (showEditSubcategoria) {
+                            EditSubcategoriaForm(
+                                homeViewModel = homeViewModel,
+                                subcategoria = homeViewModel.selectedSubcategoria.value,
+                                onClose = { showEditSubcategoria = false }
                             )
                         }
                     }

@@ -1,5 +1,7 @@
 package com.dieyteixeira.fluxsync.ui.home.tabs.home.screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -39,11 +41,13 @@ import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeCardNotificati
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeCardPrevisao
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeCardSaldo
 import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.HomeTopBar
+import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.SubcategoriasDialog
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeTabScreen(
     loginViewModel: LoginViewModel,
@@ -83,8 +87,10 @@ fun HomeTabScreen(
 
     var mostrarContas by remember { mutableStateOf(false) }
     var mostrarCategorias by remember { mutableStateOf(false) }
+    var mostrarSubcategorias by remember { mutableStateOf(false) }
     var showContas by remember { mutableStateOf(false) }
     var showCategorias by remember { mutableStateOf(false) }
+    var showSubcategorias by remember { mutableStateOf(false) }
 
     LazyColumn(
         modifier = Modifier
@@ -97,6 +103,7 @@ fun HomeTabScreen(
                 coroutineScope.launch {
                     mostrarContas = false
                     mostrarCategorias = false
+                    mostrarSubcategorias = false
                 }
             },
         verticalArrangement = Arrangement.spacedBy(15.dp),
@@ -165,9 +172,12 @@ fun HomeTabScreen(
                         if (it == "Contas") {
                             coroutineScope.launch { homeViewModel.getContas() }
                             showContas = true
-                        } else {
+                        } else if (it == "Categorias") {
                             coroutineScope.launch { homeViewModel.getCategorias() }
                             showCategorias = true
+                        } else {
+                            coroutineScope.launch { homeViewModel.getSubcategorias() }
+                            showSubcategorias = true
                         }
                     }
                 )
@@ -228,6 +238,14 @@ fun HomeTabScreen(
             onAddClick = { onAddClick("categoria") },
             onEditClick = { onEditClick("categoria") },
             onClickClose = { showCategorias = false }
+        )
+    }
+    if (showSubcategorias) {
+        SubcategoriasDialog(
+            homeViewModel = homeViewModel,
+            onAddClick = { onAddClick("subcategoria") },
+            onEditClick = { onEditClick("subcategoria") },
+            onClickClose = { showSubcategorias = false }
         )
     }
 }

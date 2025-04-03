@@ -14,5 +14,6 @@ data class ItemAjuste(
 
 val itemsAjuste = listOf(
     ItemAjuste("Contas"),
-    ItemAjuste("Categorias")
+    ItemAjuste("Categorias"),
+    ItemAjuste("Subcategorias")
 )

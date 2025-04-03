@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
@@ -33,20 +31,18 @@ import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalIcon
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
-import com.dieyteixeira.fluxsync.app.components.ButtonSinal
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Subcategoria
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
-import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorGrayDark
 import com.dieyteixeira.fluxsync.ui.home.components.AlertDialog
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 
 @Composable
-fun CategoriasDialog(
+fun SubcategoriasDialog(
     homeViewModel: HomeViewModel,
     onAddClick: () -> Unit,
     onEditClick: () -> Unit,
@@ -55,7 +51,7 @@ fun CategoriasDialog(
 
     val messageReturn by homeViewModel.message.collectAsState()
     val tipoMessage by homeViewModel.tipoMessage.collectAsState()
-    val mostrarCategoriasMap = remember { mutableStateOf(mapOf<String, Boolean>()) }
+    val mostrarSubcategoriasMap = remember { mutableStateOf(mapOf<String, Boolean>()) }
     var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(tipoMessage) {
@@ -72,7 +68,7 @@ fun CategoriasDialog(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Categorias",
+                text = "Subcategorias",
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.surfaceContainer
             )
@@ -82,67 +78,43 @@ fun CategoriasDialog(
                     onClickClose()
                     onAddClick()
                 },
-                text = "Adicionar categoria",
+                text = "Adicionar subcategoria",
                 colorText = MaterialTheme.colorScheme.surfaceContainer,
                 colorBorder = MaterialTheme.colorScheme.surfaceContainer,
                 height = 40.dp
             )
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                val transacoesAgrupadas = homeViewModel.categorias.value.groupBy { it.tipo }
+                items(homeViewModel.subcategorias.value.size) { index ->
+                    val subcategoria = homeViewModel.subcategorias.value[index]
+                    val isMostrarButtons = mostrarSubcategoriasMap.value[subcategoria.id] ?: false
 
-                transacoesAgrupadas.forEach { (tipoCategoria, categorias) ->
-                    item {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 10.dp)
-                                .height(40.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.surfaceContainer,
-                                    shape = RoundedCornerShape(15.dp)
-                                )
-                                .padding(horizontal = 20.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = if (tipoCategoria == "despesa") "Despesas" else "Receitas",
-                                style = MaterialTheme.typography.headlineSmall,
-                                color = Color.White
-                            )
-                        }
-                    }
-                    items(categorias) { categoria ->
-                        val isMostrarButtons = mostrarCategoriasMap.value[categoria.id] ?: false
-
-                        CategoriasList(
-                            categorias = categoria,
-                            isMostrarButtons = isMostrarButtons,
-                            onClickCategoria = {
-                                mostrarCategoriasMap.value =
-                                    mostrarCategoriasMap.value.toMutableMap().apply {
-                                        if (this[categoria.id] == true) {
-                                            remove(categoria.id)
-                                        } else {
-                                            clear()
-                                            put(categoria.id, true)
-                                        }
-                                    }
-                            },
-                            onClickEditar = {
-                                onClickClose()
-                                onEditClick()
-                                homeViewModel.selectCategoria(categoria)
-                            },
-                            onClickDelete = {
-                                homeViewModel.excluirCategoria(categoria.id)
+                    SubcategoriasList(
+                        subcategorias = homeViewModel.subcategorias.value[index],
+                        isMostrarButtons = isMostrarButtons,
+                        onClickSubcategoria = {
+                            mostrarSubcategoriasMap.value = mostrarSubcategoriasMap.value.toMutableMap().apply {
+                                if (this[subcategoria.id] == true) {
+                                    remove(subcategoria.id)
+                                } else {
+                                    clear()
+                                    put(subcategoria.id, true)
+                                }
                             }
-                        )
-                    }
+                        },
+                        onClickEditar = {
+                            onClickClose()
+                            onEditClick()
+                            homeViewModel.selectSubcategoria(subcategoria)
+                        },
+                        onClickDelete = {
+                            homeViewModel.excluirSubcategoria(subcategoria.id)
+                        }
+                    )
                 }
             }
         }
@@ -154,7 +126,7 @@ fun CategoriasDialog(
                 onClickClose = {
                     showDialog = false
                     homeViewModel.clearMessage()
-                    mostrarCategoriasMap.value = mostrarCategoriasMap.value
+                    mostrarSubcategoriasMap.value = mostrarSubcategoriasMap.value
                         .toMutableMap().apply { clear() }
                 }
             )
@@ -163,10 +135,10 @@ fun CategoriasDialog(
 }
 
 @Composable
-fun CategoriasList(
-    categorias: Categoria,
+fun SubcategoriasList(
+    subcategorias: Subcategoria,
     isMostrarButtons: Boolean = false,
-    onClickCategoria: (Categoria) -> Unit = {},
+    onClickSubcategoria: (Subcategoria) -> Unit = {},
     onClickEditar: () -> Unit = {},
     onClickDelete: () -> Unit = {}
 ) {
@@ -187,26 +159,20 @@ fun CategoriasList(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
                 ) {
-                    onClickCategoria(categorias)
+                    onClickSubcategoria(subcategorias)
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconCategoria(
-                    color = categorias.color,
-                    icon = categorias.icon
-                )
-                Spacer(modifier = Modifier.width(15.dp))
-                Text(
-                    text = categorias.descricao,
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            ButtonSinal(categorias.tipo)
+            IconCategoria(
+                color = subcategorias.color,
+                icon = subcategorias.icon
+            )
+            Spacer(modifier = Modifier.width(15.dp))
+            Text(
+                text = subcategorias.descricao,
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.weight(1f)
+            )
         }
         if (isMostrarButtons) {
             Row(

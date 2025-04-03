@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
+import com.dieyteixeira.fluxsync.app.di.model.Subcategoria
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.di.repository.FirestoreRepository
 import com.google.firebase.Timestamp
@@ -29,6 +30,8 @@ class HomeViewModel(
     val contas = _contas
     private val _categorias = mutableStateOf<List<Categoria>>(emptyList())
     val categorias = _categorias
+    private val _subcategorias = mutableStateOf<List<Subcategoria>>(emptyList())
+    val subcategorias = _subcategorias
     private val _transacoes = mutableStateOf<List<Transacoes>>(emptyList())
     val transacoes = _transacoes
 
@@ -36,6 +39,8 @@ class HomeViewModel(
     val selectedConta: StateFlow<Conta?> = _selectedConta.asStateFlow()
     private val _selectedCategoria = MutableStateFlow<Categoria?>(null)
     val selectedCategoria: StateFlow<Categoria?> = _selectedCategoria.asStateFlow()
+    private val _selectedSubcategoria = MutableStateFlow<Subcategoria?>(null)
+    val selectedSubcategoria: StateFlow<Subcategoria?> = _selectedSubcategoria.asStateFlow()
     private val _selectedTransaction = MutableStateFlow<Transacoes?>(null)
     val selectedTransaction: StateFlow<Transacoes?> = _selectedTransaction.asStateFlow()
 
@@ -87,6 +92,7 @@ class HomeViewModel(
     fun getAtualizar() {
         getContas()
         getCategorias()
+        getSubcategorias()
         getTransacoes()
     }
 
@@ -222,6 +228,72 @@ class HomeViewModel(
         }
     }
 
+    fun getSubcategorias() {
+        viewModelScope.launch {
+            val subcategoriasFromFirestore = firestoreRepository.getSubcategorias()
+            _subcategorias.value = subcategoriasFromFirestore
+        }
+    }
+
+    fun salvarSubcategoria(icon: String, color: String, descricao: String, tipo: String) {
+        viewModelScope.launch {
+            try {
+                firestoreRepository.salvarSubcategoria(icon, color, descricao, tipo)
+
+                _message.value = "Subcategoria salva com sucesso!"
+                _tipoMessage.value = "success"
+
+                getAtualizar()
+            } catch (e: Exception) {
+                _message.value = "Erro ao salvar a subcategoria: ${e.message}"
+                _tipoMessage.value = "error"
+            }
+        }
+    }
+
+    fun selectSubcategoria(subcategoria: Subcategoria) {
+        _selectedSubcategoria.value = subcategoria
+    }
+
+    fun editarSubcategoria(
+        subcategoria: Subcategoria
+    ) {
+        viewModelScope.launch {
+            try {
+                firestoreRepository.editarSubcategoria(subcategoria)
+
+                _message.value = "Subcategoria editada com sucesso!"
+                _tipoMessage.value = "success"
+
+                getAtualizar()
+            } catch (e: Exception) {
+                _message.value = "Erro ao editar a subcategoria: ${e.message}"
+                _tipoMessage.value = "error"
+            }
+        }
+    }
+
+    fun excluirSubcategoria(subcategoriaId: String) {
+        viewModelScope.launch {
+            try {
+                val transacoesVinculadas = _transacoes.value.any { it.subcategoriaId == subcategoriaId }
+
+                if (transacoesVinculadas) {
+                    _message.value = "Não é possível excluir esta subcategoria, pois há transações vinculadas a ela."
+                    _tipoMessage.value = "vinculo"
+                    return@launch
+                }
+
+                firestoreRepository.excluirSubcategoria(subcategoriaId)
+
+                getAtualizar()
+            } catch (e: Exception) {
+                _message.value = "Erro ao excluir a subcategoria: ${e.message}"
+                _tipoMessage.value = "error"
+            }
+        }
+    }
+
     fun getTransacoes() {
         viewModelScope.launch {
             val transacoesFirestore = firestoreRepository.getTransacoes()
@@ -242,6 +314,7 @@ class HomeViewModel(
         tipo: String,
         situacao: String,
         categoriaId: String,
+        subcategoriaId: String,
         contaId: String,
         data: String,
         lancamento: String,
@@ -256,8 +329,8 @@ class HomeViewModel(
                 val parcelasString = parcelas.toString()
 
                 firestoreRepository.salvarTransacao(
-                    descricao, valor, tipo, situacao, categoriaId, contaId, timestampDate,
-                    lancamento, parcelasString, observacao
+                    descricao, valor, tipo, situacao, categoriaId, subcategoriaId, contaId,
+                    timestampDate, lancamento, parcelasString, observacao
                 )
 
                 _message.value = "Transação salva com sucesso!"
@@ -363,9 +436,9 @@ class HomeViewModel(
         val diferencaEmDias = TimeUnit.MILLISECONDS.toDays(diferencaEmMillis).toInt()
 
         return when {
-            diferencaEmDias < 0 -> "Atrasada há ${-diferencaEmDias} dias" // Caso esteja vencida
-            diferencaEmDias in 1..2 -> if (diferencaEmDias == 1) "Vence amanhã" else "Vence em $diferencaEmDias dias" // Se vencer hoje ou nos próximos 2 dias
-            diferencaEmDias == 0 -> "Vence hoje" // Caso venha hoje
+            diferencaEmDias < 0 -> "atrasada há ${-diferencaEmDias} dias" // Caso esteja vencida
+            diferencaEmDias in 1..2 -> "vence em $diferencaEmDias dias" // Se vencer hoje ou nos próximos 2 dias
+            diferencaEmDias == 0 -> "vence hoje" // Caso venha hoje
             else -> null // Caso não se encaixe nesses critérios
         }
     }
