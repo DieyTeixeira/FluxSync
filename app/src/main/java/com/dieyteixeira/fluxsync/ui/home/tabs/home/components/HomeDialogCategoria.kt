@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,6 +35,7 @@ import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalIcon
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.ButtonSinal
+import com.dieyteixeira.fluxsync.app.components.CategoriasList
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
@@ -48,6 +50,7 @@ import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 @Composable
 fun CategoriasDialog(
     homeViewModel: HomeViewModel,
+    onShowClick: () -> Unit,
     onAddClick: () -> Unit,
     onEditClick: () -> Unit,
     onClickClose: () -> Unit
@@ -89,7 +92,9 @@ fun CategoriasDialog(
             )
             Spacer(modifier = Modifier.height(15.dp))
             LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 350.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
@@ -145,6 +150,46 @@ fun CategoriasDialog(
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(25.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(35.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ButtonPersonalMaxWidth(
+                        onClick = {
+                            onClickClose()
+                            onShowClick()
+                        },
+                        text = "Subcategorias",
+                        colorText = MaterialTheme.colorScheme.surfaceContainer,
+                        colorBorder = MaterialTheme.colorScheme.surfaceContainer,
+                        height = 35.dp,
+                        icon = false
+                    )
+                }
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ButtonPersonalMaxWidth(
+                        onClick = {
+
+                        },
+                        text = "Grupos",
+                        colorText = MaterialTheme.colorScheme.surfaceContainer,
+                        colorBorder = MaterialTheme.colorScheme.surfaceContainer,
+                        height = 35.dp,
+                        icon = false
+                    )
+                }
+            }
         }
     }
     if (showDialog) {
@@ -158,99 +203,6 @@ fun CategoriasDialog(
                         .toMutableMap().apply { clear() }
                 }
             )
-        }
-    }
-}
-
-@Composable
-fun CategoriasList(
-    categorias: Categoria,
-    isMostrarButtons: Boolean = false,
-    onClickCategoria: (Categoria) -> Unit = {},
-    onClickEditar: () -> Unit = {},
-    onClickDelete: () -> Unit = {}
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .background(
-                    color = ColorBackground.copy(alpha = 0.7f),
-                    shape = RoundedCornerShape(15.dp)
-                )
-                .padding(horizontal = 15.dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) {
-                    onClickCategoria(categorias)
-                },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconCategoria(
-                    color = categorias.color,
-                    icon = categorias.icon
-                )
-                Spacer(modifier = Modifier.width(15.dp))
-                Text(
-                    text = categorias.descricao,
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            ButtonSinal(categorias.tipo)
-        }
-        if (isMostrarButtons) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .height(50.dp)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.3f to Color.Transparent,
-                            1f to ColorCards
-                        ),
-                        shape = RoundedCornerShape(20.dp)
-                    )
-                    .border(
-                        width = 1.dp,
-                        brush = Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.3f to Color.Transparent,
-                            1f to ColorGrayDark
-                        ),
-                        shape = RoundedCornerShape(20.dp)
-                    ),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ButtonPersonalIcon( // editar
-                    onClick = {
-                        onClickEditar()
-                    },
-                    icon = R.drawable.icon_editar,
-                    color = MaterialTheme.colorScheme.surfaceContainerLow,
-                    size = 35.dp,
-                    sizeIcon = 18.dp
-                )
-                ButtonPersonalIcon( // excluir
-                    onClick = {
-                        onClickDelete()
-                    },
-                    icon = R.drawable.icon_excluir,
-                    color = MaterialTheme.colorScheme.surfaceContainerLow,
-                    size = 35.dp
-                )
-            }
         }
     }
 }

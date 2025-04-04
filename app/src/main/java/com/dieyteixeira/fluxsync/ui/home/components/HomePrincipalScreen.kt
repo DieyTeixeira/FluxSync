@@ -33,6 +33,7 @@ fun HomePrincipalScreen(
     loginViewModel: LoginViewModel,
     homeViewModel: HomeViewModel,
     userPreferences: UserPreferences,
+    onShowClick: (String) -> Unit,
     onAddClick: (String) -> Unit,
     onEditClick: (String) -> Unit,
     onSignOutClick: () -> Unit,
@@ -57,6 +58,7 @@ fun HomePrincipalScreen(
                 loginViewModel,
                 homeViewModel,
                 userPreferences,
+                onShowClick,
                 onAddClick,
                 onEditClick,
                 onSignOutClick,
@@ -69,22 +71,22 @@ fun HomePrincipalScreen(
 enum class NavigationBarItems(
     val icon: Int,
     val screen: @Composable (
-        (LoginViewModel, HomeViewModel, UserPreferences, (String) -> Unit, (String) -> Unit, () -> Unit, () -> Unit) -> Unit),
+        (LoginViewModel, HomeViewModel, UserPreferences, (String) -> Unit, (String) -> Unit, (String) -> Unit, () -> Unit, () -> Unit) -> Unit),
 ) {
     @RequiresApi(Build.VERSION_CODES.O)
     Home(
         icon = R.drawable.icon_casa,
-        screen = { loginViewModel, homeViewModel, userPreferences, onAddClick, onEditClick, onSignOutClick, onClick ->
+        screen = { loginViewModel, homeViewModel, userPreferences, onShowClick, onAddClick, onEditClick, onSignOutClick, onClick ->
             HomeTabScreen(
                 loginViewModel, homeViewModel, userPreferences,
-                onAddClick, onEditClick, onSignOutClick, onClick
+                onShowClick, onAddClick, onEditClick, onSignOutClick, onClick
             )
         }
     ),
     @RequiresApi(Build.VERSION_CODES.O)
     Transaction(
         icon = R.drawable.icon_documento,
-        screen = { _, homeViewModel, _, _, onEditClick, _, _ ->
+        screen = { _, homeViewModel, _, _, _, onEditClick, _, _ ->
             TransactionTab(
                 homeViewModel, onEditClick
             )
@@ -92,11 +94,11 @@ enum class NavigationBarItems(
     ),
     Add(
         icon = R.drawable.icon_mais,
-        screen = { _, _, _, _, _, _, _ -> }
+        screen = { _, _, _, _, _, _, _, _ -> }
     ),
     Chart(
         icon = R.drawable.icon_estatisticas,
-        screen = { _, homeViewModel, _, _, _, _, _ ->
+        screen = { _, homeViewModel, _, _, _, _, _, _ ->
             GraphicTabScreen(
                 homeViewModel
             )
@@ -104,7 +106,7 @@ enum class NavigationBarItems(
     ),
     Settings(
         icon = R.drawable.icon_ferramenta,
-        screen = { _, homeViewModel, _, _, _, _, _ ->
+        screen = { _, homeViewModel, _, _, _, _, _, _ ->
             SettingsTab(
                 homeViewModel
             )

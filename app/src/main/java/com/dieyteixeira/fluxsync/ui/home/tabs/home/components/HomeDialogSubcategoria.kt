@@ -33,6 +33,7 @@ import com.dieyteixeira.fluxsync.app.components.ButtonPersonalIcon
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
+import com.dieyteixeira.fluxsync.app.components.SubcategoriasList
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Subcategoria
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
@@ -130,93 +131,6 @@ fun SubcategoriasDialog(
                         .toMutableMap().apply { clear() }
                 }
             )
-        }
-    }
-}
-
-@Composable
-fun SubcategoriasList(
-    subcategorias: Subcategoria,
-    isMostrarButtons: Boolean = false,
-    onClickSubcategoria: (Subcategoria) -> Unit = {},
-    onClickEditar: () -> Unit = {},
-    onClickDelete: () -> Unit = {}
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .background(
-                    color = ColorBackground.copy(alpha = 0.7f),
-                    shape = RoundedCornerShape(15.dp)
-                )
-                .padding(horizontal = 15.dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) {
-                    onClickSubcategoria(subcategorias)
-                },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconCategoria(
-                color = subcategorias.color,
-                icon = subcategorias.icon
-            )
-            Spacer(modifier = Modifier.width(15.dp))
-            Text(
-                text = subcategorias.descricao,
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.weight(1f)
-            )
-        }
-        if (isMostrarButtons) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .height(50.dp)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.3f to Color.Transparent,
-                            1f to ColorCards
-                        ),
-                        shape = RoundedCornerShape(20.dp)
-                    )
-                    .border(
-                        width = 1.dp,
-                        brush = Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.3f to Color.Transparent,
-                            1f to ColorGrayDark
-                        ),
-                        shape = RoundedCornerShape(20.dp)
-                    ),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ButtonPersonalIcon( // editar
-                    onClick = {
-                        onClickEditar()
-                    },
-                    icon = R.drawable.icon_editar,
-                    color = MaterialTheme.colorScheme.surfaceContainerLow,
-                    size = 35.dp,
-                    sizeIcon = 18.dp
-                )
-                ButtonPersonalIcon( // excluir
-                    onClick = {
-                        onClickDelete()
-                    },
-                    icon = R.drawable.icon_excluir,
-                    color = MaterialTheme.colorScheme.surfaceContainerLow,
-                    size = 35.dp
-                )
-            }
         }
     }
 }

@@ -53,6 +53,7 @@ fun HomeTabScreen(
     loginViewModel: LoginViewModel,
     homeViewModel: HomeViewModel,
     userPreferences: UserPreferences,
+    onShowClick: (String) -> Unit,
     onAddClick: (String) -> Unit,
     onEditClick: (String) -> Unit,
     onSignOutClick: () -> Unit,
@@ -66,15 +67,13 @@ fun HomeTabScreen(
                 "Saldo",
                 "Previsão",
                 "Categorias",
-                "Histórico",
-                "Ajustes"
+                "Histórico"
             ),
             mapOf(
                 "Saldo" to true,
                 "Previsão" to true,
                 "Categorias" to true,
-                "Histórico" to true,
-                "Ajustes" to true
+                "Histórico" to true
             )
         )
     )
@@ -87,7 +86,6 @@ fun HomeTabScreen(
 
     var mostrarContas by remember { mutableStateOf(false) }
     var mostrarCategorias by remember { mutableStateOf(false) }
-    var mostrarSubcategorias by remember { mutableStateOf(false) }
     var showContas by remember { mutableStateOf(false) }
     var showCategorias by remember { mutableStateOf(false) }
     var showSubcategorias by remember { mutableStateOf(false) }
@@ -103,7 +101,6 @@ fun HomeTabScreen(
                 coroutineScope.launch {
                     mostrarContas = false
                     mostrarCategorias = false
-                    mostrarSubcategorias = false
                 }
             },
         verticalArrangement = Arrangement.spacedBy(15.dp),
@@ -167,20 +164,6 @@ fun HomeTabScreen(
                     homeViewModel = homeViewModel,
                     isSaldoVisivel = isSaldoVisivel
                 )
-                "Ajustes" -> HomeCardAjusts(
-                    onEditItem = {
-                        if (it == "Contas") {
-                            coroutineScope.launch { homeViewModel.getContas() }
-                            showContas = true
-                        } else if (it == "Categorias") {
-                            coroutineScope.launch { homeViewModel.getCategorias() }
-                            showCategorias = true
-                        } else {
-                            coroutineScope.launch { homeViewModel.getSubcategorias() }
-                            showSubcategorias = true
-                        }
-                    }
-                )
             }
         }
         item {
@@ -235,6 +218,10 @@ fun HomeTabScreen(
     if (showCategorias) {
         CategoriasDialog(
             homeViewModel = homeViewModel,
+            onShowClick = {
+                onShowClick("subcategoria")
+                showCategorias = false
+            },
             onAddClick = { onAddClick("categoria") },
             onEditClick = { onEditClick("categoria") },
             onClickClose = { showCategorias = false }

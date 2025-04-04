@@ -7,6 +7,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -72,7 +73,9 @@ fun GraphicCardDespesas(
 ) {
 
     val categorias = homeViewModel.categorias.value
+    val subcategorias = homeViewModel.subcategorias.value
     var selectedChartType by remember { mutableStateOf(TypeGraphic.PIE) }
+    var selectedFilter by remember { mutableStateOf("Categoria") }
 
     var transacoesFiltradas by remember { mutableStateOf(emptyList<Transacoes>()) }
 
@@ -97,7 +100,7 @@ fun GraphicCardDespesas(
         categoria to totalCategoria
     }.filter { it.second > 0 }
 
-    val graficoData = transacoesPorCategoria.map { (categoria, total) ->
+    val graficoDataCategoria = transacoesPorCategoria.map { (categoria, total) ->
         Grafico(
             id = categoria.id,
             nome = categoria.descricao,
@@ -106,6 +109,27 @@ fun GraphicCardDespesas(
             icon = categoria.icon
         )
     }
+
+    val transacoesPorSubcategoria = subcategorias.map { subcategoria ->
+        val transacoesDaSubcategoria = transacoesFiltradas.filter {
+            it.subcategoriaId == subcategoria.id && it.tipo == "despesa" && it.valor > 0
+        }
+        val totalSubcategoria = transacoesDaSubcategoria.sumOf { it.valor }
+
+        subcategoria to totalSubcategoria
+    }.filter { it.second > 0 }
+
+    val graficoDataSubcategoria = transacoesPorSubcategoria.map { (subcategoria, total) ->
+        Grafico(
+            id = subcategoria.id,
+            nome = subcategoria.descricao,
+            valor = total,
+            color = subcategoria.color,
+            icon = subcategoria.icon
+        )
+    }
+
+    val selectedGrafico = if (selectedFilter == "Categoria") graficoDataCategoria else graficoDataSubcategoria
 
     Column(
         modifier = Modifier
@@ -128,19 +152,37 @@ fun GraphicCardDespesas(
                 .height(50.dp),
             contentAlignment = Alignment.Center
         ) {
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp, 3.dp),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Center
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
             ) {
                 Text(
-                    text = "Despesas por categoria",
+                    text = "Despesas por",
                     style = MaterialTheme.typography.headlineMedium,
                     color = ColorFontesDark,
                     modifier = Modifier.padding(0.dp, 3.dp)
                 )
+                Spacer(modifier = Modifier.width(10.dp))
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.surfaceContainerLow,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .clickable { selectedFilter = if (selectedFilter == "Categoria") "Subcategoria" else "Categoria" },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = selectedFilter,
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Color.White,
+                        modifier = Modifier.padding(vertical = 3.dp)
+                    )
+                }
             }
         }
         Box(modifier = Modifier.fillMaxWidth(0.95f).height(1.dp).background(ColorLine).align(Alignment.CenterHorizontally))
@@ -195,13 +237,13 @@ fun GraphicCardDespesas(
             when (selectedChartType) {
                 TypeGraphic.PIE ->
                     GraphicSpiral(
-                        data = graficoData,
+                        data = selectedGrafico,
                         mes = mesSelecionado,
                         ano = anoSelecionado
                     )
                 TypeGraphic.BAR ->
                     GraphicBar(
-                        data = graficoData,
+                        data = selectedGrafico,
                         mes = mesSelecionado,
                         ano = anoSelecionado
                     )

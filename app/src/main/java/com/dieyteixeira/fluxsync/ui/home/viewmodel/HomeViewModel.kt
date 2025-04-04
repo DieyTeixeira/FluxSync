@@ -462,7 +462,8 @@ class HomeViewModel(
         val transacoesFiltradas = _transacoes.value.filter { transacao ->
             val dataTransacao = Calendar.getInstance().apply { time = transacao.data }
             dataTransacao.get(Calendar.YEAR) == anoAtual &&
-                    dataTransacao.get(Calendar.MONTH) == mesAtual
+                    dataTransacao.get(Calendar.MONTH) == mesAtual &&
+                    transacao.situacao == "pendente"
         }
 
         // Soma receitas e despesas por dia

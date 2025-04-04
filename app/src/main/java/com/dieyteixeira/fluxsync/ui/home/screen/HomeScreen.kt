@@ -58,8 +58,12 @@ import com.dieyteixeira.fluxsync.ui.home.components.EditCategoriaForm
 import com.dieyteixeira.fluxsync.ui.home.components.EditContaForm
 import com.dieyteixeira.fluxsync.ui.home.components.EditSubcategoriaForm
 import com.dieyteixeira.fluxsync.ui.home.components.EditTransactionForm
+import com.dieyteixeira.fluxsync.ui.home.components.CentralButton
 import com.dieyteixeira.fluxsync.ui.home.components.HomePrincipalScreen
 import com.dieyteixeira.fluxsync.ui.home.components.NavigationBarItems
+import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.CategoriasDialog
+import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasDialog
+import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.SubcategoriasDialog
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import com.dieyteixeira.fluxsync.ui.login.viewmodel.LoginViewModel
 import com.exyte.animatednavbar.AnimatedNavigationBar
@@ -89,6 +93,12 @@ fun HomeScreen(
     val navigationBarItems = remember { NavigationBarItems.values() }
     var selectedIndex by remember { mutableStateOf(0) }
     var pulseEffect by remember { mutableStateOf(false) }
+
+    val isMenuExtended = remember { mutableStateOf(false) }
+
+    var showContas by remember { mutableStateOf(false) }
+    var showCategorias by remember { mutableStateOf(false) }
+    var showSubcategorias by remember { mutableStateOf(false) }
 
     var showAddTransaction by remember { mutableStateOf(false) }
     var showAddConta by remember { mutableStateOf(false) }
@@ -151,48 +161,49 @@ fun HomeScreen(
                     ) {
                         navigationBarItems.forEach { item ->
                             if (item.ordinal == 2) {
-                                val pulseScale by animateFloatAsState(
-                                    targetValue = if (pulseEffect) 1.1f else 1f,
-                                    animationSpec = tween(
-                                        durationMillis = 100,
-                                        easing = FastOutSlowInEasing
-                                    )
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .noRippleClickable {
-                                            pulseEffect = true
-                                            showAddTransaction = true
-                                        },
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize(0.85f * pulseScale)
-                                            .background(
-                                                color = MaterialTheme.colorScheme.surfaceContainer,
-                                                shape = RoundedCornerShape(50)
-                                            )
-                                    )
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize(0.85f * pulseScale)
-                                            .border(
-                                                width = 5.dp,
-                                                brush = Brush.linearGradient(
-                                                    colors = listOf(MaterialTheme.colorScheme.surfaceContainerLow, MaterialTheme.colorScheme.surfaceContainerHigh)
-                                                ),
-                                                shape = RoundedCornerShape(50)
-                                            )
-                                    )
-                                    Image(
-                                        painter = painterResource(id = item.icon),
-                                        contentDescription = "Bottom Bar Icon",
-                                        modifier = Modifier.size(20.dp * pulseScale),
-                                        colorFilter = ColorFilter.tint(Color.White)
-                                    )
-                                }
+                                Box(modifier = Modifier.fillMaxSize())
+//                                val pulseScale by animateFloatAsState(
+//                                    targetValue = if (pulseEffect) 1.1f else 1f,
+//                                    animationSpec = tween(
+//                                        durationMillis = 100,
+//                                        easing = FastOutSlowInEasing
+//                                    )
+//                                )
+//                                Box(
+//                                    modifier = Modifier
+//                                        .fillMaxSize()
+//                                        .noRippleClickable {
+//                                            pulseEffect = true
+//                                            showAddTransaction = true
+//                                        },
+//                                    contentAlignment = Alignment.Center
+//                                ) {
+//                                    Box(
+//                                        modifier = Modifier
+//                                            .fillMaxSize(0.85f * pulseScale)
+//                                            .background(
+//                                                color = MaterialTheme.colorScheme.surfaceContainer,
+//                                                shape = RoundedCornerShape(50)
+//                                            )
+//                                    )
+//                                    Box(
+//                                        modifier = Modifier
+//                                            .fillMaxSize(0.85f * pulseScale)
+//                                            .border(
+//                                                width = 5.dp,
+//                                                brush = Brush.linearGradient(
+//                                                    colors = listOf(MaterialTheme.colorScheme.surfaceContainerLow, MaterialTheme.colorScheme.surfaceContainerHigh)
+//                                                ),
+//                                                shape = RoundedCornerShape(50)
+//                                            )
+//                                    )
+//                                    Image(
+//                                        painter = painterResource(id = item.icon),
+//                                        contentDescription = "Bottom Bar Icon",
+//                                        modifier = Modifier.size(20.dp * pulseScale),
+//                                        colorFilter = ColorFilter.tint(Color.White)
+//                                    )
+//                                }
                             } else {
                                 val isSelected = selectedIndex == item.ordinal
                                 val revealProgress by animateFloatAsState(
@@ -213,7 +224,10 @@ fun HomeScreen(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .noRippleClickable { selectedIndex = item.ordinal },
+                                        .noRippleClickable {
+                                            selectedIndex = item.ordinal
+                                            isMenuExtended.value = false
+                                        },
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Image(
@@ -276,6 +290,11 @@ fun HomeScreen(
                                 loginViewModel = loginViewModel,
                                 homeViewModel = homeViewModel,
                                 userPreferences = userPreferences,
+                                onShowClick = { show ->
+                                    when (show) {
+                                        "subcategoria" -> showSubcategorias = true
+                                    }
+                                },
                                 onAddClick = { add ->
                                     when (add) {
                                         "transacao" -> showAddTransaction = true
@@ -301,6 +320,12 @@ fun HomeScreen(
                     }
                 }
             }
+            CentralButton(
+                isMenuExtended = isMenuExtended,
+                onClickConta = { showContas = true },
+                onClickCategoria = { showCategorias = true },
+                onClickTransacao = { showAddTransaction = true }
+            )
             this@Column.AnimatedVisibility(
                 visible = showForm,
                 enter = slideInVertically(
@@ -386,6 +411,35 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
+
+            if (showContas) {
+                ContasDialog(
+                    homeViewModel = homeViewModel,
+                    onAddClick = { showAddConta = true },
+                    onEditClick = { showEditConta = true },
+                    onClickClose = { showContas = false }
+                )
+            }
+            if (showCategorias) {
+                CategoriasDialog(
+                    homeViewModel = homeViewModel,
+                    onShowClick = {
+                        showSubcategorias = true
+                        showCategorias = false
+                    },
+                    onAddClick = { showAddCategoria = true },
+                    onEditClick = { showEditCategoria = true },
+                    onClickClose = { showCategorias = false }
+                )
+            }
+            if (showSubcategorias) {
+                SubcategoriasDialog(
+                    homeViewModel = homeViewModel,
+                    onAddClick = { showAddSubcategoria = true },
+                    onEditClick = { showEditSubcategoria = true },
+                    onClickClose = { showSubcategorias = false }
+                )
             }
         }
     }

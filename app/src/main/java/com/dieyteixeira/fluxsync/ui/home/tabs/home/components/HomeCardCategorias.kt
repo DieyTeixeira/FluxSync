@@ -23,7 +23,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +41,6 @@ import com.dieyteixeira.fluxsync.app.components.ButtonPersonalMaxWidth
 import com.dieyteixeira.fluxsync.app.components.IconCategoria
 import com.dieyteixeira.fluxsync.app.components.anoAtual
 import com.dieyteixeira.fluxsync.app.components.mesAtual
-import com.dieyteixeira.fluxsync.app.components.nomeMesAtual
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.theme.ColorBackground
 import com.dieyteixeira.fluxsync.app.theme.ColorCards
@@ -50,8 +48,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesDark
 import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorLine
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -66,7 +62,7 @@ fun HomeCardCategorias(
     val categorias = homeViewModel.categorias.value
     val transacoes = homeViewModel.transacoes.value
 
-    var isOrdenacaoCrescente by remember { mutableStateOf(true) }
+    var isOrdenacaoList by remember { mutableStateOf(true) }
 
     val transacoesFiltradas = transacoes.filter { transacao ->
         val dataTransacao = transacao.data
@@ -86,10 +82,10 @@ fun HomeCardCategorias(
         categoria to totalCategoria
     }.filter { it.second > 0 }
 
-    val categoriasOrdenadas = if (isOrdenacaoCrescente) {
-        transacoesPorCategoria.sortedBy { it.second }
-    } else {
+    val categoriasOrdenadas = if (isOrdenacaoList) {
         transacoesPorCategoria.sortedByDescending { it.second }
+    } else {
+        transacoesPorCategoria.sortedBy { it.second }
     }
 
     Column(
@@ -128,7 +124,7 @@ fun HomeCardCategorias(
                 )
                 Image(
                     painter = painterResource(id = R.drawable.icon_classification),
-                    contentDescription = if (isOrdenacaoCrescente) "Ordenar: Maior → Menor" else "Ordenar: Menor → Maior",
+                    contentDescription = if (isOrdenacaoList) "Ordenar: Maior → Menor" else "Ordenar: Menor → Maior",
                     modifier = Modifier
                         .size(22.dp)
                         .padding(end = 2.dp)
@@ -136,7 +132,7 @@ fun HomeCardCategorias(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() },
                         ) {
-                            isOrdenacaoCrescente = !isOrdenacaoCrescente
+                            isOrdenacaoList = !isOrdenacaoList
                         },
                     colorFilter = ColorFilter.tint(ColorFontesLight)
                 )

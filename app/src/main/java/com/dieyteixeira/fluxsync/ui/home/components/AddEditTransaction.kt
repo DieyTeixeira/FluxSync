@@ -46,11 +46,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.R
 import com.dieyteixeira.fluxsync.app.components.ButtonPersonalFilled
+import com.dieyteixeira.fluxsync.app.components.CategoriasList
+import com.dieyteixeira.fluxsync.app.components.ContasList
 import com.dieyteixeira.fluxsync.app.components.CustomDialog
 import com.dieyteixeira.fluxsync.app.components.CustomField
 import com.dieyteixeira.fluxsync.app.components.CustomFieldIconEdit
 import com.dieyteixeira.fluxsync.app.components.CustomKeyboard
 import com.dieyteixeira.fluxsync.app.components.DatePickerCustom
+import com.dieyteixeira.fluxsync.app.components.SubcategoriasList
 import com.dieyteixeira.fluxsync.app.components.formatCurrencyInput
 import com.dieyteixeira.fluxsync.app.components.removeLastDigit
 import com.dieyteixeira.fluxsync.app.components.textEditTransactionSalvar
@@ -65,9 +68,6 @@ import com.dieyteixeira.fluxsync.app.theme.ColorFontesLight
 import com.dieyteixeira.fluxsync.app.theme.ColorNegative
 import com.dieyteixeira.fluxsync.app.theme.ColorPositive
 import com.dieyteixeira.fluxsync.app.theme.GrayCont
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.CategoriasList
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.ContasList
-import com.dieyteixeira.fluxsync.ui.home.tabs.home.components.SubcategoriasList
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsInsert
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLeanding
 import com.dieyteixeira.fluxsync.ui.home.tabs.transaction.components.TransactionAddFieldsTextLongLeanding
