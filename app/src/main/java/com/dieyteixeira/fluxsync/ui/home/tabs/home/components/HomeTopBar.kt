@@ -29,9 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.dieyteixeira.fluxsync.R
+import com.dieyteixeira.fluxsync.app.components.enviarEmailComRelatorio
+import com.dieyteixeira.fluxsync.app.components.exportarTransacoesParaCSV
 import com.dieyteixeira.fluxsync.ui.home.viewmodel.HomeViewModel
 import java.util.Calendar
 
@@ -40,6 +43,7 @@ fun HomeTopBar(
     homeViewModel: HomeViewModel
 ) {
 
+    val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
     var rotationAngle by remember { mutableStateOf(0f) }
 
@@ -80,7 +84,25 @@ fun HomeTopBar(
                     .background(
                         color = Color.White,
                         shape = RoundedCornerShape(100)
-                    ),
+                    )
+                    .clickable(
+                        indication = null,
+                        interactionSource = interactionSource
+                    ) {
+                        val relatorio = homeViewModel.gerarRelatorioTransacoes(
+                            transacoes = homeViewModel.transacoes.value,
+                            categorias = homeViewModel.categorias.value,
+                            subcategorias = homeViewModel.subcategorias.value,
+                            contas = homeViewModel.contas.value
+                        )
+                        val arquivo = exportarTransacoesParaCSV(context, relatorio)
+                        arquivo?.let {
+                            enviarEmailComRelatorio(
+                                context = context,
+                                arquivo = it
+                            )
+                        }
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Image(

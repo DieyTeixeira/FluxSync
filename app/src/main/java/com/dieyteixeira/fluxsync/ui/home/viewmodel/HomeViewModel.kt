@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.dieyteixeira.fluxsync.app.configs.UserPreferences
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
+import com.dieyteixeira.fluxsync.app.di.model.Prioridade
+import com.dieyteixeira.fluxsync.app.di.model.Relatorio
 import com.dieyteixeira.fluxsync.app.di.model.Subcategoria
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.di.repository.FirestoreRepository
@@ -32,6 +34,8 @@ class HomeViewModel(
     val categorias = _categorias
     private val _subcategorias = mutableStateOf<List<Subcategoria>>(emptyList())
     val subcategorias = _subcategorias
+    private val _prioridades = mutableStateOf<List<Prioridade>>(emptyList())
+    val prioridades = _prioridades
     private val _transacoes = mutableStateOf<List<Transacoes>>(emptyList())
     val transacoes = _transacoes
 
@@ -41,6 +45,8 @@ class HomeViewModel(
     val selectedCategoria: StateFlow<Categoria?> = _selectedCategoria.asStateFlow()
     private val _selectedSubcategoria = MutableStateFlow<Subcategoria?>(null)
     val selectedSubcategoria: StateFlow<Subcategoria?> = _selectedSubcategoria.asStateFlow()
+    private val _selectedPrioridade = MutableStateFlow<Prioridade?>(null)
+    val selectedPrioridade: StateFlow<Prioridade?> = _selectedPrioridade.asStateFlow()
     private val _selectedTransaction = MutableStateFlow<Transacoes?>(null)
     val selectedTransaction: StateFlow<Transacoes?> = _selectedTransaction.asStateFlow()
 
@@ -93,6 +99,7 @@ class HomeViewModel(
         getContas()
         getCategorias()
         getSubcategorias()
+        getPrioridades()
         getTransacoes()
     }
 
@@ -294,6 +301,72 @@ class HomeViewModel(
         }
     }
 
+    fun getPrioridades() {
+        viewModelScope.launch {
+            val prioridadesFromFirestore = firestoreRepository.getPrioridades()
+            _prioridades.value = prioridadesFromFirestore
+        }
+    }
+
+    fun salvarPrioridade(color: String, descricao: String) {
+        viewModelScope.launch {
+            try {
+                firestoreRepository.salvarPrioridade(color, descricao)
+
+                _message.value = "Prioridade salva com sucesso!"
+                _tipoMessage.value = "success"
+
+                getAtualizar()
+            } catch (e: Exception) {
+                _message.value = "Erro ao salvar a prioridade: ${e.message}"
+                _tipoMessage.value = "error"
+            }
+        }
+    }
+
+    fun selectPrioridade(prioridade: Prioridade) {
+        _selectedPrioridade.value = prioridade
+    }
+
+    fun editarPrioridade(
+        prioridade: Prioridade
+    ) {
+        viewModelScope.launch {
+            try {
+                firestoreRepository.editarPrioridade(prioridade)
+
+                _message.value = "Prioridade editada com sucesso!"
+                _tipoMessage.value = "success"
+
+                getAtualizar()
+            } catch (e: Exception) {
+                _message.value = "Erro ao editar a prioridade: ${e.message}"
+                _tipoMessage.value = "error"
+            }
+        }
+    }
+
+    fun excluirPrioridade(prioridadeId: String) {
+        viewModelScope.launch {
+            try {
+                val transacoesVinculadas = _transacoes.value.any { it.prioridadeId == prioridadeId }
+
+                if (transacoesVinculadas) {
+                    _message.value = "Não é possível excluir esta prioridade, pois há transações vinculadas a ela."
+                    _tipoMessage.value = "vinculo"
+                    return@launch
+                }
+
+                firestoreRepository.excluirPrioridade(prioridadeId)
+
+                getAtualizar()
+            } catch (e: Exception) {
+                _message.value = "Erro ao excluir a prioridade: ${e.message}"
+                _tipoMessage.value = "error"
+            }
+        }
+    }
+
     fun getTransacoes() {
         viewModelScope.launch {
             val transacoesFirestore = firestoreRepository.getTransacoes()
@@ -475,5 +548,32 @@ class HomeViewModel(
 
         // Retorna a lista ordenada (dia, gasto)
         return saldoPorDia.toList().sortedBy { it.first }
+    }
+
+    fun gerarRelatorioTransacoes(
+        transacoes: List<Transacoes>,
+        categorias: List<Categoria>,
+        subcategorias: List<Subcategoria>,
+        contas: List<Conta>
+    ): List<Relatorio> {
+        return transacoes.map { transacao ->
+            val categoria = categorias.find { it.id == transacao.categoriaId }?.descricao ?: "Categoria não encontrada"
+            val subcategoria = subcategorias.find { it.id == transacao.subcategoriaId }?.descricao ?: "Subcategoria não encontrada"
+            val conta = contas.find { it.id == transacao.contaId }?.descricao ?: "Conta não encontrada"
+
+            Relatorio(
+                descricao = transacao.descricao,
+                valor = transacao.valor,
+                tipo = transacao.tipo,
+                situacao = transacao.situacao,
+                categoria = categoria,
+                subcategoria = subcategoria,
+                conta = conta,
+                data = transacao.data,
+                lancamento = transacao.lancamento,
+                parcelas = transacao.parcelas,
+                observacao = transacao.observacao
+            )
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.dieyteixeira.fluxsync.app.di.model.Categoria
 import com.dieyteixeira.fluxsync.app.di.model.Conta
+import com.dieyteixeira.fluxsync.app.di.model.Prioridade
 import com.dieyteixeira.fluxsync.app.di.model.Subcategoria
 import com.dieyteixeira.fluxsync.app.di.model.Transacoes
 import com.dieyteixeira.fluxsync.app.di.replace.colorToStringCategoria
@@ -22,7 +23,6 @@ import com.google.firebase.firestore.QuerySnapshot
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.Calendar
-import java.util.Date
 
 class FirestoreRepository {
 
@@ -93,9 +93,9 @@ class FirestoreRepository {
         val user = auth.currentUser
         val userEmail = user?.email ?: return
 
-        val transacaoRef = db.collection(userEmail).document("Conta").collection("Contas").document(conta.id)
+        val contaRef = db.collection(userEmail).document("Conta").collection("Contas").document(conta.id)
 
-        transacaoRef.update(
+        contaRef.update(
             mapOf(
                 "icon" to iconToStringConta(conta.icon),
                 "color" to colorToStringConta(conta.color),
@@ -176,9 +176,9 @@ class FirestoreRepository {
         val user = auth.currentUser
         val userEmail = user?.email ?: return
 
-        val transacaoRef = db.collection(userEmail).document("Categoria").collection("Categorias").document(categoria.id)
+        val categoriaRef = db.collection(userEmail).document("Categoria").collection("Categorias").document(categoria.id)
 
-        transacaoRef.update(
+        categoriaRef.update(
             mapOf(
                 "icon" to iconToStringCategoria(categoria.icon),
                 "color" to colorToStringCategoria(categoria.color),
@@ -259,12 +259,12 @@ class FirestoreRepository {
         val user = auth.currentUser
         val userEmail = user?.email ?: return
 
-        val transacaoRef = db.collection(userEmail)
+        val subcategoriaRef = db.collection(userEmail)
             .document("Subcategoria")
             .collection("Subcategorias")
             .document(subcategoria.id)
 
-        transacaoRef.update(
+        subcategoriaRef.update(
             mapOf(
                 "icon" to iconToStringCategoria(subcategoria.icon),
                 "color" to colorToStringCategoria(subcategoria.color),
@@ -282,6 +282,86 @@ class FirestoreRepository {
             .document("Subcategoria")
             .collection("Subcategorias")
             .document(subcategoriaId).delete()
+    }
+
+    suspend fun getPrioridades(): List<Prioridade> {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return emptyList()
+
+        return try {
+            val querySnapshot: QuerySnapshot = db.collection(userEmail)
+                .document("Prioridade")
+                .collection("Prioridades")
+                .get()
+                .await()
+
+            querySnapshot.documents.mapNotNull { document ->
+                val id = document.id
+                val colorString = document.getString("color") ?: return@mapNotNull null
+                val descricao = document.getString("descricao") ?: return@mapNotNull null
+
+                val color = stringToColorCategoria(colorString)
+
+                Prioridade(id = id, color = color, descricao = descricao)
+            }
+        } catch (e: Exception) {
+            Log.e("FirestoreRepository", "Erro ao recuperar prioridades", e)
+            emptyList()
+        }
+    }
+
+    suspend fun salvarPrioridade(
+        color: String,
+        descricao: String
+    ) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+        val novoId = db.collection("Prioridades").document().id
+
+        val prioridadeMap = hashMapOf(
+            "id" to novoId,
+            "color" to color,
+            "descricao" to descricao
+        )
+
+        try {
+            db.collection(userEmail)
+                .document("Prioridade")
+                .collection("Prioridades")
+                .document(novoId)
+                .set(prioridadeMap)
+                .await()
+            Log.d("FirestoreRepository", "Prioridade salva com ID: $novoId")
+        } catch (e: Exception) {
+            Log.e("FirestoreRepository", "Erro ao salvar prioridade", e)
+        }
+    }
+
+    fun editarPrioridade(prioridade: Prioridade) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        val prioridadeRef = db.collection(userEmail)
+            .document("Prioridade")
+            .collection("Prioridades")
+            .document(prioridade.id)
+
+        prioridadeRef.update(
+            mapOf(
+                "color" to colorToStringCategoria(prioridade.color),
+                "descricao" to prioridade.descricao
+            )
+        )
+    }
+
+    fun excluirPrioridade(prioridadeId: String) {
+        val user = auth.currentUser
+        val userEmail = user?.email ?: return
+
+        db.collection(userEmail)
+            .document("Prioridade")
+            .collection("Prioridades")
+            .document(prioridadeId).delete()
     }
 
     suspend fun getTransacoes(): List<Transacoes> {
@@ -389,7 +469,7 @@ class FirestoreRepository {
 
                     for (i in 1..parcelasInt) {
                         val novoId = transacoesRef.document().id
-                        val numParcelas = i.toString() + "/" + parcelas
+                        val numParcelas = i.toString() + "|" + parcelas
                         val transacaoMap = criarTransacaoMap(
                             novoId, grupoId, descricao, valorParcela, tipo, situacao,
                             categoriaId, subcategoriaId, contaId, Timestamp(calendar.time),

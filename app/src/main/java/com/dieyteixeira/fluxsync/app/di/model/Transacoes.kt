@@ -11,6 +11,7 @@ data class Transacoes(
     var situacao: String = "", // situação do lançamento (pendente, paga, etc.)
     var categoriaId: String = "", // ID da categoria do lançamento
     var subcategoriaId: String = "", // ID da subcategoria do lançamento
+    var prioridadeId: String = "", // ID da prioridade do lançamento
     var contaId: String = "", // ID da conta do lançamento
     var data: Date = Date(), // data do lançamento
     var lancamento: String = "", // tipo de lançamento (único, fixo ou parcelado)
